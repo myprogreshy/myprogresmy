@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kosakata N5</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f3f3f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 360px;
+    }
+    #question {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    #options button {
+      display: block;
+      width: 100%;
+      margin: 0.4rem 0;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    #score, #finalScore {
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+    #restartBtn {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>Kosakata N5</h2>
+    <div id="question">...</div>
+    <div id="options"></div>
+    <div id="result"></div>
+    <div id="score">Skor: 0</div>
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang</button>
+  </div>
+  <script>
+    const data = [
+      ["kudasai", "tolong (mohon)"],
+      ["arigatou", "terima kasih"],
+      ["gomen nasai", "maaf"],
+      ["ohayou", "selamat pagi"],
+      ["konbanwa", "selamat malam"],
+      ["yasui", "murah"],
+      ["takai", "mahal"],
+      ["omoshiroi", "menarik"],
+      ["muzukashii", "sulit"],
+      ["yasashii", "mudah"],
+      ["hayai", "cepat"],
+      ["osoi", "lambat"],
+      ["atarashii", "baru"],
+      ["furui", "lama"],
+      ["chiisai", "kecil"]
+    ];
+      ["watashi", "saya"],
+      ["sensei", "guru"],
+      ["gakusei", "mahasiswa"],
+      ["isha", "dokter"],
+      ["kaisha", "perusahaan"],
+      ["denwa", "telepon"],
+      ["hon", "buku"],
+      ["jisho", "kamus"],
+      ["zasshi", "majalah"],
+      ["enpitsu", "pensil"],
+      ["kuruma", "mobil"],
+      ["isu", "kursi"],
+      ["tabemasu", "makan"],
+      ["nomimasu", "minum"],
+      ["mimasu", "melihat"]
+    ];
+
+    let questions = [];
+    let current = 0;
+    let score = 0;
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function loadQuestion() {
+      if (current >= questions.length) {
+        showFinalScore();
+        return;
+      }
+
+      const [romaji, correct] = questions[current];
+      document.getElementById("question").textContent = romaji;
+      document.getElementById("result").textContent = "";
+
+      const options = new Set([correct]);
+      while (options.size < 4) {
+        const rand = data[Math.floor(Math.random() * data.length)][1];
+        options.add(rand);
+      }
+
+      const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+
+      shuffled.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, correct);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+    }
+
+    function checkAnswer(selected, correct) {
+      const result = document.getElementById("result");
+      if (selected === correct) {
+        result.textContent = `✅ Benar!`;
+        result.style.color = "green";
+        score++;
+        current++;
+        setTimeout(loadQuestion, 600);
+      } else {
+        result.textContent = `❌ Salah! Jawaban: ${correct}`;
+        result.style.color = "red";
+      }
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+    }
+
+    function showFinalScore() {
+      document.getElementById("question").textContent = "Selesai!";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
+      document.getElementById("restartBtn").style.display = "inline-block";
+    }
+
+    function startQuiz() {
+      score = 0;
+      current = 0;
+      questions = [...data];
+      shuffle(questions);
+      document.getElementById("restartBtn").style.display = "none";
+      loadQuestion();
+    }
+
+    document.getElementById("restartBtn").onclick = startQuiz;
+    startQuiz();
+  </script>
+</body>
+</html>
