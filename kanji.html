@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis Kunyomi (Romaji)</title>
+  <title>Kuis Kanji (Arti + Kunyomi)</title>
   <style>
     body {
       font-family: sans-serif;
@@ -20,11 +20,17 @@
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
-      width: 360px;
+      width: 400px;
     }
     #question {
-      font-size: 4rem;
-      margin-bottom: 1rem;
+      font-size: 3.5rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    #meaning {
+      font-size: 1.2rem;
+      color: #555;
+      margin-bottom: 1.5rem;
     }
     #options button {
       display: block;
@@ -33,10 +39,18 @@
       padding: 0.75rem;
       font-size: 1.1rem;
       cursor: pointer;
+      background: #f0f0f5;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: all 0.2s;
+    }
+    #options button:hover {
+      background: #e0e0ee;
     }
     #result {
       margin-top: 1rem;
       font-weight: bold;
+      min-height: 24px;
     }
     #score, #finalScore {
       margin-top: 1rem;
@@ -46,13 +60,22 @@
       margin-top: 1rem;
       padding: 0.5rem 1rem;
       display: none;
+      background: #4a6baf;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #restartBtn:hover {
+      background: #3a5a9f;
     }
   </style>
 </head>
 <body>
   <div class="quiz-container">
-    <h2>Kuis Kunyomi (Romaji)</h2>
+    <h2>Kuis Kanji (Arti + Kunyomi)</h2>
     <div id="question">...</div>
+    <div id="meaning">...</div>
     <div id="options"></div>
     <div id="result"></div>
     <div id="score">Skor: 0</div>
@@ -62,66 +85,92 @@
 
   <script>
     const data = [
-      ["日", "hi"], ["月", "tsuki"], ["山", "yama"], ["川", "kawa"], ["田", "ta"],
-      ["人", "hito"], ["女", "onna"], ["男", "otoko"], ["子", "ko"], ["目", "me"],
-      ["耳", "mimi"], ["口", "kuchi"], ["手", "te"], ["足", "ashi"], ["心", "kokoro"],
-      ["雨", "ame"], ["風", "kaze"], ["空", "sora"], ["天", "ama"], ["石", "ishi"],
-      ["花", "hana"], ["竹", "take"], ["糸", "ito"], ["貝", "kai"], ["虫", "mushi"],
-      ["犬", "inu"], ["魚", "sakana"], ["鳥", "tori"], ["馬", "uma"], ["牛", "ushi"],
-      ["白", "shiro"], ["黒", "kuro"], ["赤", "aka"], ["青", "ao"], ["小", "chiisai"],
-      ["大", "ookii"], ["中", "naka"], ["上", "ue"], ["下", "shita"], ["左", "hidari"],
-      ["右", "migi"], ["早", "hayai"], ["名", "na"], ["音", "oto"], ["力", "chikara"],
-      ["本", "moto"], ["学", "manabu"], ["行", "iku"], ["来", "kuru"], ["見", "miru"],
-      ["聞", "kiku"], ["食", "taberu"], ["飲", "nomu"], ["話", "hanasu"], ["言", "iu"],
-      ["買", "kau"], ["売", "uru"], ["書", "kaku"], ["読", "yomu"], ["立", "tatsu"],
-      ["住", "sumu"], ["出", "deru"], ["入", "hairu"], ["使", "tsukau"], ["思", "omou"]
+      ["日<br>matahari", "nichi,hi"], 
+      ["月<br>bulan", "getsu,tsuki"], 
+      ["山<br>gunung", "san,yama"], 
+      ["川<br>sungai", "sen,kawa"], 
+      ["田<br>sawah", "den,ta"],
+      ["人<br>orang", "jin,hito"], 
+      ["女<br>perempuan", "jo,onna"], 
+      ["男<br>laki-laki", "dan,otoko"]
     ];
+
     let questions = [], current = 0, score = 0;
-    function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
-    function loadQuestion(){
-      if(current>=questions.length){showFinalScore();return;}
-      const [kanji, correct] = questions[current];
-      document.getElementById("question").textContent = kanji;
+    
+    function shuffle(arr) {
+      for(let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+    
+    function loadQuestion() {
+      if(current >= questions.length) {
+        showFinalScore();
+        return;
+      }
+      
+      const [kanjiWithMeaning, correctAnswer] = questions[current];
+      const [kanji, meaning] = kanjiWithMeaning.split("<br>");
+      
+      document.getElementById("question").innerHTML = kanji;
+      document.getElementById("meaning").textContent = meaning;
       document.getElementById("result").textContent = "";
-      const options = new Set([correct]);
-      while(options.size < 4){
-        const rand = data[Math.floor(Math.random()*data.length)][1];
+      
+      const options = new Set([correctAnswer]);
+      while(options.size < 4) {
+        const rand = data[Math.floor(Math.random() * data.length)][1];
         options.add(rand);
       }
-      const shuffled = Array.from(options).sort(()=>Math.random()-0.5);
+      
+      const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
       const optionsDiv = document.getElementById("options");
       optionsDiv.innerHTML = "";
-      shuffled.forEach(opt=>{
+      
+      shuffled.forEach(opt => {
         const btn = document.createElement("button");
         btn.textContent = opt;
-        btn.onclick = () => checkAnswer(opt, correct);
+        btn.onclick = () => checkAnswer(opt, correctAnswer);
         optionsDiv.appendChild(btn);
       });
+      
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
     }
-    function checkAnswer(selected, correct){
+    
+    function checkAnswer(selected, correct) {
       const result = document.getElementById("result");
-      if(selected === correct){
-        result.textContent = `✅ Benar!`; result.style.color = "green";
-        score++; current++;
+      if(selected === correct) {
+        result.textContent = `✅ Benar!`; 
+        result.style.color = "green";
+        score++; 
+        current++;
         setTimeout(loadQuestion, 800);
-      }else{
+      } else {
         result.textContent = `❌ Salah! Jawaban: ${correct}`;
         result.style.color = "red";
       }
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
     }
-    function showFinalScore(){
+    
+    function showFinalScore() {
       document.getElementById("question").textContent = "Selesai!";
+      document.getElementById("meaning").textContent = "";
       document.getElementById("options").innerHTML = "";
       document.getElementById("result").textContent = "";
       document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
       document.getElementById("restartBtn").style.display = "inline-block";
     }
-    function startQuiz(){
-      score = 0; current = 0; questions = [...data]; shuffle(questions);
-      document.getElementById("restartBtn").style.display = "none"; loadQuestion();
+    
+    function startQuiz() {
+      score = 0; 
+      current = 0; 
+      questions = [...data]; 
+      shuffle(questions);
+      document.getElementById("restartBtn").style.display = "none"; 
+      document.getElementById("finalScore").textContent = "";
+      loadQuestion();
     }
+    
     document.getElementById("restartBtn").onclick = startQuiz;
     startQuiz();
   </script>
