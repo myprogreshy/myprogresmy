@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kuis Percakapan Jepang</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef2f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 360px;
+    }
+    #question {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    #options button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    #score {
+      margin-top: 1rem;
+      color: #333;
+    }
+    #finalScore {
+      font-size: 1.2rem;
+      margin-top: 1.5rem;
+      font-weight: bold;
+    }
+    #restartBtn {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Kuis Percakapan Jepang</h1>
+    <div id="question">Memuat...</div>
+    <div id="options"></div>
+    <div id="result"></div>
+    <div id="score">Skor: 0 / 10</div>
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang</button>
+  </div>
+
+  <script>
+    const questionsData = [
+      { q: "A: おはようございます。
+B: ...", correct: "おはようございます", options: ["こんばんは", "おやすみなさい", "おはようございます", "こんにちは"] },
+      { q: "A: ありがとう。
+B: ...", correct: "どういたしまして", options: ["こんにちは", "どういたしまして", "さようなら", "ごめんなさい"] },
+      { q: "A: すみません。
+B: ...", correct: "はい、なんですか？", options: ["どういたしまして", "はい、なんですか？", "おやすみ", "ありがとう"] },
+      { q: "A: いってきます。
+B: ...", correct: "いってらっしゃい", options: ["おかえり", "こんにちは", "いってらっしゃい", "さようなら"] },
+      { q: "A: ごめんなさい。
+B: ...", correct: "だいじょうぶです", options: ["だいじょうぶです", "ありがとう", "またね", "いいえ"] },
+      { q: "A: おやすみなさい。
+B: ...", correct: "おやすみなさい", options: ["こんにちは", "おやすみなさい", "ありがとう", "いってきます"] },
+      { q: "A: はじめまして。
+B: ...", correct: "よろしくおねがいします", options: ["こんにちは", "ありがとう", "よろしくおねがいします", "おやすみなさい"] },
+      { q: "A: ただいま。
+B: ...", correct: "おかえりなさい", options: ["こんにちは", "おかえりなさい", "いってきます", "さようなら"] },
+      { q: "A: おなまえはなんですか？
+B: ...", correct: "わたしのなまえは〜です", options: ["ありがとう", "わたしのなまえは〜です", "はい、そうです", "いいえ"] },
+      { q: "A: さようなら。
+B: ...", correct: "さようなら", options: ["こんにちは", "さようなら", "おやすみ", "ありがとう"] }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      if (current >= questionsData.length) {
+        showFinalScore();
+        return;
+      }
+
+      const q = questionsData[current];
+      document.getElementById("question").textContent = q.q;
+      document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = "";
+
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      q.options.sort(() => Math.random() - 0.5).forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, q.correct);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("score").textContent = `Skor: ${score} / ${questionsData.length}`;
+    }
+
+    function checkAnswer(selected, correct) {
+      const result = document.getElementById("result");
+      if (selected === correct) {
+        result.textContent = "Benar!";
+        result.style.color = "green";
+        score++;
+        current++;
+        setTimeout(loadQuestion, 500);
+      } else {
+        result.textContent = `Salah! Jawaban: ${correct}`;
+        result.style.color = "red";
+      }
+      document.getElementById("score").textContent = `Skor: ${score} / ${questionsData.length}`;
+    }
+
+    function showFinalScore() {
+      document.getElementById("question").textContent = "Selesai!";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${questionsData.length}`;
+      document.getElementById("restartBtn").style.display = "inline-block";
+    }
+
+    function startQuiz() {
+      score = 0;
+      current = 0;
+      document.getElementById("restartBtn").style.display = "none";
+      loadQuestion();
+    }
+
+    document.getElementById("restartBtn").onclick = startQuiz;
+    startQuiz();
+  </script>
+</body>
+</html>
