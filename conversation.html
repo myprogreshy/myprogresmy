@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kuis Percakapan Jepang</title>
+  <title>Kuis Kosakata Jepang</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #eef2f7;
+      background-color: #f5f5fa;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -24,7 +23,7 @@
       width: 360px;
     }
     #question {
-      font-size: 1.3rem;
+      font-size: 2rem;
       margin-bottom: 1rem;
     }
     #options button {
@@ -58,95 +57,84 @@
 </head>
 <body>
   <div class="quiz-container">
-    <h1>Kuis Percakapan Jepang</h1>
-    <div id="question">Memuat...</div>
+    <h1>Kuis Kosakata Jepang</h1>
+    <div id="question">Memuat soal...</div>
     <div id="options"></div>
     <div id="result"></div>
-    <div id="score">Skor: 0 / 10</div>
+    <div id="score">Skor: 0</div>
     <div id="finalScore"></div>
     <button id="restartBtn">Mulai Ulang</button>
   </div>
 
   <script>
-    const questionsData = [
-      { q: "A: おはようございます。
-B: ...", correct: "おはようございます", options: ["こんばんは", "おやすみなさい", "おはようございます", "こんにちは"] },
-      { q: "A: ありがとう。
-B: ...", correct: "どういたしまして", options: ["こんにちは", "どういたしまして", "さようなら", "ごめんなさい"] },
-      { q: "A: すみません。
-B: ...", correct: "はい、なんですか？", options: ["どういたしまして", "はい、なんですか？", "おやすみ", "ありがとう"] },
-      { q: "A: いってきます。
-B: ...", correct: "いってらっしゃい", options: ["おかえり", "こんにちは", "いってらっしゃい", "さようなら"] },
-      { q: "A: ごめんなさい。
-B: ...", correct: "だいじょうぶです", options: ["だいじょうぶです", "ありがとう", "またね", "いいえ"] },
-      { q: "A: おやすみなさい。
-B: ...", correct: "おやすみなさい", options: ["こんにちは", "おやすみなさい", "ありがとう", "いってきます"] },
-      { q: "A: はじめまして。
-B: ...", correct: "よろしくおねがいします", options: ["こんにちは", "ありがとう", "よろしくおねがいします", "おやすみなさい"] },
-      { q: "A: ただいま。
-B: ...", correct: "おかえりなさい", options: ["こんにちは", "おかえりなさい", "いってきます", "さようなら"] },
-      { q: "A: おなまえはなんですか？
-B: ...", correct: "わたしのなまえは〜です", options: ["ありがとう", "わたしのなまえは〜です", "はい、そうです", "いいえ"] },
-      { q: "A: さようなら。
-B: ...", correct: "さようなら", options: ["こんにちは", "さようなら", "おやすみ", "ありがとう"] }
+    const data = [
+      ["neko", "kucing"],["inu", "anjing"],["hon", "buku"],["kuruma", "mobil"],
+      ["mizu", "air"],["sora", "langit"],["yama", "gunung"],["kawa", "sungai"],
+      ["ki", "pohon"],["hana", "bunga"],["arigatou gozaimasu", "terimakasih"],
+      ["konnichiwa", "halo"],["ohayougozaimasu", "selamat pagi"],["konbanwa", "selamat malam"],
+      ["oyasuminasai", "selamat istirahat"],["sayounara", "sampai jumpa"],["getsuyoubi", "senin"],
+      ["kayoubi", "selasa"],["suiyoubi", "rabu"],["mokuyoubi", "kamis"],["kinyoubi", "jumat"],
+      ["doyoubi", "sabtu"],["nichiyoubi", "minggu"],["kyoo", "hari ini"],["kinoo", "kemarin"],
+      ["asatte", "lusa"],["otootoi", "kemarin dulu"],["asa", "pagi"],["kesa", "tadi pagi"],
+      ["ban/yoru", "malam"],["yuube", "tadi malam"],["konban", "malam ini"],["ashita", "besok"],
+      ["mainichi", "setiap hari"],["maiasa", "setiap pagi"],["maiban", "setiap malam"],
+      ["konshuu", "minggu ini"],["senshuu", "minggu lalu"],["raishuu", "minggu depan"],
+      ["shikisai", "warna"],["pinku", "pink"],["anshoku", "gelap(warna)"],["meishoku", "cerah(warna)"],
+      ["kiiro", "kuning"],["kiniro/konjiki", "emas"],["giniro", "perak"],["kuroi", "hitam"],
+      ["ichigatsu", "januari"],["nigatsu", "februari"],["sangatsu", "maret"],["shigatsu", "april"],["gogatsu", "mei"],
+      ["rokugatsu", "juni"],["sichigatsu", "juli"],["hachigatsu", "agustus"],["kugatsu", "september"],["juugatsu", "oktober"],
+      ["juuichigatsu", "november"],["juunigatsu", "desember"],["murasaki", "unggu"],["aoi", "biru"],["mizuiro", "biru muda"],
+      ["akai", "merah"],["akamurasaki", "merah keunguan"],["chairo", "coklat"],["shiroi", "putih"],["midori", "hijau"],
+      ["orenjiro", "orange"],["daidaiiro", "jingga"]
     ];
-
-    let current = 0;
-    let score = 0;
-
-    function loadQuestion() {
-      if (current >= questionsData.length) {
-        showFinalScore();
-        return;
-      }
-
-      const q = questionsData[current];
-      document.getElementById("question").textContent = q.q;
+    let questions = [], current = 0, score = 0;
+    function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+    function loadQuestion(){
+      if(current>=questions.length){showFinalScore();return;}
+      const [romaji, correct] = questions[current];
+      document.getElementById("question").textContent = romaji;
       document.getElementById("result").textContent = "";
       document.getElementById("finalScore").textContent = "";
-
+      const options = new Set([correct]);
+      while(options.size < 4){
+        const rand = data[Math.floor(Math.random()*data.length)][1];
+        options.add(rand);
+      }
+      const shuffled = Array.from(options).sort(()=>Math.random()-0.5);
       const optionsDiv = document.getElementById("options");
       optionsDiv.innerHTML = "";
-      q.options.sort(() => Math.random() - 0.5).forEach(opt => {
+      shuffled.forEach(opt=>{
         const btn = document.createElement("button");
         btn.textContent = opt;
-        btn.onclick = () => checkAnswer(opt, q.correct);
+        btn.onclick = () => checkAnswer(opt, correct);
         optionsDiv.appendChild(btn);
       });
-
-      document.getElementById("score").textContent = `Skor: ${score} / ${questionsData.length}`;
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
     }
-
-    function checkAnswer(selected, correct) {
+    function checkAnswer(selected, correct){
       const result = document.getElementById("result");
-      if (selected === correct) {
+      if(selected === correct){
         result.textContent = "Benar!";
         result.style.color = "green";
-        score++;
-        current++;
+        score++; current++;
         setTimeout(loadQuestion, 500);
-      } else {
+      }else{
         result.textContent = `Salah! Jawaban: ${correct}`;
         result.style.color = "red";
       }
-      document.getElementById("score").textContent = `Skor: ${score} / ${questionsData.length}`;
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
     }
-
-    function showFinalScore() {
+    function showFinalScore(){
       document.getElementById("question").textContent = "Selesai!";
       document.getElementById("options").innerHTML = "";
       document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${questionsData.length}`;
+      document.getElementById("finalScore").textContent = `Nilai Akhir: ${score} dari ${data.length}`;
       document.getElementById("restartBtn").style.display = "inline-block";
     }
-
-    function startQuiz() {
-      score = 0;
-      current = 0;
-      document.getElementById("restartBtn").style.display = "none";
-      loadQuestion();
+    function startQuiz(){
+      score = 0; current = 0; questions = [...data]; shuffle(questions);
+      document.getElementById("restartBtn").style.display = "none"; loadQuestion();
     }
-
     document.getElementById("restartBtn").onclick = startQuiz;
     startQuiz();
   </script>
