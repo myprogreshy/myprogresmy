@@ -86,9 +86,13 @@
       ["juuichigatsu", "november"],["juunigatsu", "desember"],["murasaki", "unggu"],["aoi", "biru"],["mizuiro", "biru muda"],
       ["akai", "merah"],["akamurasaki", "merah keunguan"],["chairo", "coklat"],["shiroi", "putih"],["midori", "hijau"],
       ["orenjiro", "orange"],["daidaiiro", "jingga"],["makka", "merah tua"],["masshiro", "putih jernih"],["makkuro", "hitam legam"],
-      ["massao", "biru tua"],["haiiro", "abu-abu"],["kon", "biru laut"],["kurenai", "merah terang"]
+      ["massao", "biru tua"],["haiiro", "abu-abu"],["kon", "biru laut"],["kurenai", "merah terang"],["rei", "nol"],["ichi", "satu"],
+      ["ni", "dua"],["san", "tiga"],["yon", "empat"],["go", "lima"],["roku", "enam"],["nana", "tujuh"],["hachi", "delapan"],
+      ["kyuu", "sembilan"],["juu", "sepuluh"],["juuichi", "sebelas"],["juuni", "dua belas"],["juusan", "tiga belas"],["juuyon", "empat belas"],
+      ["juugo", "lima belas"],["juuroku", "enam belas"],["juunana", "tujuh belas"],["juuhachi", "delapan belas"],["juukyuu", "sembilan belas"],
+      ["nijuu", "dua puluh"]
     ];
-    let questions = [], current = 0, score = 0;
+     let questions = [], current = 0, score = 0;
     function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
     function loadQuestion(){
       if(current>=questions.length){showFinalScore();return;}
