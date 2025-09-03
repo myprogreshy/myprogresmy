@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kuis Matematika Dasar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 360px;
+    }
+    #question {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    #options button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    #score {
+      margin-top: 1rem;
+      color: #333;
+    }
+    #finalScore {
+      font-size: 1.2rem;
+      margin-top: 1.5rem;
+      font-weight: bold;
+    }
+    #restartBtn {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Kuis Matematika Dasar</h1>
+    <div id="question">Memuat soal...</div>
+    <div id="options"></div>
+    <div id="result"></div>
+    <div id="score">Skor: 0</div>
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang</button>
+  </div>
+
+  <script>
+    const data = [
+      ["neko", "kucing"],["inu", "anjing"],["hon", "buku"],["kuruma", "mobil"],
+      ["mizu", "air"],["sora", "langit"],["yama", "gunung"],["kawa", "sungai"],
+      ["ki", "pohon"],["hana", "bunga"],["arigatou gozaimasu", "terimakasih"],
+      ["konnichiwa", "halo"],["ohayougozaimasu", "selamat pagi"],["konbanwa", "selamat malam"],
+      ["oyasuminasai", "selamat istirahat"],["sayounara", "sampai jumpa"],["getsuyoubi", "senin"],
+      ["kayoubi", "selasa"],["suiyoubi", "rabu"],["mokuyoubi", "kamis"],["kinyoubi", "jumat"],
+      ["doyoubi", "sabtu"],["nichiyoubi", "minggu"],["kyoo", "hari ini"],["kinoo", "kemarin"],
+      ["asatte", "lusa"],["otootoi", "kemarin dulu"],["asa", "pagi"],["kesa", "tadi pagi"],
+      ["ban/yoru", "malam"],["yuube", "tadi malam"],["konban", "malam ini"],["ashita", "besok"],
+      ["mainichi", "setiap hari"],["maiasa", "setiap pagi"],["maiban", "setiap malam"],
+      ["konshuu", "minggu ini"],["senshuu", "minggu lalu"],["raishuu", "minggu depan"],
+      ["shikisai", "warna"],["pinku", "pink"],["anshoku", "gelap(warna)"],["meishoku", "cerah(warna)"],
+      ["kiiro", "kuning"],["kiniro/konjiki", "emas"],["giniro", "perak"],["kuroi", "hitam"],
+      ["ichigatsu", "januari"],["nigatsu", "februari"],["sangatsu", "maret"],["shigatsu", "april"],["gogatsu", "mei"],
+      ["rokugatsu", "juni"],["sichigatsu", "juli"],["hachigatsu", "agustus"],["kugatsu", "september"],["juugatsu", "oktober"],
+      ["juuichigatsu", "november"],["juunigatsu", "desember"],["murasaki", "unggu"],["aoi", "biru"],["mizuiro", "biru muda"],
+      ["akai", "merah"],["akamurasaki", "merah keunguan"],["chairo", "coklat"],["shiroi", "putih"],["midori", "hijau"],
+      ["orenjiro", "orange"],["daidaiiro", "jingga"],["makka", "merah tua"],["masshiro", "putih jernih"],["makkuro", "hitam legam"],
+      ["massao", "biru tua"],["haiiro", "abu-abu"],["kon", "biru laut"],["kurenai", "merah terang"],["rei", "nol"],["ichi", "satu"],
+      ["ni", "dua"],["san", "tiga"],["yon", "empat"],["go", "lima"],["roku", "enam"],["nana", "tujuh"],["hachi", "delapan"],
+      ["kyuu", "sembilan"],["juu", "sepuluh"],["juuichi", "sebelas"],["juuni", "dua belas"],["juusan", "tiga belas"],["juuyon", "empat belas"],
+      ["juugo", "lima belas"],["juuroku", "enam belas"],["juunana", "tujuh belas"],["juuhachi", "delapan belas"],["juukyuu", "sembilan belas"],
+      ["nijuu", "dua puluh"],["nijuuichi", "dua puluh satu"],["nijuuni", "dua puluh dua"],["nijuusan", "dua puluh tiga"],["hyaku", "seratus"],
+      ["nihyaku", "dua ratus"],["sanbyaku", "tiga ratus"],["yohyaku", "empat ratus"],["gohyaku", "lima ratus"],["roppyaku", "enam ratus"],
+      ["nanahyaku", "tujuh ratus"],["happyaku", "delapan ratus"],["kyuuhyaku", "sembilan ratus"],["sen", "seribu"],["nisen", "dua ribu"],
+      ["sanzen", "tiga ribu"],["yonsen", "empat ribu"],["gosen", "lima ribu"],["rokusen", "enam ribu"],["nanasen", "tujuh ribu"],
+      ["hassen", "delapan ribu"],["kyuusen", "sembilan ribu"],["man", "sepuluh ribu"],["niman", "dua puluh ribu"],["sanman", "tiga puluh ribu"],
+      ["yonman", "empat puluh ribu"],["goman", "lima puluh ribu"],["rokuman", "enam puluh ribu"],["nanaman", "tujuh puluh ribu"],
+      ["hachiman", "delapan puluh ribu"],["sichiman", "tujuh puluh ribu"],["juuman", "seratus ribu"],["hyakuman", "sejuta"],["senman", "sepuluh juta"],
+      ["oku", "seratus juta"],["chou", "satu triliun"],["jintai", "tubuh manusia"],["kata", "bahu"],["nodo", "tenggorokan"],["kao", "muka"],
+      ["hoho", "pipi"],["ha", "gigi"],["yubi", "jari"],["onaka", "perut"],["tsume", "kuku"],["hitai", "dahi"],["ago", "dagu"],["hana", "hidung"],
+      ["kuchi", "mulut"],["kuchibiru", "bibir"],["kubi", "leher"],["tenohira", "telapak tangan"],["karada", "tubuh/badan"],["atama", "kepala"],
+      ["te", "tangan"],["ashi", "kaki"],["ude", "lengan"],["hiza", "lutut"],["kami", "rambut"],["senaka", "punggung"],["koshi", "pinggang"],
+      ["me", "mata"],["mimi", "telinga"],["kakato", "tumit"],["ashiyubi", "jari kaki"],["oyayubi", "jempol"],["hitosashiyubi", "jari telunjuk"],
+      ["nakayubi", "jari tengah"],["kusuruyubi", "jari manis"],["koyubi", "jari kelingking"],["agohige", "janggut"],["hige", "kumis"],["futomomo", "paha"],
+      ["watashi", "saya"],["watakushi", "saya"],["shousa", "saya"],["boku", "saya"],["atashi", "saya"],["ore", "saya"],["watashitachi", "kami"],
+      ["bokutachi", "kami"],["bokura", "kami"],["atashitachi", "kami"],["oretachi", "kami"],["anata", "kamu"],["kimi", "kamu"],["omaera", "kamu"],
+      ["kare", "dia(laki)"],["karera", "mereka(laki)"],["kanojo", "dia(perempuan)"],["kanojora", "mereka(perempuan)"],["kore", "ini"],["korera", "ini(jamak)"],
+      ["sore", "itu"],["are", "itu"],["sorera", "itu(jamak)"],["arera", "itu(jamak)"],["hifu", "kulit"],["ketsueki", "darah"],["mayu", "alis"],["mune", "dada"],
+      ["hiji", "siku"],["heso", "pusar"],["wakinoshita", "ketiak"],["ashikubi", "pergelangan kaki"],["tekubi", "pergelangan tangan"],["gankyuu", "bola mata"],
+      ["naizou", "tubuh bagian dalam"],["jinzou", "ginjal"],["kanzou", "hati"],["rokkotsu", "tulang rusuk"],["taiji", "janin"],["shinzou", "jantung"],
+      ["hizou", "limpa"],["nou", "otak"],["kinniku", "otot"],["hai", "paru-paru"],["kekkan", "pembulu darah"],["doumyaku", "nadi"],["joumyaku", "urat"],
+      ["shikyuu", "rahim"],["moumaku", "rahim"],["seishi", "sperma"],["heso no o", "tali pusar"],["zugaikotsu", "tengkorak"],["hone", "tulang"],["chou", "usus"],
+      ["daichou", "usus besar"],["boorupen", "pulpen"],["hon", "buku"],["bundoki", "busur derajat"],["kyoukasho", "buku pelajaran"],["hyakkajiten", "ensiklopedia"],
+      ["hasami", "gunting"],["dentaku keisanki", "kalkulator"],["chooku", "kapur"],["isu", "kursi"],["konpyu-ta", "komputer"],["jisho", "kamus"],["kami", "kertas"],
+      ["tsukue", "meja"],["kyoutaku", "guru"],["kokuban", "papan tulis hitam"],["jougi", "penggaris"],["kokuban keshi", "penghapus papan hitam"],["enpitsu", "pensil"],
+      ["sha-pen", "pensil mekanik"],["chizu", "peta"],["pen", "pulpen"],["hondana", "rak buku"],["enpitsu kezuri", "rautan pensil"],["seifuku", "seragam"],
+      ["hochikisu", "staples"],["ma-ka", "spidol"],["tsuugaku kaban", "tas sekolah"],["fudebako", "tempat pensil"],["houchou", "pisau dapur"],["manaita", "talenan"],
+      ["jousuiki", "penyuling air"],["nabe", "panci"],["furaipan", "wajan"],["yakan", "ketel"],["otama", "sendok sayur"],["haisuikou", "saringan"],["bouru", "mangkuk"],
+      ["mikisaa", "blender"],["oroshigane", "parutan"],["kawa muki ki", "alat pengupas"],["sennuki", "pembuka botol"],["kankiri", "pembuka kaleng"],["koruku nuki", "kotrek"],
+      ["kudamono", "buah"],["ichigo", "strawberry"],["mikan", "jeruk mandarin"],["orenji", "jeruk"],["remon", "lemon"],["suika", "semangka"],["budou", "anggur"],
+      ["painappurru", "nanas"],["ringo", "apel"],["dorian", "durian"],["papaiya", "pepaya"],["momo", "buah persik"],["mangoo", "mangga"],["abokado", "alpukat"],
+      ["kiui", "kiwi"],["guaba", "jambu biji"],["hoshibudou", "kismis"],["zakuro", "delima"],["kokonottsu", "kelapa"],["kiichigo", "rasbery"],["budou", "anggur"],
+      ["nashi", "pir"],["yasai", "sayur"],["daikon", "lobak jepang"],["retasu", "selada"],["tomato", "tomat"],["kinomi", "kacang kacangan"],["budou", "anggur"],
+      ["jagaimo", "kentang"],["kyabetsu", "kubis"],["shouga", "jahe"],["nasu", "terong"],["buruuberii", "bluberry"],["burakkuberii", "blackberry"],["sakuranbou", "cherry"],
+      ["oribu", "buah jaitun"],
+    ];
+     let questions = [], current = 0, score = 0;
+    function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+    function loadQuestion(){
+      if(current>=questions.length){showFinalScore();return;}
+      const [romaji, correct] = questions[current];
+      document.getElementById("question").textContent = romaji;
+      document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = "";
+      const options = new Set([correct]);
+      while(options.size < 4){
+        const rand = data[Math.floor(Math.random()*data.length)][1];
+        options.add(rand);
+      }
+      const shuffled = Array.from(options).sort(()=>Math.random()-0.5);
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      shuffled.forEach(opt=>{
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, correct);
+        optionsDiv.appendChild(btn);
+      });
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+    }
+    function checkAnswer(selected, correct){
+      const result = document.getElementById("result");
+      if(selected === correct){
+        result.textContent = "Benar!";
+        result.style.color = "green";
+        score++; current++;
+        setTimeout(loadQuestion, 500);
+      }else{
+        result.textContent = `Salah! Jawaban: ${correct}`;
+        result.style.color = "red";
+      }
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+    }
+    function showFinalScore(){
+      document.getElementById("question").textContent = "Selesai!";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = `Nilai Akhir: ${score} dari ${data.length}`;
+      document.getElementById("restartBtn").style.display = "inline-block";
+    }
+    function startQuiz(){
+      score = 0; current = 0; questions = [...data]; shuffle(questions);
+      document.getElementById("restartBtn").style.display = "none"; loadQuestion();
+    }
+    document.getElementById("restartBtn").onclick = startQuiz;
+    startQuiz();
+  </script>
+</body>
+</html>
