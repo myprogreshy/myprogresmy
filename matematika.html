@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kuis Kosakata</title>
+  <title>Kuis Perkalian Dasar</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -57,7 +57,7 @@
 </head>
 <body>
   <div class="quiz-container">
-    <h1>Kuis Kosakata Jepang</h1>
+    <h1>Kuis Perkalian Dasar</h1>
     <div id="question">Memuat soal...</div>
     <div id="options"></div>
     <div id="result"></div>
@@ -68,31 +68,31 @@
 
   <script>
     const data = [
-      ["neko", "kucing"],["inu", "anjing"],["hon", "buku"],["kuruma", "mobil"],
-      ["mizu", "air"],["sora", "langit"],["yama", "gunung"],["kawa", "sungai"],
-      ["ki", "pohon"],["hana", "bunga"],["arigatou gozaimasu", "terimakasih"],
-      ["konnichiwa", "halo"],["ohayougozaimasu", "selamat pagi"],["konbanwa", "selamat malam"],
-      ["oyasuminasai", "selamat istirahat"],["sayounara", "sampai jumpa"],["getsuyoubi", "senin"],
-      ["kayoubi", "selasa"],["suiyoubi", "rabu"],["mokuyoubi", "kamis"],["kinyoubi", "jumat"],
-      ["doyoubi", "sabtu"],["nichiyoubi", "minggu"],["kyoo", "hari ini"],["kinoo", "kemarin"],
-      ["asatte", "lusa"],["otootoi", "kemarin dulu"],["asa", "pagi"],["kesa", "tadi pagi"],
-      ["ban/yoru", "malam"],["yuube", "tadi malam"],["konban", "malam ini"],["ashita", "besok"],
-      ["mainichi", "setiap hari"],["maiasa", "setiap pagi"],["maiban", "setiap malam"],
-      ["konshuu", "minggu ini"],["senshuu", "minggu lalu"],["raishuu", "minggu depan"],
-      ["shikisai", "warna"],["pinku", "pink"],["anshoku", "gelap(warna)"],["meishoku", "cerah(warna)"],
-      ["kiiro", "kuning"],["kiniro/konjiki", "emas"],["giniro", "perak"],["kuroi", "hitam"],
-      ["ichigatsu", "januari"],["nigatsu", "februari"],["sangatsu", "maret"],["shigatsu", "april"],["gogatsu", "mei"],
-      ["rokugatsu", "juni"],["sichigatsu", "juli"],["hachigatsu", "agustus"],["kugatsu", "september"],["juugatsu", "oktober"],
-      ["juuichigatsu", "november"],["juunigatsu", "desember"],["murasaki", "unggu"],["aoi", "biru"],["mizuiro", "biru muda"],
-      ["akai", "merah"],["akamurasaki", "merah keunguan"],["chairo", "coklat"],["shiroi", "putih"],["midori", "hijau"],
-      ["orenjiro", "orange"],["daidaiiro", "jingga"],["makka", "merah tua"],["masshiro", "putih jernih"],["makkuro", "hitam legam"],
-      ["massao", "biru tua"],["haiiro", "abu-abu"],["kon", "biru laut"],["kurenai", "merah terang"],["rei", "nol"],["ichi", "satu"],
-      ["ni", "dua"],["san", "tiga"],["yon", "empat"],["go", "lima"],["roku", "enam"],["nana", "tujuh"],["hachi", "delapan"],
-      ["kyuu", "sembilan"],["juu", "sepuluh"],["juuichi", "sebelas"],["juuni", "dua belas"],["juusan", "tiga belas"],["juuyon", "empat belas"],
-      ["juugo", "lima belas"],["juuroku", "enam belas"],["juunana", "tujuh belas"],["juuhachi", "delapan belas"],["juukyuu", "sembilan belas"],
-      ["nijuu", "dua puluh"],["nijuuichi", "dua puluh satu"],["nijuuni", "dua puluh dua"],["nijuusan", "dua puluh tiga"],["hyaku", "seratus"],
-      ["nihyaku", "dua ratus"],["sanbyaku", "tiga ratus"],["yohyaku", "empat ratus"],["gohyaku", "lima ratus"],["roppyaku", "enam ratus"],
-      ["nanahyaku", "tujuh ratus"],["happyaku", "delapan ratus"],["kyuuhyaku", "sembilan ratus"],["sen", "seribu"],["nisen", "dua ribu"],
+      ["2x2", "4"],["2x3", "6"],["2x4", "8"],["2x5", "10"],
+      ["2x6", "12"],["2x7", "14"],["2x8", "16"],["2x9", "18"],
+      ["2x10", "20"],["3x2", "6"],["3x3", "9"],
+      ["3x4", "12"],["3x5", "15"],["3x6", "18"],
+      ["3x7", "21"],["3x8", "24"],["3x9", "27"],
+      ["3x10", "30"],["4x2", "8"],["4x3", "12"],["4x4", "16"],
+      ["4x5", "20"],["4x6", "24"],["4x7", "28"],["4x8", "32"],
+      ["4x9", "36"],["4x10", "40"],["5x2", "10"],["5x3", "15"],
+      ["5x4", 20"],["5x5", "25"],["5x6", "30"],["5x7", "35"],
+      ["5x8", "40"],["5x9", "45"],["5x10", "50"],
+      ["6x2", "12"],["6x3", "18"],["6x4", "24"],
+      ["6x5", "30"],["6x6", "36"],["6x7", "42"],["6x8", "48"],
+      ["6x9", "54"],["6x10", "60"],["7x2", "14"],["7x3", "21"],
+      ["7x4", "28"],["7x5", "35"],["7x6", "42"],["7x7", "49"],["7x8", "56"],
+      ["7x9", "63"],["7x10", "70"],["8x2", "16"],["8x3", "24"],["8x4", "32"],
+      ["8x5", "40"],["8x6", "48"],["8x7", "56"],["8x8", "64"],["8x9", "72"],
+      ["8x10", "80"],["9x2", "18"],["9x3", "27"],["9x4", "36"],["9x5", "45"],
+      ["9x6", "54"],["9x7", "63"],["9x8", "72"],["9x9", "81"],["9x10", "90"],
+      ["10x2", "20"],["10x3", "30"],["10x4", "40"],["10x5", "50"],["10x6", "60"],["10x7", "70"],
+      ["10x8", "80"],["10x9", "90"],["10x10", "100"],["11x2", "22"],["11x3", "33"],["11x4", "44"],["11x5", "55"],
+      ["11x6", "66"],["11x7", "77"],["11x8", "88"],["11x9", "99"],["11x10", "110"],["12x2", "24"],
+      ["12x3", "36"],["12x4", "48"],["12x5", "60"],["12x6", "72"],["12x7", "84"],
+      ["12x8", "96"],["12x9", "108"],["12x10", "120"],["13x2", "26"],["13x3", "39"],
+      ["13x4", "52"],["13x5", "65"],["13x6", "78"],["13x7", "91"],["13x8", "104"],
+      ["13x9", "117"],["13x10", "130"],["kyuuhyaku", "sembilan ratus"],["sen", "seribu"],["nisen", "dua ribu"],
       ["sanzen", "tiga ribu"],["yonsen", "empat ribu"],["gosen", "lima ribu"],["rokusen", "enam ribu"],["nanasen", "tujuh ribu"],
       ["hassen", "delapan ribu"],["kyuusen", "sembilan ribu"],["man", "sepuluh ribu"],["niman", "dua puluh ribu"],["sanman", "tiga puluh ribu"],
       ["yonman", "empat puluh ribu"],["goman", "lima puluh ribu"],["rokuman", "enam puluh ribu"],["nanaman", "tujuh puluh ribu"],
