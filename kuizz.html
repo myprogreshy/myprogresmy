@@ -72,67 +72,93 @@
       ["ka","か"],["ki","き"],["ku","く"],["ke","け"],["ko","こ"],
       ["sa","さ"],["shi","し"],["su","す"],["se","せ"],["so","そ"],
       ["ta","た"],["chi","ち"],["tsu","つ"],["te","て"],["to","と"],
-      ["na","な"],["ni","に"],["nu","ぬ"],["ne","ね"],["の","no"],
+      ["na","な"],["ni","に"],["nu","ぬ"],["ne","ね"],["no","の"],
       ["ha","は"],["hi","ひ"],["fu","ふ"],["he","へ"],["ho","ほ"],
       ["ma","ま"],["mi","み"],["mu","む"],["me","め"],["mo","も"],
       ["ya","や"],["yu","ゆ"],["yo","よ"],
       ["ra","ら"],["ri","り"],["ru","る"],["re","れ"],["ro","ろ"],
-      ["wa","わ"],["wo","を"],["n","ん"],["ga", "が"],["gi", "ぎ"],
-      ["gu", "ぐ"],["ge", "げ"],["go", "ご"],["za", "ざ"],["ji", "じ"],["zu", "ず"],
-      ["ze", "ぜ"],["zo", "ぞ"],["da", "だ"],["dji", "ぢ"],["dzu", "づ"],["de", "で"],
-      ["do", "ど"],["ba", "ば"],["bi", "び"],["bu", "ぶ"],["be", "べ"],["bo", "ぼ"],
-      ["pa", "ぱ"],["pi", "ぴ"],["pu", "ぷ"],["pe", "ぺ"],["po", "ぽ"]
+      ["wa","わ"],["wo","を"],["n","ん"],
+      ["ga","が"],["gi","ぎ"],["gu","ぐ"],["ge","げ"],["go","ご"],
+      ["za","ざ"],["ji","じ"],["zu","ず"],["ze","ぜ"],["zo","ぞ"],
+      ["da","だ"],["dji","ぢ"],["dzu","づ"],["de","で"],["do","ど"],
+      ["ba","ば"],["bi","び"],["bu","ぶ"],["be","べ"],["bo","ぼ"],
+      ["pa","ぱ"],["pi","ぴ"],["pu","ぷ"],["pe","ぺ"],["po","ぽ"]
     ];
-    const katakanaDasar = hiraganaDasar.map(([kana, romaji]) => [
-      String.fromCharCode(kana.charCodeAt(0) + 0x60), romaji
+
+    // Katakana dasar = romaji + katakana
+    const katakanaDasar = hiraganaDasar.map(([romaji, hira]) => [
+      romaji,
+      String.fromCharCode(hira.charCodeAt(0) + 0x60)
     ]);
+
     const youonHiragana = [
-      ["きゃ","kya"],["きゅ","kyu"],["きょ","kyo"],
-      ["しゃ","sha"],["しゅ","shu"],["しょ","sho"],
-      ["ちゃ","cha"],["ちゅ","chu"],["ちょ","cho"],
-      ["にゃ","nya"],["にゅ","nyu"],["にょ","nyo"],
-      ["ひゃ","hya"],["ひゅ","hyu"],["ひょ","hyo"],
-      ["みゃ","mya"],["みゅ","myu"],["みょ","myo"],
-      ["りゃ","rya"],["りゅ","ryu"],["りょ","ryo"],
-      ["ぎゃ","gya"],["ぎゅ","gyu"],["ぎょ","gyo"],
-      ["じゃ","ja"],["じゅ","ju"],["じょ","jo"],
-      ["びゃ","bya"],["びゅ","byu"],["びょ","byo"],
-      ["ぴゃ","pya"],["ぴゅ","pyu"],["ぴょ","pyo"]
+      ["kya","きゃ"],["kyu","きゅ"],["kyo","きょ"],
+      ["sha","しゃ"],["shu","しゅ"],["sho","しょ"],
+      ["cha","ちゃ"],["chu","ちゅ"],["cho","ちょ"],
+      ["nya","にゃ"],["nyu","にゅ"],["nyo","にょ"],
+      ["hya","ひゃ"],["hyu","ひゅ"],["hyo","ひょ"],
+      ["mya","みゃ"],["myu","みゅ"],["myo","みょ"],
+      ["rya","りゃ"],["ryu","りゅ"],["ryo","りょ"],
+      ["gya","ぎゃ"],["gyu","ぎゅ"],["gyo","ぎょ"],
+      ["ja","じゃ"],["ju","じゅ"],["jo","じょ"],
+      ["bya","びゃ"],["byu","びゅ"],["byo","びょ"],
+      ["pya","ぴゃ"],["pyu","ぴゅ"],["pyo","ぴょ"]
     ];
-    const youonKatakana = youonHiragana.map(([kana, romaji]) => [
-      kana.replace(/./g, ch => String.fromCharCode(ch.charCodeAt(0) + 0x60)), romaji
+
+    const youonKatakana = youonHiragana.map(([romaji, hira]) => [
+      romaji,
+      hira.replace(/./g, ch => String.fromCharCode(ch.charCodeAt(0) + 0x60))
     ]);
+
     const data = [...hiraganaDasar, ...katakanaDasar, ...youonHiragana, ...youonKatakana];
+
     let questions = [], current = 0, score = 0;
-    function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+
+    function shuffle(arr){
+      for(let i=arr.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [arr[i],arr[j]]=[arr[j],arr[i]];
+      }
+    }
+
     function loadQuestion(){
       if(current>=questions.length){showFinalScore();return;}
-      const [kana,correct]=questions[current];
+      const [romaji, kana]=questions[current];
       document.getElementById("question").textContent=kana;
       document.getElementById("result").textContent="";
       document.getElementById("finalScore").textContent="";
-      const options=new Set([correct]);
-      while(options.size<4){const rand=data[Math.floor(Math.random()*data.length)][1];options.add(rand);}
+      const options=new Set([romaji]);
+      while(options.size<4){
+        const rand=data[Math.floor(Math.random()*data.length)][0];
+        options.add(rand);
+      }
       const shuffled=Array.from(options).sort(()=>Math.random()-0.5);
       const optionsDiv=document.getElementById("options");
       optionsDiv.innerHTML="";
       shuffled.forEach(opt=>{
         const btn=document.createElement("button");
         btn.textContent=opt;
-        btn.onclick=()=>checkAnswer(opt,correct);
+        btn.onclick=()=>checkAnswer(opt,romaji);
         optionsDiv.appendChild(btn);
       });
       document.getElementById("score").textContent=`Skor: ${score} / ${data.length}`;
     }
+
     function checkAnswer(selected,correct){
       const result=document.getElementById("result");
       if(selected===correct){
-        result.textContent="Benar!";result.style.color="green";score++;current++;setTimeout(loadQuestion,500);
+        result.textContent="Benar!";
+        result.style.color="green";
+        score++;
+        current++;
+        setTimeout(loadQuestion,500);
       }else{
-        result.textContent=`Salah! Jawaban: ${correct}`;result.style.color="red";
+        result.textContent=`Salah! Jawaban: ${correct}`;
+        result.style.color="red";
       }
       document.getElementById("score").textContent=`Skor: ${score} / ${data.length}`;
     }
+
     function showFinalScore(){
       document.getElementById("question").textContent="Selesai!";
       document.getElementById("options").innerHTML="";
@@ -140,10 +166,16 @@
       document.getElementById("finalScore").textContent=`Skor Akhir: ${score} dari ${data.length}`;
       document.getElementById("restartBtn").style.display="inline-block";
     }
+
     function startQuiz(){
-      score=0;current=0;questions=[...data];shuffle(questions);
-      document.getElementById("restartBtn").style.display="none";loadQuestion();
+      score=0;
+      current=0;
+      questions=[...data];
+      shuffle(questions);
+      document.getElementById("restartBtn").style.display="none";
+      loadQuestion();
     }
+
     document.getElementById("restartBtn").onclick=startQuiz;
     startQuiz();
   </script>
