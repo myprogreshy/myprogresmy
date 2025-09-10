@@ -23,7 +23,7 @@
       width: 360px;
     }
     #question {
-      font-size: 3rem;
+      font-size: 2rem;
       margin-bottom: 1rem;
     }
     #options button {
@@ -31,7 +31,7 @@
       width: 100%;
       margin: 0.5rem 0;
       padding: 0.75rem;
-      font-size: 1rem;
+      font-size: 1.5rem;
       cursor: pointer;
     }
     #result {
@@ -85,7 +85,6 @@
       ["pa","ぱ"],["pi","ぴ"],["pu","ぷ"],["pe","ぺ"],["po","ぽ"]
     ];
 
-    // Katakana dasar = romaji + katakana
     const katakanaDasar = hiraganaDasar.map(([romaji, hira]) => [
       romaji,
       String.fromCharCode(hira.charCodeAt(0) + 0x60)
@@ -124,12 +123,12 @@
     function loadQuestion(){
       if(current>=questions.length){showFinalScore();return;}
       const [romaji, kana]=questions[current];
-      document.getElementById("question").textContent=kana;
+      document.getElementById("question").textContent=romaji; // tampilkan romaji
       document.getElementById("result").textContent="";
       document.getElementById("finalScore").textContent="";
-      const options=new Set([romaji]);
+      const options=new Set([kana]);
       while(options.size<4){
-        const rand=data[Math.floor(Math.random()*data.length)][0];
+        const rand=data[Math.floor(Math.random()*data.length)][1]; // ambil kana
         options.add(rand);
       }
       const shuffled=Array.from(options).sort(()=>Math.random()-0.5);
@@ -138,7 +137,7 @@
       shuffled.forEach(opt=>{
         const btn=document.createElement("button");
         btn.textContent=opt;
-        btn.onclick=()=>checkAnswer(opt,romaji);
+        btn.onclick=()=>checkAnswer(opt,kana);
         optionsDiv.appendChild(btn);
       });
       document.getElementById("score").textContent=`Skor: ${score} / ${data.length}`;
