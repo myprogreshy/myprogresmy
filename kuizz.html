@@ -87,17 +87,17 @@
       String.fromCharCode(kana.charCodeAt(0) + 0x60), romaji
     ]);
     const youonHiragana = [
-  ["kya","きゃ"],["kyu","きゅ"],["kyo","きょ"],
-  ["sha","しゃ"],["shu","しゅ"],["sho","しょ"],
-  ["cha","ちゃ"],["chu","ちゅ"],["cho","ちょ"],
-  ["nya","にゃ"],["nyu","にゅ"],["nyo","にょ"],
-  ["hya","ひゃ"],["hyu","ひゅ"],["hyo","ひょ"],
-  ["mya","みゃ"],["myu","みゅ"],["myo","みょ"],
-  ["rya","りゃ"],["ryu","りゅ"],["ryo","りょ"],
-  ["gya","ぎゃ"],["gyu","ぎゅ"],["gyo","ぎょ"],
-  ["ja","じゃ"],["ju","じゅ"],["jo","じょ"],
-  ["bya","びゃ"],["byu","びゅ"],["byo","びょ"],
-  ["pya","ぴゃ"],["pyu","ぴゅ"],["pyo","ぴょ"]
+      ["きゃ","kya"],["きゅ","kyu"],["きょ","kyo"],
+      ["しゃ","sha"],["しゅ","shu"],["しょ","sho"],
+      ["ちゃ","cha"],["ちゅ","chu"],["ちょ","cho"],
+      ["にゃ","nya"],["にゅ","nyu"],["にょ","nyo"],
+      ["ひゃ","hya"],["ひゅ","hyu"],["ひょ","hyo"],
+      ["みゃ","mya"],["みゅ","myu"],["みょ","myo"],
+      ["りゃ","rya"],["りゅ","ryu"],["りょ","ryo"],
+      ["ぎゃ","gya"],["ぎゅ","gyu"],["ぎょ","gyo"],
+      ["じゃ","ja"],["じゅ","ju"],["じょ","jo"],
+      ["びゃ","bya"],["びゅ","byu"],["びょ","byo"],
+      ["ぴゃ","pya"],["ぴゅ","pyu"],["ぴょ","pyo"]
     ];
     const youonKatakana = youonHiragana.map(([kana, romaji]) => [
       kana.replace(/./g, ch => String.fromCharCode(ch.charCodeAt(0) + 0x60)), romaji
