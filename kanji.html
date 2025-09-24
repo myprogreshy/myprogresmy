@@ -20,17 +20,11 @@
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
-      width: 400px;
+      width: 360px;
     }
     #question {
-      font-size: 3.5rem;
-      margin-bottom: 0.5rem;
-      line-height: 1.2;
-    }
-    #meaning {
-      font-size: 1.2rem;
-      color: #555;
-      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
     #options button {
       display: block;
@@ -39,18 +33,10 @@
       padding: 0.75rem;
       font-size: 1.1rem;
       cursor: pointer;
-      background: #f0f0f5;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      transition: all 0.2s;
-    }
-    #options button:hover {
-      background: #e0e0ee;
     }
     #result {
       margin-top: 1rem;
       font-weight: bold;
-      min-height: 24px;
     }
     #score, #finalScore {
       margin-top: 1rem;
@@ -60,14 +46,6 @@
       margin-top: 1rem;
       padding: 0.5rem 1rem;
       display: none;
-      background: #4a6baf;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #restartBtn:hover {
-      background: #3a5a9f;
     }
   </style>
 </head>
@@ -75,14 +53,12 @@
   <div class="quiz-container">
     <h2>Kuis Membaca Kanji</h2>
     <div id="question">...</div>
-    <div id="meaning">...</div>
     <div id="options"></div>
     <div id="result"></div>
     <div id="score">Skor: 0</div>
     <div id="finalScore"></div>
     <button id="restartBtn">Mulai Ulang</button>
   </div>
-
   <script>
     const data = [
       ["日曜日", "nichi-you-bi"],
@@ -118,10 +94,12 @@
 ["人体", "jin-tai"],
     ];
 
-    let questions = [], current = 0, score = 0;
+    let questions = [];
+    let current = 0;
+    let score = 0;
 
     function shuffle(arr) {
-      for(let i = arr.length - 1; i > 0; i--) {
+      for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
@@ -133,14 +111,11 @@
         return;
       }
 
-      const [kanjiWithMeaning, correctAnswer] = questions[current];
-      const [kanji, meaning] = kanjiWithMeaning.split("<br>");
-
-      document.getElementById("question").innerHTML = kanji;
-      document.getElementById("meaning").textContent = meaning;
+      const [romaji, correct] = questions[current];
+      document.getElementById("question").textContent = romaji;
       document.getElementById("result").textContent = "";
 
-      const options = new Set([correctAnswer]);
+      const options = new Set([correct]);
       while (options.size < 4) {
         const rand = data[Math.floor(Math.random() * data.length)][1];
         options.add(rand);
@@ -153,36 +128,34 @@
       shuffled.forEach(opt => {
         const btn = document.createElement("button");
         btn.textContent = opt;
-        btn.onclick = () => checkAnswer(btn, opt, correctAnswer);
+        btn.onclick = () => checkAnswer(opt, correct);
         optionsDiv.appendChild(btn);
       });
 
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
     }
 
-    function checkAnswer(button, selected, correct) {
+    function checkAnswer(selected, correct) {
       const result = document.getElementById("result");
       if (selected === correct) {
         result.textContent = `✅ Benar!`;
         result.style.color = "green";
         score++;
         current++;
-        setTimeout(loadQuestion, 800);
+        setTimeout(loadQuestion, 600);
       } else {
-        result.textContent = `❌ Salah! Coba lagi`;
+        result.textContent = `❌ Salah! Jawaban: ${correct}`;
         result.style.color = "red";
-        button.disabled = true; // hanya nonaktifkan opsi yang salah
       }
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
     }
 
     function showFinalScore() {
-      document.getElementById("finalScore").textContent = `🎉 Selesai! Skor akhir: ${score} / ${data.length}`;
-      document.getElementById("restartBtn").style.display = "inline-block";
-      document.getElementById("question").textContent = "";
-      document.getElementById("meaning").textContent = "";
+      document.getElementById("question").textContent = "Selesai!";
       document.getElementById("options").innerHTML = "";
       document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
+      document.getElementById("restartBtn").style.display = "inline-block";
     }
 
     function startQuiz() {
@@ -191,7 +164,6 @@
       questions = [...data];
       shuffle(questions);
       document.getElementById("restartBtn").style.display = "none";
-      document.getElementById("finalScore").textContent = "";
       loadQuestion();
     }
 
