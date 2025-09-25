@@ -1,1 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Kun/On Kanji</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f3f3f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 360px;
+    }
+    #question {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    #options button {
+      display: block;
+      width: 100%;
+      margin: 0.4rem 0;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    #score, #finalScore {
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+    #restartBtn {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>Kuis Kun/On Kanji</h2>
+    <div id="question">...</div>
+    <div id="options"></div>
+    <div id="result"></div>
+    <div id="score">Skor: 0</div>
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang</button>
+  </div>
+  <script>
+    const data = [
+      ["日", "nichi"],
+["月", "gatsu"],
+["木", "moku"],
+["山", "yama"],
+["川", "kawa"],
+["田", "ta"],
+["人", "jin"],
+["口", "kuchi"],
+["車", "sha"],
+["門", "mon"],
+["火", "ka"],
+["水", "sui"],
+["室", "shitsu"],
+["家", "ka"],
+["度", "do"],
+["竹", "take"],
+["貝", "kai"],
+["花", "hana"],
+["茶", "cha"],
+["肉", "niku"],
+["文", "bun"],
+["字", "ji"],
+["物", "mono"],
+["牛", "gyuu"],
+["鳥", "tori"],
+["魚", "sakana"],
+["明", "mei"],
+["休", "kyuu"],
+["体", "tai"],
+["好", "suki"],
+["男", "otoko"],
+["林", "hayashi"],
+["森", "mori"],
+["朝", "asa"],
+["昼", "hiru"],
+["夜", "yoru"],
+["晩", "ban"],
+["夕", "yuu"],
+["方", "hou"],
+["午", "go"],
+["前", "mae"],
+["後", "ato"],
+["毎", "mai"],
+["週", "shuu"],
+["曜", "you"],
+["今", "ima"],
+["年", "nen"],
+["間", "kan"],
+["一", "ichi"],
+["二", "ni"],
+["三", "san"],
+["四", "shi"],
+["五", "go"],
+["六", "roku"],
+["七", "shichi"],
+["八", "hachi"],
+["九", "kyuu"],
+["十", "juu"],
+["千", "sen"],
+["万", "man"],
+["百", "hyaku"],
+["円", "en"],
+["新", "shin"],
+["古", "furu"],
+["長", "naga"],
+["短", "mijika"],
+["高", "taka"],
+["安", "yasu"],
+["低", "hiku"],
+["暗", "kura"],
+["多", "oo"],
+["少", "suku"],
+["金", "kin"],
+["土", "tsuchi"],
+["子", "ko"],
+["女", "onna"],
+["学", "gaku"],
+["生", "sei"],
+["先", "saki"],
+["私", "watashi"],
+["上", "ue"],
+["下", "shita"],
+["中", "naka"],
+["大", "oo"],
+["英", "ei"],
+["会", "kai"],
+["首", "kubi"],
+["行", "i-ku"],
+["来", "ku-ru"],
+["帰", "kae-ru"],
+["食", "ta-beru"],
+["飲", "no-mu"],
+["見", "mi-ru"],
+["聞", "ki-ku"],
+["読", "yo-mu"],
+["書", "ka-ku"],
+["話", "hana-su"],
+["買", "ka-u"],
+["教", "oshie-ru"],
+["小", "chii-sai"],
+["本", "hon"],
+["半", "han"],
+["分", "bun"],
+["力", "chikara"],
+["何", "nani"],
+["目", "me"],
+["耳", "mimi"],
+["手", "te"],
+["足", "ashi"],
+["雨", "ame"],
+["米", "kome"],
+    ];
 
+    let questions = [];
+    let current = 0;
+    let score = 0;
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function loadQuestion() {
+      if (current >= questions.length) {
+        showFinalScore();
+        return;
+      }
+
+      const [romaji, correct] = questions[current];
+      document.getElementById("question").textContent = romaji;
+      document.getElementById("result").textContent = "";
+
+      const options = new Set([correct]);
+      while (options.size < 4) {
+        const rand = data[Math.floor(Math.random() * data.length)][1];
+        options.add(rand);
+      }
+
+      const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+
+      shuffled.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, correct);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+    }
+
+    function checkAnswer(selected, correct) {
+      const result = document.getElementById("result");
+      if (selected === correct) {
+        result.textContent = `✅ Benar!`;
+        result.style.color = "green";
+        score++;
+        current++;
+        setTimeout(loadQuestion, 600);
+      } else {
+        result.textContent = `❌ Salah! Jawaban: ${correct}`;
+        result.style.color = "red";
+      }
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+    }
+
+    function showFinalScore() {
+      document.getElementById("question").textContent = "Selesai!";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
+      document.getElementById("restartBtn").style.display = "inline-block";
+    }
+
+    function startQuiz() {
+      score = 0;
+      current = 0;
+      questions = [...data];
+      shuffle(questions);
+      document.getElementById("restartBtn").style.display = "none";
+      loadQuestion();
+    }
+
+    document.getElementById("restartBtn").onclick = startQuiz;
+    startQuiz();
+  </script>
+</body>
+</html>
