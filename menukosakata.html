@@ -1,147 +1,72 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kuis Kosakata Jepang</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Halaman Utama</title>
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f5f5fa;
+      background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
-    .quiz-container {
-      background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+    .container {
       text-align: center;
-      width: 360px;
     }
-    #question {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.2em;
     }
-    #options button {
-      display: block;
-      width: 100%;
-      margin: 0.5rem 0;
-      padding: 0.75rem;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    #result {
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-    #score {
-      margin-top: 1rem;
+
+    p {
+      font-size: 1.2em;
       color: #333;
     }
-    #finalScore {
-      font-size: 1.2rem;
-      margin-top: 1.5rem;
-      font-weight: bold;
+
+    .menu {
+      margin-top: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
     }
-    #restartBtn {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      display: none;
+
+    button {
+      padding: 1em 2em;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="quiz-container">
-    <h1>Kuis Kosakata Jepang</h1>
-    <div id="question">Memuat soal...</div>
-    <div id="options"></div>
-    <div id="result"></div>
-    <div id="score">Skor: 0</div>
-    <div id="finalScore"></div>
-    <button id="restartBtn">Mulai Ulang</button>
+  <div class="container">
+    <h1>Website Quiz Bahasa Jepang</h1>
+    <p>Pilih salah satu kuis di bawah ini:</p>
+    <div class="menu">
+      <<button onclick="goTo('kosakata')">📚 Kuis Kosakata</button>
+      <button onclick="location.href='kotoba.html'">📔 Kotoba Minna</button>
+      <button onclick="location.href='n5kosakata'">📒 Kosakata N5</button>
+    </div>
   </div>
 
   <script>
-    const data = [
-      ["わたし は がくせい です", "saya siswa"],["たなか-さん は かいしゃいん です", "tanaka-san karyawan perusahaan"],
-      ["あのかた は いしゃ です", "orang itu dokter"],["わたし は せんせい じゃありません", "saya bukan guru"],
-      ["やまだ-さん は がくせい じゃありません", "yamada-san bukan siswa"],["それ は かさ じゃありません", "itu bukan payung"],
-      ["あなた は がくせい ですか", "kamu siswa?"],["たなか-さん は かいしゃいん ですか", "tanaka-san karyawan perusahaan?"],
-      ["これ は ほん ですか", "ini buku?"],["わたし は かいしゃいん です, かれ も かいしゃいん です", "saya karyawan perusahaan dia juga karyawan perusahaan"],
-      ["たなか-さん は にほんじん です, やまだ-さん も にほんじん です", "tanaka-san orang jepang, yamada-san juga orang jepang"],
-      ["それ は ほん です, これ も ほん です", "itu buku, ini juga buku"],["これ は わたし の ほん です", "ini buku saya"],
-      ["かれ は だいがく の せんせい です", "dia guru universitas"],["それ は すずき-さん の かさ です", "itu payung suzuki-san"],
-      ["あのかた は やまだ-さん です", "orang itu yamada-san"],["すずき-さん は がくせい ですか", "suzuki-san siswa?"],
-      ["たなか-さん も せんせい ですか", "tanaka-san juga guru?"],["これ は ほん です", "ini buku"],["それ は かさ ですか", "itu payung?"],["あれ は つくえ です", "itu meja"],
-      ["この ほん は わたし の です", "ini buku milik saya"],["その かさ は あなた の ですか", "itu payung milikmu?"],["あのひと は せんせい です", "orang itu guru"],["はい そうです", "iya, benar"],
-      ["いいえ, そうじゃありません", "tidak, itu tidak benar"],["いいえ, ちがいます", "tidak, itu salah"],["これ は きゅう か, なな か", "ini 9 atau 7"],["これ は ほん か, ざっし か", "ini buku atau majalah"],
-      ["あのひと は せんせい か, がくせい か", "orang itu guru atau siswa"],["これ は わたし の ほん です", "ini buku saya"],["これ は コンピュータ の ほん です", "ini buku tentang komputer"],
-      ["わたし は だいがく の がくせい です", "saya mahasiswa universitas"],["あ, そうですか", "oh, begitu ya"],["これ は わたし の です ~ そうですか", "ini milik saya ~ begitu ya"],
-      ["たなかさん は がくせい です ~ そうですか", "tanaka adalah siswa ~ begitu ya"],
-      ["ここ は ぎこう です", "disini bank"],["あそこ は えき です", "di sana stasiun"],["うけつけ は どちら ですか", "resepsionis dimana?"],
-      ["ほん は つくえ の うえ です", "buku diatas meja"],["かいぎしつ は 3 かい です", "ruang rapat lantai 3"],["やまださん は じむしょ です", "yamada-san di kantor"],["meishoku", "cerah(warna)"],
-      ["kiiro", "kuning"],["kiniro/konjiki", "emas"],["giniro", "perak"],["kuroi", "hitam"],
-      ["ichigatsu", "januari"],["nigatsu", "februari"],["sangatsu", "maret"],["shigatsu", "april"],["gogatsu", "mei"],
-      ["rokugatsu", "juni"],["sichigatsu", "juli"],["hachigatsu", "agustus"],["kugatsu", "september"],["juugatsu", "oktober"],
-      ["juuichigatsu", "november"],["juunigatsu", "desember"],["murasaki", "unggu"],["aoi", "biru"],["mizuiro", "biru muda"],
-      ["akai", "merah"],["akamurasaki", "merah keunguan"],["chairo", "coklat"],["shiroi", "putih"],["midori", "hijau"],
-      ["orenjiro", "orange"],["daidaiiro", "jingga"]
-    ];
-    let questions = [], current = 0, score = 0;
-    function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
-    function loadQuestion(){
-      if(current>=questions.length){showFinalScore();return;}
-      const [romaji, correct] = questions[current];
-      document.getElementById("question").textContent = romaji;
-      document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = "";
-      const options = new Set([correct]);
-      while(options.size < 4){
-        const rand = data[Math.floor(Math.random()*data.length)][1];
-        options.add(rand);
-      }
-      const shuffled = Array.from(options).sort(()=>Math.random()-0.5);
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
-      shuffled.forEach(opt=>{
-        const btn = document.createElement("button");
-        btn.textContent = opt;
-        btn.onclick = () => checkAnswer(opt, correct);
-        optionsDiv.appendChild(btn);
-      });
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+    function goTo(menu) {
+      window.location.href = menu + ".html";
     }
-    function checkAnswer(selected, correct){
-      const result = document.getElementById("result");
-      if(selected === correct){
-        result.textContent = "Benar!";
-        result.style.color = "green";
-        score++; current++;
-        setTimeout(loadQuestion, 500);
-      }else{
-        result.textContent = `Salah! Jawaban: ${correct}`;
-        result.style.color = "red";
-      }
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
-    }
-    function showFinalScore(){
-      document.getElementById("question").textContent = "Selesai!";
-      document.getElementById("options").innerHTML = "";
-      document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = `Nilai Akhir: ${score} dari ${data.length}`;
-      document.getElementById("restartBtn").style.display = "inline-block";
-    }
-    function startQuiz(){
-      score = 0; current = 0; questions = [...data]; shuffle(questions);
-      document.getElementById("restartBtn").style.display = "none"; loadQuestion();
-    }
-    document.getElementById("restartBtn").onclick = startQuiz;
-    startQuiz();
   </script>
 </body>
 </html>
