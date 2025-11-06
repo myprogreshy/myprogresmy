@@ -1,340 +1,72 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis TKA Jepang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Halaman Utama</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #f3f3f8;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
-    .quiz-container {
-      background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    .container {
       text-align: center;
-      width: 360px;
     }
-    #question {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.2em;
     }
-    #options button {
-      display: block;
-      width: 100%;
-      margin: 0.4rem 0;
-      padding: 0.75rem;
-      font-size: 1.1rem;
+
+    p {
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    .menu {
+      margin-top: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+
+    button {
+      padding: 1em 2em;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      background-color: #007bff;
+      color: white;
       cursor: pointer;
+      transition: background-color 0.3s;
     }
-    #result {
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-    #score, #finalScore {
-      margin-top: 1rem;
-      font-size: 1rem;
-    }
-    #restartBtn {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      display: none;
+
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="quiz-container">
-    <h2>Kuis TKA Jepang</h2>
-    <div id="question">...</div>
-    <div id="options"></div>
-    <div id="result"></div>
-    <div id="score">Skor: 0</div>
-    <div id="finalScore"></div>
-    <button id="restartBtn">Mulai Ulang</button>
+  <div class="container">
+    <h1>Website Quiz Bahasa Jepang</h1>
+    <p>Pilih salah satu kuis di bawah ini:</p>
+    <div class="menu">
+      <button onclick="goTo('kuis')">📝 Kuis Hirakana 1</button>
+      <button onclick="location.href='kuizz.html'">🗒️ Kuis Hirakana 2</button>
+      <button onclick="location.href='artikanji.html'">📒 Kuis Arti Kanji</button>
+    </div>
   </div>
+
   <script>
-    const data = [
-      ["おはようございます", "selamat pagi"],
-  ["こんにちは", "selamat siang"],
-  ["こんばんは", "selamat malam"],
-  ["おやすみなさい", "selamat tidur"],
-  ["さようなら", "selamat tinggal"],
-  ["はじめまして", "salam kenal"],
-  ["よろしくおねがいします", "mohon kerja samanya"],
-  ["ありがとう", "terima kasih"],
-  ["ありがとうございます", "terima kasih (formal)"],
-  ["すみません", "permisi / maaf"],
-  ["ごめんなさい", "maaf"],
-  ["はい", "ya"],
-  ["いいえ", "tidak"],
-  ["おねがいします", "tolong"],
-  ["どういたしまして", "sama-sama"],
-
-  ["わたし", "saya"],
-  ["あなた", "kamu"],
-  ["かれ", "dia (laki-laki)"],
-  ["かのじょ", "dia (perempuan)"],
-  ["ともだち", "teman"],
-  ["せんせい", "guru"],
-  ["がくせい", "murid / mahasiswa"],
-  ["ちち", "ayah"],
-  ["はは", "ibu"],
-  ["あに", "kakak laki-laki"],
-  ["あね", "kakak perempuan"],
-  ["おとうと", "adik laki-laki"],
-  ["いもうと", "adik perempuan"],
-  ["おじいさん", "kakek"],
-  ["おばあさん", "nenek"],
-
-  ["いち", "satu"],
-  ["に", "dua"],
-  ["さん", "tiga"],
-  ["よん", "empat"],
-  ["ご", "lima"],
-  ["ろく", "enam"],
-  ["なな", "tujuh"],
-  ["はち", "delapan"],
-  ["きゅう", "sembilan"],
-  ["じゅう", "sepuluh"],
-  ["ひゃく", "seratus"],
-  ["せん", "seribu"],
-  ["まん", "sepuluh ribu"],
-  ["いま", "sekarang"],
-  ["きょう", "hari ini"],
-  ["あした", "besok"],
-  ["きのう", "kemarin"],
-  ["あさ", "pagi"],
-  ["ひる", "siang"],
-  ["よる", "malam"],
-  ["しゅうまつ", "akhir pekan"],
-  ["じ", "jam"],
-  ["ふん", "menit"],
-  ["とき", "waktu"],
-  ["なんじ", "jam berapa"],
-
-  ["がっこう", "sekolah"],
-  ["だいがく", "universitas"],
-  ["いえ", "rumah"],
-  ["へや", "kamar"],
-  ["としょかん", "perpustakaan"],
-  ["えき", "stasiun"],
-  ["みせ", "toko"],
-  ["ぎんこう", "bank"],
-  ["びょういん", "rumah sakit"],
-  ["レストラン", "restoran"],
-  ["コンビニ", "minimarket"],
-  ["こうえん", "taman"],
-  ["まち", "kota"],
-  ["くに", "negara"],
-  ["みち", "jalan"],
-
-  ["ほん", "buku"],
-  ["ざっし", "majalah"],
-  ["しんぶん", "koran"],
-  ["ノート", "buku catatan"],
-  ["えんぴつ", "pensil"],
-  ["ペン", "pulpen"],
-  ["スマホ", "HP"],
-  ["コンピューター", "komputer"],
-  ["つくえ", "meja"],
-  ["いす", "kursi"],
-  ["くるま", "mobil"],
-  ["じてんしゃ", "sepeda"],
-  ["でんしゃ", "kereta"],
-  ["ひこうき", "pesawat"],
-  ["ふね", "kapal"],
-  ["かばん", "tas"],
-  ["くつ", "sepatu"],
-  ["シャツ", "kemeja"],
-  ["ズボン", "celana"],
-  ["ドア", "pintu"],
-  ["まど", "jendela"],
-
-  ["ごはん", "nasi / makan"],
-  ["パン", "roti"],
-  ["にく", "daging"],
-  ["さかな", "ikan"],
-  ["やさい", "sayur"],
-  ["くだもの", "buah"],
-  ["りんご", "apel"],
-  ["バナナ", "pisang"],
-  ["みかん", "jeruk"],
-  ["みず", "air"],
-  ["おちゃ", "teh"],
-  ["こうちゃ", "teh hitam"],
-  ["コーヒー", "kopi"],
-  ["ジュース", "jus"],
-  ["ぎゅうにゅう", "susu"],
-
-  ["いきます", "pergi"],
-  ["きます", "datang"],
-  ["かえります", "pulang"],
-  ["たべます", "makan"],
-  ["のみます", "minum"],
-  ["みます", "melihat"],
-  ["ききます", "mendengar / bertanya"],
-  ["よみます", "membaca"],
-  ["かきます", "menulis"],
-  ["べんきょうします", "belajar"],
-  ["はなします", "berbicara"],
-  ["あいます", "bertemu"],
-  ["ねます", "tidur"],
-  ["おきます", "bangun"],
-  ["かいます", "membeli"],
-  ["つかいます", "menggunakan"],
-  ["あります", "ada (benda)"],
-  ["います", "ada (orang/hewan)"],
-  ["します", "melakukan"],
-
-  ["いい", "baik"],
-  ["わるい", "buruk"],
-  ["おおきい", "besar"],
-  ["ちいさい", "kecil"],
-  ["たかい", "tinggi / mahal"],
-  ["やすい", "murah"],
-  ["あたらしい", "baru"],
-  ["ふるい", "lama / tua (benda)"],
-  ["いそがしい", "sibuk"],
-  ["ひま", "senggang"],
-  ["たのしい", "menyenangkan"],
-  ["おいしい", "enak"],
-  ["あつい", "panas"],
-  ["さむい", "dingin"],
-  ["あかい", "merah"],
-  ["あおい", "biru"],
-  ["しろい", "putih"],
-  ["くろい", "hitam"],
-
-  ["なに", "apa"],
-  ["どこ", "di mana"],
-  ["だれ", "siapa"],
-  ["いつ", "kapan"],
-  ["なんじ", "jam berapa"],
-  ["なんにち", "tanggal berapa"],
-  ["いくつ", "berapa (jumlah)"],
-  ["なんさい", "umur berapa"],
-  ["どうして", "kenapa"],
-  ["どう", "bagaimana"],
-
-  ["とても", "sangat"],
-  ["すこし", "sedikit"],
-  ["たくさん", "banyak"],
-  ["そして", "lalu / kemudian"],
-  ["でも", "tetapi"],
-  ["から", "karena / dari"],
-  ["まで", "sampai"],
-  ["と", "dan / dengan"],
-  ["もしもし", "halo (telepon)"],
-  ["これ", "ini"],
-  ["それ", "itu"],
-  ["あれ", "itu (jauh)"],
-  ["どれ", "yang mana"],
-  ["おはようございます", "selamat pagi"],
-  ["こんにちは", "selamat siang"],
-  ["こんばんは", "selamat malam"],
-  ["おやすみなさい", "selamat tidur"],
-  ["さようなら", "selamat tinggal"],
-  ["またね", "sampai jumpa"],
-  ["じゃあね", "sampai nanti"],
-  ["では、また", "kalau begitu, sampai jumpa"],
-  ["ありがとうございます", "terima kasih"],
-  ["どういたしまして", "sama-sama"],
-  ["すみません", "permisi / maaf"],
-  ["ごめんなさい", "maaf (mohon maaf)"],
-  ["はじめまして", "salam kenal"],
-  ["よろしくおねがいします", "mohon kerja samanya / senang berkenalan"],
-  ["おげんきですか", "apa kabar?"],
-  ["はい、げんきです", "ya, saya baik"],
-  ["いってきます", "saya pergi dulu"],
-  ["いってらっしゃい", "hati-hati di jalan"],
-  ["ただいま", "saya pulang"],
-  ["おかえりなさい", "selamat datang kembali"],
-  ["いただきます", "selamat makan (sebelum makan)"],
-  ["ごちそうさまでした", "terima kasih atas makanannya"],
-    ];
-
-    let questions = [];
-    let current = 0;
-    let score = 0;
-
-    function shuffle(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
+    function goTo(menu) {
+      window.location.href = menu + ".html";
     }
-
-    function loadQuestion() {
-      if (current >= questions.length) {
-        showFinalScore();
-        return;
-      }
-
-      const [romaji, correct] = questions[current];
-      document.getElementById("question").textContent = romaji;
-      document.getElementById("result").textContent = "";
-
-      const options = new Set([correct]);
-      while (options.size < 4) {
-        const rand = data[Math.floor(Math.random() * data.length)][1];
-        options.add(rand);
-      }
-
-      const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
-
-      shuffled.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.textContent = opt;
-        btn.onclick = () => checkAnswer(opt, correct);
-        optionsDiv.appendChild(btn);
-      });
-
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
-    }
-
-    function checkAnswer(selected, correct) {
-      const result = document.getElementById("result");
-      if (selected === correct) {
-        result.textContent = `✅ Benar!`;
-        result.style.color = "green";
-        score++;
-        current++;
-        setTimeout(loadQuestion, 600);
-      } else {
-        result.textContent = `❌ Salah! Jawaban: ${correct}`;
-        result.style.color = "red";
-      }
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
-    }
-
-    function showFinalScore() {
-      document.getElementById("question").textContent = "Selesai!";
-      document.getElementById("options").innerHTML = "";
-      document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
-      document.getElementById("restartBtn").style.display = "inline-block";
-    }
-
-    function startQuiz() {
-      score = 0;
-      current = 0;
-      questions = [...data];
-      shuffle(questions);
-      document.getElementById("restartBtn").style.display = "none";
-      loadQuestion();
-    }
-
-    document.getElementById("restartBtn").onclick = startQuiz;
-    startQuiz();
   </script>
 </body>
 </html>
