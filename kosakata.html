@@ -242,16 +242,6 @@
       margin-bottom: 0.5rem;
     }
 
-    .category-badge {
-      display: inline-block;
-      padding: 0.3rem 0.8rem;
-      background: #ff6b6b;
-      color: white;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      margin-top: 0.5rem;
-    }
-
     @media (max-width: 600px) {
       .header h1 {
         font-size: 2rem;
@@ -298,7 +288,6 @@
       <div class="type-indicator">Kata Jepang</div>
       <div class="question-label">Apa arti dari:</div>
       <div id="question">Memuat soal...</div>
-      <div class="category-badge" id="categoryBadge">Kosakata Dasar</div>
     </div>
     
     <div id="options"></div>
@@ -331,66 +320,86 @@
       ["ban/yoru", "malam"],["yuube", "tadi malam"],["konban", "malam ini"],["ashita", "besok"],
       ["mainichi", "setiap hari"],["maiasa", "setiap pagi"],["maiban", "setiap malam"],
       ["konshuu", "minggu ini"],["senshuu", "minggu lalu"],["raishuu", "minggu depan"],
-      ["shikisai", "warna"],["pinku", "pink"],["anshoku", "gelap(warna)"],["meishoku", "cerah(warna)"],
-      ["kiiro", "kuning"],["kiniro/konjiki", "emas"],["giniro", "perak"],["kuroi", "hitam"],
-      ["ichigatsu", "januari"],["nigatsu", "februari"],["sangatsu", "maret"],["shigatsu", "april"],["gogatsu", "mei"],
-      ["rokugatsu", "juni"],["sichigatsu", "juli"],["hachigatsu", "agustus"],["kugatsu", "september"],["juugatsu", "oktober"],
-      ["juuichigatsu", "november"],["juunigatsu", "desember"],["murasaki", "unggu"],["aoi", "biru"],["mizuiro", "biru muda"],
-      ["akai", "merah"],["akamurasaki", "merah keunguan"],["chairo", "coklat"],["shiroi", "putih"],["midori", "hijau"],
-      ["orenjiro", "orange"],["daidaiiro", "jingga"],["makka", "merah tua"],["masshiro", "putih jernih"],["makkuro", "hitam legam"],
-      ["massao", "biru tua"],["haiiro", "abu-abu"],["kon", "biru laut"],["kurenai", "merah terang"],["rei", "nol"],["ichi", "satu"],
-      ["ni", "dua"],["san", "tiga"],["yon", "empat"],["go", "lima"],["roku", "enam"],["nana", "tujuh"],["hachi", "delapan"],
-      ["kyuu", "sembilan"],["juu", "sepuluh"],["juuichi", "sebelas"],["juuni", "dua belas"],["juusan", "tiga belas"],["juuyon", "empat belas"],
-      ["juugo", "lima belas"],["juuroku", "enam belas"],["juunana", "tujuh belas"],["juuhachi", "delapan belas"],["juukyuu", "sembilan belas"],
-      ["nijuu", "dua puluh"],["nijuuichi", "dua puluh satu"],["nijuuni", "dua puluh dua"],["nijuusan", "dua puluh tiga"],["hyaku", "seratus"],
-      ["nihyaku", "dua ratus"],["sanbyaku", "tiga ratus"],["yohyaku", "empat ratus"],["gohyaku", "lima ratus"],["roppyaku", "enam ratus"],
-      ["nanahyaku", "tujuh ratus"],["happyaku", "delapan ratus"],["kyuuhyaku", "sembilan ratus"],["sen", "seribu"],["nisen", "dua ribu"],
-      ["sanzen", "tiga ribu"],["yonsen", "empat ribu"],["gosen", "lima ribu"],["rokusen", "enam ribu"],["nanasen", "tujuh ribu"],
-      ["hassen", "delapan ribu"],["kyuusen", "sembilan ribu"],["man", "sepuluh ribu"],["niman", "dua puluh ribu"],["sanman", "tiga puluh ribu"],
-      ["yonman", "empat puluh ribu"],["goman", "lima puluh ribu"],["rokuman", "enam puluh ribu"],["nanaman", "tujuh puluh ribu"],
-      ["hachiman", "delapan puluh ribu"],["sichiman", "tujuh puluh ribu"],["juuman", "seratus ribu"],["hyakuman", "sejuta"],["senman", "sepuluh juta"],
-      ["oku", "seratus juta"],["chou", "satu triliun"],["jintai", "tubuh manusia"],["kata", "bahu"],["nodo", "tenggorokan"],["kao", "muka"],
-      ["hoho", "pipi"],["ha", "gigi"],["yubi", "jari"],["onaka", "perut"],["tsume", "kuku"],["hitai", "dahi"],["ago", "dagu"],["hana", "hidung"],
-      ["kuchi", "mulut"],["kuchibiru", "bibir"],["kubi", "leher"],["tenohira", "telapak tangan"],["karada", "tubuh/badan"],["atama", "kepala"],
-      ["te", "tangan"],["ashi", "kaki"],["ude", "lengan"],["hiza", "lutut"],["kami", "rambut"],["senaka", "punggung"],["koshi", "pinggang"],
-      ["me", "mata"],["mimi", "telinga"],["kakato", "tumit"],["ashiyubi", "jari kaki"],["oyayubi", "jempol"],["hitosashiyubi", "jari telunjuk"],
-      ["nakayubi", "jari tengah"],["kusuruyubi", "jari manis"],["koyubi", "jari kelingking"],["agohige", "janggut"],["hige", "kumis"],["futomomo", "paha"],
-      ["watashi", "saya"],["watakushi", "saya"],["shousa", "saya"],["boku", "saya"],["atashi", "saya"],["ore", "saya"],["watashitachi", "kami"],
-      ["bokutachi", "kami"],["bokura", "kami"],["atashitachi", "kami"],["oretachi", "kami"],["anata", "kamu"],["kimi", "kamu"],["omaera", "kamu"],
-      ["kare", "dia(laki)"],["karera", "mereka(laki)"],["kanojo", "dia(perempuan)"],["kanojora", "mereka(perempuan)"],["kore", "ini"],["korera", "ini(jamak)"],
-      ["sore", "itu"],["are", "itu"],["sorera", "itu(jamak)"],["arera", "itu(jamak)"],["hifu", "kulit"],["ketsueki", "darah"],["mayu", "alis"],["mune", "dada"],
-      ["hiji", "siku"],["heso", "pusar"],["wakinoshita", "ketiak"],["ashikubi", "pergelangan kaki"],["tekubi", "pergelangan tangan"],["gankyuu", "bola mata"],
-      ["naizou", "tubuh bagian dalam"],["jinzou", "ginjal"],["kanzou", "hati"],["rokkotsu", "tulang rusuk"],["taiji", "janin"],["shinzou", "jantung"],
-      ["hizou", "limpa"],["nou", "otak"],["kinniku", "otot"],["hai", "paru-paru"],["kekkan", "pembulu darah"],["doumyaku", "nadi"],["joumyaku", "urat"],
-      ["shikyuu", "rahim"],["moumaku", "rahim"],["seishi", "sperma"],["heso no o", "tali pusar"],["zugaikotsu", "tengkorak"],["hone", "tulang"],["chou", "usus"],
-      ["daichou", "usus besar"],["boorupen", "pulpen"],["hon", "buku"],["bundoki", "busur derajat"],["kyoukasho", "buku pelajaran"],["hyakkajiten", "ensiklopedia"],
-      ["hasami", "gunting"],["dentaku keisanki", "kalkulator"],["chooku", "kapur"],["isu", "kursi"],["konpyu-ta", "komputer"],["jisho", "kamus"],["kami", "kertas"],
-      ["tsukue", "meja"],["kyoutaku", "guru"],["kokuban", "papan tulis hitam"],["jougi", "penggaris"],["kokuban keshi", "penghapus papan hitam"],["enpitsu", "pensil"],
-      ["sha-pen", "pensil mekanik"],["chizu", "peta"],["pen", "pulpen"],["hondana", "rak buku"],["enpitsu kezuri", "rautan pensil"],["seifuku", "seragam"],
-      ["hochikisu", "staples"],["ma-ka", "spidol"],["tsuugaku kaban", "tas sekolah"],["fudebako", "tempat pensil"],["houchou", "pisau dapur"],["manaita", "talenan"],
-      ["jousuiki", "penyuling air"],["nabe", "panci"],["furaipan", "wajan"],["yakan", "ketel"],["otama", "sendok sayur"],["haisuikou", "saringan"],["bouru", "mangkuk"],
-      ["mikisaa", "blender"],["oroshigane", "parutan"],["kawa muki ki", "alat pengupas"],["sennuki", "pembuka botol"],["kankiri", "pembuka kaleng"],["koruku nuki", "kotrek"],
-      ["kudamono", "buah"],["ichigo", "strawberry"],["mikan", "jeruk mandarin"],["orenji", "jeruk"],["remon", "lemon"],["suika", "semangka"],["budou", "anggur"],
-      ["painappurru", "nanas"],["ringo", "apel"],["dorian", "durian"],["papaiya", "pepaya"],["momo", "buah persik"],["mangoo", "mangga"],["abokado", "alpukat"],
-      ["kiui", "kiwi"],["guaba", "jambu biji"],["hoshibudou", "kismis"],["zakuro", "delima"],["kokonottsu", "kelapa"],["kiichigo", "rasbery"],["budou", "anggur"],
-      ["nashi", "pir"],["yasai", "sayur"],["daikon", "lobak jepang"],["retasu", "selada"],["tomato", "tomat"],["kinomi", "kacang kacangan"],["budou", "anggur"],
-      ["jagaimo", "kentang"],["kyabetsu", "kubis"],["shouga", "jahe"],["nasu", "terong"],["buruuberii", "bluberry"],["burakkuberii", "blackberry"],["sakuranbou", "cherry"],
-      ["oribu", "buah jaitun"],["banana", "pisang"],["natsumeyashi no mi", "kurma"],["ninjin", "wortel"],["tamanegi", "bawang merah"],["ninniku", "bawang putih"],
-      ["sayaendou", "kacang panjang"],["endou mame/aomame", "kacang polong"],["karifurawaa", "kembang kol"],["mekyabetsu", "touge"],["kyuuri", "mentimun"],
-      ["piman", "cabe hijau"],["mame", "kacang"],["massuruumu", "jamur"],["hakusai", "sawi"],["kabocha", "labu"],["burokkorii", "brokoli"],["daizu", "kedelai"],
-      ["ingen mame", "kacang merah"],["ooki", "besar"],["chiisai", "kecil"],["nagai", "panjang"],["mijikai", "pendek"],["ooi", "banyak"],["sukunai", "sedikit"],
-      ["futoi", "gemuk,tebal"],["hosoi", "ramping,tipis"],["atsui", "tebal"],["usui", "tipis"],["katai", "keras"],["yawarakai", "lunak"],["komakai", "kecil(uang)"],
-      ["arai", "kasar"],["atarashii", "baru"],["furui", "lama,tua"],["takai", "mahal"],["yasui", "murah"],["hayai", "cepat(waktu)"],["hayai", "cepat(kelajuan)"],
-      ["osoi", "lambat"],["tooi", "jauh"],["chikai", "dekat"],["tsuyoi", "kuat"],["yowai", "lemah"],["takai", "tinggi,mahal"],["hikui", "rendah"],["atsui", "panas(mkn,minum dll)"],
-      ["atatakai", "hangat(mkn,minum dll)"],["atsui", "panas(suhu)"],["tsumetai", "dingin(mkn,minum dll)"],["nurui", "kurang panas, tdk panas tdk dingin jg"],["marui", "bundar/bulat"],["amai", "manis"],
-      ["karai", "pedas"],["suppai", "asam"],["shiokarai", "asin"],["nigai", "pahit"],["koi", "pekat"],["usui", "tipis,encer(rasa)"],["oishii", "enak"],["mazui", "tidak enak"],["samui", "dingin(suhu)"],
-      ["atatakai", "hangat(suhu)"],["suzushii", "sejuk(suhu)"],["mushiatsui", "panas gerah"],["akarui", "terang,riang"],["kurai", "gelap,suram"],["kitanai", "kotor"],["omoi", "berat"],["karui", "ringan"],
-      ["kuwashii", "detail"],["muzukashii", "sulit"],["yasashii", "mudah"],["mezurashii", "langka"],["okashii", "aneh,lucu"],["abunai", "berbahaya"],["umai", "enak,pandai"],["ii", "bagus"],["warui", "jelek"],
-      ["hidoi", "kejam"],["urusai", "berisik"],["isogashii", "sibuk"],["tadashii", "benar"],["sugoi", "hebat"],["subarashii", "luar biasa"],["kakkoi", "keren,terlihat bagus"],["erai", "pintar,hebat,bagus"],
-      ["shitashii", "akrab"],["yasashii", "baik hati,ramah"],["kawaii", "cantik,lucu,imut"],["utsukushii", "indah"],["otonashii", "bersifat lemah lembut dan tidak keras"],["tanoshii", "menyenangkan"],
-      ["omoshiroi", "menarik,lucu"],["tsumaranai", "membosankan,tidak menarik"],["ureshii", "senang,gembira"],["sabishii", "merasa sepi"],["kowai", "takut"],["kanashii", "sedih"],["hazukashii", "malu"],
-      ["urayamashii", "iri hati"],["natsukashii", "terkenang,melepas rindu"],["itai", "merasa nyeri,sakit"],["hoshii", "ingin mendapatkan"],["nai", "tidak ada"],["zannen", "menyayangkan"],
-      ["shinpai", "khawatir"],
+      ["shikisai", "warna"],["pinku", "pink"],["kiiro", "kuning"],["kiniro/konjiki", "emas"],
+      ["giniro", "perak"],["kuroi", "hitam"],["ichigatsu", "januari"],["nigatsu", "februari"],
+      ["sangatsu", "maret"],["shigatsu", "april"],["gogatsu", "mei"],["rokugatsu", "juni"],
+      ["sichigatsu", "juli"],["hachigatsu", "agustus"],["kugatsu", "september"],["juugatsu", "oktober"],
+      ["juuichigatsu", "november"],["juunigatsu", "desember"],["murasaki", "unggu"],["aoi", "biru"],
+      ["mizuiro", "biru muda"],["akai", "merah"],["chairo", "coklat"],["shiroi", "putih"],
+      ["midori", "hijau"],["orenjiro", "orange"],["daidaiiro", "jingga"],["makka", "merah tua"],
+      ["masshiro", "putih jernih"],["makkuro", "hitam legam"],["massao", "biru tua"],["haiiro", "abu-abu"],
+      ["kon", "biru laut"],["kurenai", "merah terang"],["rei", "nol"],["ichi", "satu"],["ni", "dua"],
+      ["san", "tiga"],["yon", "empat"],["go", "lima"],["roku", "enam"],["nana", "tujuh"],["hachi", "delapan"],
+      ["kyuu", "sembilan"],["juu", "sepuluh"],["juuichi", "sebelas"],["juuni", "dua belas"],["juusan", "tiga belas"],
+      ["juuyon", "empat belas"],["juugo", "lima belas"],["juuroku", "enam belas"],["juunana", "tujuh belas"],
+      ["juuhachi", "delapan belas"],["juukyuu", "sembilan belas"],["nijuu", "dua puluh"],["nijuuichi", "dua puluh satu"],
+      ["nijuuni", "dua puluh dua"],["nijuusan", "dua puluh tiga"],["hyaku", "seratus"],["nihyaku", "dua ratus"],
+      ["sanbyaku", "tiga ratus"],["yohyaku", "empat ratus"],["gohyaku", "lima ratus"],["roppyaku", "enam ratus"],
+      ["nanahyaku", "tujuh ratus"],["happyaku", "delapan ratus"],["kyuuhyaku", "sembilan ratus"],["sen", "seribu"],
+      ["nisen", "dua ribu"],["sanzen", "tiga ribu"],["yonsen", "empat ribu"],["gosen", "lima ribu"],
+      ["rokusen", "enam ribu"],["nanasen", "tujuh ribu"],["hassen", "delapan ribu"],["kyuusen", "sembilan ribu"],
+      ["man", "sepuluh ribu"],["niman", "dua puluh ribu"],["sanman", "tiga puluh ribu"],["yonman", "empat puluh ribu"],
+      ["goman", "lima puluh ribu"],["rokuman", "enam puluh ribu"],["nanaman", "tujuh puluh ribu"],
+      ["hachiman", "delapan puluh ribu"],["juuman", "seratus ribu"],["hyakuman", "sejuta"],["senman", "sepuluh juta"],
+      ["oku", "seratus juta"],["chou", "satu triliun"],["jintai", "tubuh manusia"],["kata", "bahu"],["nodo", "tenggorokan"],
+      ["kao", "muka"],["hoho", "pipi"],["ha", "gigi"],["yubi", "jari"],["onaka", "perut"],["tsume", "kuku"],
+      ["hitai", "dahi"],["ago", "dagu"],["hana", "hidung"],["kuchi", "mulut"],["kuchibiru", "bibir"],["kubi", "leher"],
+      ["tenohira", "telapak tangan"],["karada", "tubuh/badan"],["atama", "kepala"],["te", "tangan"],["ashi", "kaki"],
+      ["ude", "lengan"],["hiza", "lutut"],["kami", "rambut"],["senaka", "punggung"],["koshi", "pinggang"],["me", "mata"],
+      ["mimi", "telinga"],["kakato", "tumit"],["ashiyubi", "jari kaki"],["oyayubi", "jempol"],["hitosashiyubi", "jari telunjuk"],
+      ["nakayubi", "jari tengah"],["kusuruyubi", "jari manis"],["koyubi", "jari kelingking"],["agohige", "janggut"],
+      ["hige", "kumis"],["futomomo", "paha"],["watashi", "saya"],["watakushi", "saya"],["boku", "saya"],["atashi", "saya"],
+      ["ore", "saya"],["watashitachi", "kami"],["bokutachi", "kami"],["bokura", "kami"],["atashitachi", "kami"],
+      ["oretachi", "kami"],["anata", "kamu"],["kimi", "kamu"],["omaera", "kamu"],["kare", "dia(laki)"],["karera", "mereka(laki)"],
+      ["kanojo", "dia(perempuan)"],["kanojora", "mereka(perempuan)"],["kore", "ini"],["korera", "ini(jamak)"],["sore", "itu"],
+      ["are", "itu"],["sorera", "itu(jamak)"],["arera", "itu(jamak)"],["hifu", "kulit"],["ketsueki", "darah"],["mayu", "alis"],
+      ["mune", "dada"],["hiji", "siku"],["heso", "pusar"],["wakinoshita", "ketiak"],["ashikubi", "pergelangan kaki"],
+      ["tekubi", "pergelangan tangan"],["gankyuu", "bola mata"],["naizou", "tubuh bagian dalam"],["jinzou", "ginjal"],
+      ["kanzou", "hati"],["rokkotsu", "tulang rusuk"],["taiji", "janin"],["shinzou", "jantung"],["hizou", "limpa"],
+      ["nou", "otak"],["kinniku", "otot"],["hai", "paru-paru"],["kekkan", "pembulu darah"],["doumyaku", "nadi"],
+      ["joumyaku", "urat"],["shikyuu", "rahim"],["seishi", "sperma"],["heso no o", "tali pusar"],["zugaikotsu", "tengkorak"],
+      ["hone", "tulang"],["chou", "usus"],["daichou", "usus besar"],["boorupen", "pulpen"],["hon", "buku"],
+      ["bundoki", "busur derajat"],["kyoukasho", "buku pelajaran"],["hyakkajiten", "ensiklopedia"],["hasami", "gunting"],
+      ["dentaku keisanki", "kalkulator"],["chooku", "kapur"],["isu", "kursi"],["konpyu-ta", "komputer"],["jisho", "kamus"],
+      ["kami", "kertas"],["tsukue", "meja"],["kokuban", "papan tulis hitam"],["jougi", "penggaris"],
+      ["kokuban keshi", "penghapus papan hitam"],["enpitsu", "pensil"],["sha-pen", "pensil mekanik"],["chizu", "peta"],
+      ["pen", "pulpen"],["hondana", "rak buku"],["enpitsu kezuri", "rautan pensil"],["seifuku", "seragam"],
+      ["hochikisu", "staples"],["ma-ka", "spidol"],["tsuugaku kaban", "tas sekolah"],["fudebako", "tempat pensil"],
+      ["houchou", "pisau dapur"],["manaita", "talenan"],["jousuiki", "penyuling air"],["nabe", "panci"],["furaipan", "wajan"],
+      ["yakan", "ketel"],["otama", "sendok sayur"],["haisuikou", "saringan"],["bouru", "mangkuk"],["mikisaa", "blender"],
+      ["oroshigane", "parutan"],["kawa muki ki", "alat pengupas"],["sennuki", "pembuka botol"],["kankiri", "pembuka kaleng"],
+      ["koruku nuki", "kotrek"],["kudamono", "buah"],["ichigo", "strawberry"],["mikan", "jeruk mandarin"],["orenji", "jeruk"],
+      ["remon", "lemon"],["suika", "semangka"],["budou", "anggur"],["painappurru", "nanas"],["ringo", "apel"],
+      ["dorian", "durian"],["papaiya", "pepaya"],["momo", "buah persik"],["mangoo", "mangga"],["abokado", "alpukat"],
+      ["kiui", "kiwi"],["guaba", "jambu biji"],["hoshibudou", "kismis"],["zakuro", "delima"],["kokonottsu", "kelapa"],
+      ["kiichigo", "rasbery"],["nashi", "pir"],["yasai", "sayur"],["daikon", "lobak jepang"],["retasu", "selada"],
+      ["tomato", "tomat"],["jagaimo", "kentang"],["kyabetsu", "kubis"],["shouga", "jahe"],["nasu", "terong"],
+      ["buruuberii", "bluberry"],["burakkuberii", "blackberry"],["sakuranbou", "cherry"],["oribu", "buah jaitun"],
+      ["banana", "pisang"],["natsumeyashi no mi", "kurma"],["ninjin", "wortel"],["tamanegi", "bawang merah"],
+      ["ninniku", "bawang putih"],["sayaendou", "kacang panjang"],["endou mame/aomame", "kacang polong"],
+      ["karifurawaa", "kembang kol"],["kyuuri", "mentimun"],["piman", "cabe hijau"],["mame", "kacang"],
+      ["massuruumu", "jamur"],["hakusai", "sawi"],["kabocha", "labu"],["burokkorii", "brokoli"],["daizu", "kedelai"],
+      ["ingen mame", "kacang merah"],["ooki", "besar"],["chiisai", "kecil"],["nagai", "panjang"],["mijikai", "pendek"],
+      ["ooi", "banyak"],["sukunai", "sedikit"],["futoi", "gemuk,tebal"],["hosoi", "ramping,tipis"],["atsui", "tebal"],
+      ["usui", "tipis"],["katai", "keras"],["yawarakai", "lunak"],["komakai", "kecil(uang)"],["arai", "kasar"],
+      ["atarashii", "baru"],["furui", "lama,tua"],["takai", "mahal"],["yasui", "murah"],["hayai", "cepat(waktu)"],
+      ["hayai", "cepat(kelajuan)"],["osoi", "lambat"],["tooi", "jauh"],["chikai", "dekat"],["tsuyoi", "kuat"],
+      ["yowai", "lemah"],["takai", "tinggi,mahal"],["hikui", "rendah"],["atsui", "panas(mkn,minum dll)"],
+      ["atatakai", "hangat(mkn,minum dll)"],["atsui", "panas(suhu)"],["tsumetai", "dingin(mkn,minum dll)"],
+      ["nurui", "kurang panas, tdk panas tdk dingin jg"],["marui", "bundar/bulat"],["amai", "manis"],["karai", "pedas"],
+      ["suppai", "asam"],["shiokarai", "asin"],["nigai", "pahit"],["koi", "pekat"],["usui", "tipis,encer(rasa)"],
+      ["oishii", "enak"],["mazui", "tidak enak"],["samui", "dingin(suhu)"],["atatakai", "hangat(suhu)"],
+      ["suzushii", "sejuk(suhu)"],["mushiatsui", "panas gerah"],["akarui", "terang,riang"],["kurai", "gelap,suram"],
+      ["kitanai", "kotor"],["omoi", "berat"],["karui", "ringan"],["kuwashii", "detail"],["muzukashii", "sulit"],
+      ["yasashii", "mudah"],["mezurashii", "langka"],["okashii", "aneh,lucu"],["abunai", "berbahaya"],["umai", "enak,pandai"],
+      ["ii", "bagus"],["warui", "jelek"],["hidoi", "kejam"],["urusai", "berisik"],["isogashii", "sibuk"],["tadashii", "benar"],
+      ["sugoi", "hebat"],["subarashii", "luar biasa"],["kakkoi", "keren,terlihat bagus"],["erai", "pintar,hebat,bagus"],
+      ["shitashii", "akrab"],["yasashii", "baik hati,ramah"],["kawaii", "cantik,lucu,imut"],["utsukushii", "indah"],
+      ["otonashii", "bersifat lemah lembut dan tidak keras"],["tanoshii", "menyenangkan"],["omoshiroi", "menarik,lucu"],
+      ["tsumaranai", "membosankan,tidak menarik"],["ureshii", "senang,gembira"],["sabishii", "merasa sepi"],
+      ["kowai", "takut"],["kanashii", "sedih"],["hazukashii", "malu"],["urayamashii", "iri hati"],
+      ["natsukashii", "terkenang,melepas rindu"],["itai", "merasa nyeri,sakit"],["hoshii", "ingin mendapatkan"],
+      ["nai", "tidak ada"],["zannen", "menyayangkan"],["shinpai", "khawatir"]
     ];
 
     let questions = [], current = 0, score = 0;
@@ -400,20 +409,6 @@
         const j=Math.floor(Math.random()*(i+1));
         [arr[i],arr[j]]=[arr[j],arr[i]];
       }
-    }
-    
-    function getCategory(romaji) {
-      // Simple category detection based on word patterns
-      if (romaji.includes('gatsu')) return 'Bulan';
-      if (romaji.includes('youbi')) return 'Hari';
-      if (romaji.includes('iro') || romaji.includes('shoku')) return 'Warna';
-      if (/^\d+$/.test(romaji.split(' ')[0]) || romaji.includes('juu') || romaji.includes('hyaku')) return 'Angka';
-      if (romaji.includes('yubi') || romaji.includes('kuchi') || romaji.includes('me') || romaji.includes('mimi')) return 'Tubuh';
-      if (romaji.includes('watashi') || romaji.includes('anata') || romaji.includes('kare')) return 'Kata Ganti';
-      if (romaji.includes('kudamono') || romaji.includes('ichigo') || romaji.includes('ringo')) return 'Buah';
-      if (romaji.includes('yasai') || romaji.includes('ninjin') || romaji.includes('tamanegi')) return 'Sayur';
-      if (romaji.length <= 3) return 'Kata Sifat';
-      return 'Kosakata Umum';
     }
     
     function updateProgress() {
@@ -432,10 +427,6 @@
       document.getElementById("question").textContent = romaji;
       document.getElementById("result").textContent = "";
       document.getElementById("finalScore").textContent = "";
-      
-      // Update category badge
-      const category = getCategory(romaji);
-      document.getElementById('categoryBadge').textContent = category;
       
       const options = new Set([correct]);
       while(options.size < 4){
@@ -483,7 +474,6 @@
       document.getElementById("finalScore").textContent = `Nilai Akhir: ${score} dari ${data.length}`;
       document.getElementById("restartBtn").style.display = "inline-block";
       document.getElementById('progressBar').style.width = '100%';
-      document.getElementById('categoryBadge').style.display = 'none';
     }
     
     function startQuiz(){
@@ -492,7 +482,6 @@
       questions = [...data]; 
       shuffle(questions);
       document.getElementById("restartBtn").style.display = "none"; 
-      document.getElementById('categoryBadge').style.display = 'inline-block';
       loadQuestion();
     }
     
