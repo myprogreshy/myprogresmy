@@ -61,16 +61,339 @@
   </div>
   <script>
     const data = [
+      <!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Kosakata N5</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .quiz-container {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(to right, #ff6b6b, #667eea);
+    }
+
+    .quiz-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .quiz-subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .question-container {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 2rem 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+      border: 2px solid #e9ecef;
+    }
+
+    #question {
+      font-size: 2.2rem;
+      margin-bottom: 0;
+      font-weight: bold;
+      color: #333;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .question-label {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    #options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    #options button {
+      padding: 1.2rem 1rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      background: #667eea;
+      color: white;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    #options button:hover {
+      background: #5a6fd8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+      min-height: 1.8rem;
+      padding: 0.8rem;
+      border-radius: 8px;
+    }
+
+    .progress-container {
+      background: #e9ecef;
+      border-radius: 10px;
+      height: 12px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #ff6b6b, #667eea);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .score-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
+    #score {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .counter {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    #finalScore {
+      font-size: 1.4rem;
+      margin-top: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
+    #restartBtn {
+      margin-top: 1.5rem;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      display: none;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    #restartBtn:hover {
+      background: #ff5252;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
+    .footer {
+      margin-top: 30px;
+      color: white;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .decoration {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.1;
+      z-index: 0;
+    }
+
+    .dec-1 { top: 20px; left: 20px; }
+    .dec-2 { top: 20px; right: 20px; }
+    .dec-3 { bottom: 20px; left: 20px; }
+    .dec-4 { bottom: 20px; right: 20px; }
+
+    .type-indicator {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: #667eea;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .jlpt-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: #ff6b6b;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .quiz-container {
+        padding: 1.5rem;
+      }
+      
+      #question {
+        font-size: 1.8rem;
+      }
+      
+      #options button {
+        font-size: 1rem;
+        min-height: 55px;
+        padding: 1rem 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Kuis Kosakata N5</h1>
+    <p>Tingkatkan persiapan JLPT N5 Anda</p>
+  </div>
+
+  <div class="quiz-container">
+    <div class="decoration dec-1">N5</div>
+    <div class="decoration dec-2">語</div>
+    <div class="decoration dec-3">彙</div>
+    <div class="decoration dec-4">試</div>
+    
+    <div class="quiz-header">
+      <h2 class="quiz-title">Tebak Arti Kosakata N5</h2>
+      <p class="quiz-subtitle">Pilih terjemahan Indonesia yang tepat untuk kosakata JLPT N5</p>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <div class="question-container">
+      <div class="type-indicator">Kata Jepang</div>
+      <div class="question-label">Apa arti dari:</div>
+      <div id="question">...</div>
+      <div class="jlpt-badge">JLPT N5</div>
+    </div>
+    
+    <div id="options"></div>
+    
+    <div id="result"></div>
+    
+    <div class="score-container">
+      <div id="score">Skor: 0</div>
+      <div class="counter" id="counter">Pertanyaan: 1/200</div>
+    </div>
+    
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang Kuis</button>
+  </div>
+
+  <div class="footer">
+    <p>Quiz Bahasa Jepang by @husain.y.m</p>
+  </div>
+
+  <script>
+    const data = [
       ["あう", "bertemu"],
       ["あお", "biru"],
       ["あおい", "biru"],
       ["あか", "merah"],
       ["あかい", "merah"],
-      ["あかるい", "cerah(cahaya/sifat)"],
+      ["あかるい", "cerah"],
       ["あき", "musim gugur"],
-      ["あく,ひらく", "membuka, membeberkan"],
+      ["あく,ひらく", "membuka"],
       ["あける", "membuka"],
-      ["あげる", "mengangkat, memberi"],
+      ["あげる", "mengangkat"],
       ["あさ", "pagi"],
       ["あさごはん", "sarapan"],
       ["あさって", "lusa"],
@@ -79,215 +402,185 @@
       ["あそこ", "disana"],
       ["あそぶ", "bermain"],
       ["おはようございます", "selamat pagi"],
-  ["こんにちは", "selamat siang"],
-  ["こんばんは", "selamat malam"],
-  ["おやすみなさい", "selamat tidur"],
-  ["さようなら", "selamat tinggal"],
-  ["はじめまして", "salam kenal"],
-  ["よろしくおねがいします", "mohon kerja samanya"],
-  ["ありがとう", "terima kasih"],
-  ["ありがとうございます", "terima kasih (formal)"],
-  ["すみません", "permisi / maaf"],
-  ["ごめんなさい", "maaf"],
-  ["はい", "ya"],
-  ["いいえ", "tidak"],
-  ["おねがいします", "tolong"],
-  ["どういたしまして", "sama-sama"],
-
-  ["わたし", "saya"],
-  ["あなた", "kamu"],
-  ["かれ", "dia (laki-laki)"],
-  ["かのじょ", "dia (perempuan)"],
-  ["ともだち", "teman"],
-  ["せんせい", "guru"],
-  ["がくせい", "murid / mahasiswa"],
-  ["ちち", "ayah"],
-  ["はは", "ibu"],
-  ["あに", "kakak laki-laki"],
-  ["あね", "kakak perempuan"],
-  ["おとうと", "adik laki-laki"],
-  ["いもうと", "adik perempuan"],
-  ["おじいさん", "kakek"],
-  ["おばあさん", "nenek"],
-
-  ["いち", "satu"],
-  ["に", "dua"],
-  ["さん", "tiga"],
-  ["よん", "empat"],
-  ["ご", "lima"],
-  ["ろく", "enam"],
-  ["なな", "tujuh"],
-  ["はち", "delapan"],
-  ["きゅう", "sembilan"],
-  ["じゅう", "sepuluh"],
-  ["ひゃく", "seratus"],
-  ["せん", "seribu"],
-  ["まん", "sepuluh ribu"],
-  ["いま", "sekarang"],
-  ["きょう", "hari ini"],
-  ["あした", "besok"],
-  ["きのう", "kemarin"],
-  ["あさ", "pagi"],
-  ["ひる", "siang"],
-  ["よる", "malam"],
-  ["しゅうまつ", "akhir pekan"],
-  ["じ", "jam"],
-  ["ふん", "menit"],
-  ["とき", "waktu"],
-  ["なんじ", "jam berapa"],
-
-  ["がっこう", "sekolah"],
-  ["だいがく", "universitas"],
-  ["いえ", "rumah"],
-  ["へや", "kamar"],
-  ["としょかん", "perpustakaan"],
-  ["えき", "stasiun"],
-  ["みせ", "toko"],
-  ["ぎんこう", "bank"],
-  ["びょういん", "rumah sakit"],
-  ["レストラン", "restoran"],
-  ["コンビニ", "minimarket"],
-  ["こうえん", "taman"],
-  ["まち", "kota"],
-  ["くに", "negara"],
-  ["みち", "jalan"],
-
-  ["ほん", "buku"],
-  ["ざっし", "majalah"],
-  ["しんぶん", "koran"],
-  ["ノート", "buku catatan"],
-  ["えんぴつ", "pensil"],
-  ["ペン", "pulpen"],
-  ["スマホ", "HP"],
-  ["コンピューター", "komputer"],
-  ["つくえ", "meja"],
-  ["いす", "kursi"],
-  ["くるま", "mobil"],
-  ["じてんしゃ", "sepeda"],
-  ["でんしゃ", "kereta"],
-  ["ひこうき", "pesawat"],
-  ["ふね", "kapal"],
-  ["かばん", "tas"],
-  ["くつ", "sepatu"],
-  ["シャツ", "kemeja"],
-  ["ズボン", "celana"],
-  ["ドア", "pintu"],
-  ["まど", "jendela"],
-
-  ["ごはん", "nasi / makan"],
-  ["パン", "roti"],
-  ["にく", "daging"],
-  ["さかな", "ikan"],
-  ["やさい", "sayur"],
-  ["くだもの", "buah"],
-  ["りんご", "apel"],
-  ["バナナ", "pisang"],
-  ["みかん", "jeruk"],
-  ["みず", "air"],
-  ["おちゃ", "teh"],
-  ["こうちゃ", "teh hitam"],
-  ["コーヒー", "kopi"],
-  ["ジュース", "jus"],
-  ["ぎゅうにゅう", "susu"],
-
-  ["いきます", "pergi"],
-  ["きます", "datang"],
-  ["かえります", "pulang"],
-  ["たべます", "makan"],
-  ["のみます", "minum"],
-  ["みます", "melihat"],
-  ["ききます", "mendengar / bertanya"],
-  ["よみます", "membaca"],
-  ["かきます", "menulis"],
-  ["べんきょうします", "belajar"],
-  ["はなします", "berbicara"],
-  ["あいます", "bertemu"],
-  ["ねます", "tidur"],
-  ["おきます", "bangun"],
-  ["かいます", "membeli"],
-  ["つかいます", "menggunakan"],
-  ["あります", "ada (benda)"],
-  ["います", "ada (orang/hewan)"],
-  ["します", "melakukan"],
-
-  ["いい", "baik"],
-  ["わるい", "buruk"],
-  ["おおきい", "besar"],
-  ["ちいさい", "kecil"],
-  ["たかい", "tinggi / mahal"],
-  ["やすい", "murah"],
-  ["あたらしい", "baru"],
-  ["ふるい", "lama / tua (benda)"],
-  ["いそがしい", "sibuk"],
-  ["ひま", "senggang"],
-  ["たのしい", "menyenangkan"],
-  ["おいしい", "enak"],
-  ["あつい", "panas"],
-  ["さむい", "dingin"],
-  ["あかい", "merah"],
-  ["あおい", "biru"],
-  ["しろい", "putih"],
-  ["くろい", "hitam"],
-
-  ["なに", "apa"],
-  ["どこ", "di mana"],
-  ["だれ", "siapa"],
-  ["いつ", "kapan"],
-  ["なんじ", "jam berapa"],
-  ["なんにち", "tanggal berapa"],
-  ["いくつ", "berapa (jumlah)"],
-  ["なんさい", "umur berapa"],
-  ["どうして", "kenapa"],
-  ["どう", "bagaimana"],
-
-  ["とても", "sangat"],
-  ["すこし", "sedikit"],
-  ["たくさん", "banyak"],
-  ["そして", "lalu / kemudian"],
-  ["でも", "tetapi"],
-  ["から", "karena / dari"],
-  ["まで", "sampai"],
-  ["と", "dan / dengan"],
-  ["もしもし", "halo (telepon)"],
-  ["これ", "ini"],
-  ["それ", "itu"],
-  ["あれ", "itu (jauh)"],
-  ["どれ", "yang mana"],
-  ["おはようございます", "selamat pagi"],
-  ["こんにちは", "selamat siang"],
-  ["こんばんは", "selamat malam"],
-  ["おやすみなさい", "selamat tidur"],
-  ["さようなら", "selamat tinggal"],
-  ["またね", "sampai jumpa"],
-  ["じゃあね", "sampai nanti"],
-  ["では、また", "kalau begitu, sampai jumpa"],
-  ["ありがとうございます", "terima kasih"],
-  ["どういたしまして", "sama-sama"],
-  ["すみません", "permisi / maaf"],
-  ["ごめんなさい", "maaf (mohon maaf)"],
-  ["はじめまして", "salam kenal"],
-  ["よろしくおねがいします", "mohon kerja samanya / senang berkenalan"],
-  ["おげんきですか", "apa kabar?"],
-  ["はい、げんきです", "ya, saya baik"],
-  ["いってきます", "saya pergi dulu"],
-  ["いってらっしゃい", "hati-hati di jalan"],
-  ["ただいま", "saya pulang"],
-  ["おかえりなさい", "selamat datang kembali"],
-  ["いただきます", "selamat makan (sebelum makan)"],
-  ["ごちそうさまでした", "terima kasih atas makanannya"],
+      ["こんにちは", "selamat siang"],
+      ["こんばんは", "selamat malam"],
+      ["おやすみなさい", "selamat tidur"],
+      ["さようなら", "selamat tinggal"],
+      ["はじめまして", "salam kenal"],
+      ["よろしくおねがいします", "mohon kerja samanya"],
+      ["ありがとう", "terima kasih"],
+      ["ありがとうございます", "terima kasih"],
+      ["すみません", "permisi"],
+      ["ごめんなさい", "maaf"],
+      ["はい", "ya"],
+      ["いいえ", "tidak"],
+      ["おねがいします", "tolong"],
+      ["どういたしまして", "sama-sama"],
+      ["わたし", "saya"],
+      ["あなた", "kamu"],
+      ["かれ", "dia"],
+      ["かのじょ", "dia"],
+      ["ともだち", "teman"],
+      ["せんせい", "guru"],
+      ["がくせい", "murid"],
+      ["ちち", "ayah"],
+      ["はは", "ibu"],
+      ["あに", "kakak"],
+      ["あね", "kakak"],
+      ["おとうと", "adik"],
+      ["いもうと", "adik"],
+      ["おじいさん", "kakek"],
+      ["おばあさん", "nenek"],
+      ["いち", "satu"],
+      ["に", "dua"],
+      ["さん", "tiga"],
+      ["よん", "empat"],
+      ["ご", "lima"],
+      ["ろく", "enam"],
+      ["なな", "tujuh"],
+      ["はち", "delapan"],
+      ["きゅう", "sembilan"],
+      ["じゅう", "sepuluh"],
+      ["ひゃく", "seratus"],
+      ["せん", "seribu"],
+      ["まん", "sepuluh ribu"],
+      ["いま", "sekarang"],
+      ["きょう", "hari ini"],
+      ["きのう", "kemarin"],
+      ["ひる", "siang"],
+      ["よる", "malam"],
+      ["しゅうまつ", "akhir pekan"],
+      ["じ", "jam"],
+      ["ふん", "menit"],
+      ["とき", "waktu"],
+      ["なんじ", "jam berapa"],
+      ["がっこう", "sekolah"],
+      ["だいがく", "universitas"],
+      ["いえ", "rumah"],
+      ["へや", "kamar"],
+      ["としょかん", "perpustakaan"],
+      ["えき", "stasiun"],
+      ["みせ", "toko"],
+      ["ぎんこう", "bank"],
+      ["びょういん", "rumah sakit"],
+      ["レストラン", "restoran"],
+      ["コンビニ", "minimarket"],
+      ["こうえん", "taman"],
+      ["まち", "kota"],
+      ["くに", "negara"],
+      ["みち", "jalan"],
+      ["ほん", "buku"],
+      ["ざっし", "majalah"],
+      ["しんぶん", "koran"],
+      ["ノート", "buku catatan"],
+      ["えんぴつ", "pensil"],
+      ["ペン", "pulpen"],
+      ["スマホ", "HP"],
+      ["コンピューター", "komputer"],
+      ["つくえ", "meja"],
+      ["いす", "kursi"],
+      ["くるま", "mobil"],
+      ["じてんしゃ", "sepeda"],
+      ["でんしゃ", "kereta"],
+      ["ひこうき", "pesawat"],
+      ["ふね", "kapal"],
+      ["かばん", "tas"],
+      ["くつ", "sepatu"],
+      ["シャツ", "kemeja"],
+      ["ズボン", "celana"],
+      ["ドア", "pintu"],
+      ["まど", "jendela"],
+      ["ごはん", "nasi"],
+      ["パン", "roti"],
+      ["にく", "daging"],
+      ["さかな", "ikan"],
+      ["やさい", "sayur"],
+      ["くだもの", "buah"],
+      ["りんご", "apel"],
+      ["バナナ", "pisang"],
+      ["みかん", "jeruk"],
+      ["みず", "air"],
+      ["おちゃ", "teh"],
+      ["こうちゃ", "teh hitam"],
+      ["コーヒー", "kopi"],
+      ["ジュース", "jus"],
+      ["ぎゅうにゅう", "susu"],
+      ["いきます", "pergi"],
+      ["きます", "datang"],
+      ["かえります", "pulang"],
+      ["たべます", "makan"],
+      ["のみます", "minum"],
+      ["みます", "melihat"],
+      ["ききます", "mendengar"],
+      ["よみます", "membaca"],
+      ["かきます", "menulis"],
+      ["べんきょうします", "belajar"],
+      ["はなします", "berbicara"],
+      ["あいます", "bertemu"],
+      ["ねます", "tidur"],
+      ["おきます", "bangun"],
+      ["かいます", "membeli"],
+      ["つかいます", "menggunakan"],
+      ["あります", "ada"],
+      ["います", "ada"],
+      ["します", "melakukan"],
+      ["いい", "baik"],
+      ["わるい", "buruk"],
+      ["おおきい", "besar"],
+      ["ちいさい", "kecil"],
+      ["たかい", "tinggi"],
+      ["やすい", "murah"],
+      ["あたらしい", "baru"],
+      ["ふるい", "lama"],
+      ["いそがしい", "sibuk"],
+      ["ひま", "senggang"],
+      ["たのしい", "menyenangkan"],
+      ["おいしい", "enak"],
+      ["あつい", "panas"],
+      ["さむい", "dingin"],
+      ["しろい", "putih"],
+      ["くろい", "hitam"],
+      ["なに", "apa"],
+      ["どこ", "di mana"],
+      ["だれ", "siapa"],
+      ["いつ", "kapan"],
+      ["なんにち", "tanggal berapa"],
+      ["いくつ", "berapa"],
+      ["なんさい", "umur berapa"],
+      ["どうして", "kenapa"],
+      ["どう", "bagaimana"],
+      ["とても", "sangat"],
+      ["すこし", "sedikit"],
+      ["たくさん", "banyak"],
+      ["そして", "lalu"],
+      ["でも", "tetapi"],
+      ["から", "karena"],
+      ["まで", "sampai"],
+      ["と", "dan"],
+      ["もしもし", "halo"],
+      ["これ", "ini"],
+      ["それ", "itu"],
+      ["あれ", "itu"],
+      ["どれ", "yang mana"],
+      ["またね", "sampai jumpa"],
+      ["じゃあね", "sampai nanti"],
+      ["では、また", "sampai jumpa"],
+      ["またね", "sampai jumpa"],
+      ["おげんきですか", "apa kabar"],
+      ["はい、げんきです", "saya baik"],
+      ["いってきます", "saya pergi"],
+      ["いってらっしゃい", "hati-hati"],
+      ["ただいま", "saya pulang"],
+      ["おかえりなさい", "selamat datang"],
+      ["いただきます", "selamat makan"],
+      ["ごちそうさまでした", "terima kasih"],
       ["あたたかい", "hangat"],
       ["あたま", "kepala"],
       ["あたらし", "baru"],
       ["あちら", "sana"],
-      ["あつい", "panas(cuaca)"],
-      ["あつい", "panas(benda)"],
-      ["あつい", "tebal/dalam/berat"],
+      ["あつい", "panas"],
       ["あっち", "disana"],
       ["あと", "setelah itu"],
-      ["あなた", "kamu"],
-      ["あに", "kakak(laki-laki)"],
-      ["あね", "kakak(perempuan)"],
-      ["あの", "itu"],
       ["アパート", "apartemen"],
       ["あびる", "mandi"],
       ["あぶない", "berbahaya"],
@@ -296,12 +589,10 @@
       ["あめ", "hujan"],
       ["あめ", "permen"],
       ["あらう", "mencuci"],
-      ["ある", "ada(benda mati)"],
+      ["ある", "ada"],
       ["あるく", "berjalan"],
-      ["あれ", "itu"],
       ["いい", "iya"],
       ["よい", "iya"],
-      ["いいえ", "tidak"],
       ["いう", "mengatakan"],
       ["いえ", "rumah"],
       ["いかが", "bagaimana"],
@@ -310,12 +601,10 @@
       ["いくら", "berapa banyak"],
       ["いけ", "kolam"],
       ["いしゃ", "dokter"],
-      ["いす", "kursi"],
       ["いそがしい", "sibuk"],
       ["いたい", "menyakiti"],
-      ["いち", "satu"],
-      ["いちにち", "satu hari/pertama sebulan"],
-      ["いちばん", "terbaik/pertama"],
+      ["いちにち", "satu hari"],
+      ["いちばん", "terbaik"],
       ["いつ", "kapan"],
       ["いつか", "lima hari"],
       ["いっしょ", "bersama"],
@@ -324,67 +613,153 @@
       ["いぬ", "anjing"],
       ["いま", "sekarang"],
       ["いみ", "arti"],
-      ["いもうと", "adik(perempuan)"],
+      ["いもうと", "adik"],
       ["いや", "tidak"],
       ["いりぐち", "jalan masuk"],
-      ["いる", "(digunakan utk makhluk hidup)"],
+      ["いる", "ada"],
       ["いる", "membutuhkan"],
       ["いれる", "memasukan"],
       ["いろ", "warna"],
       ["いろいろ", "berbagai macam"],
-      ["うえ", "diatas dari"],
+      ["うえ", "diatas"],
       ["うしろ", "dibelakang"],
-      ["うすい", "kurus,lemah"],
+      ["うすい", "kurus"],
       ["うた", "lagu"],
       ["うたう", "menyanyikan"],
       ["うまれる", "terlahir"],
       ["うみ", "laut"],
-      ["うる", "untuk menjual"],
-      ["うるさい", "berisik,mengganggu"],
+      ["うる", "menjual"],
+      ["うるさい", "berisik"],
       ["うわぎ", "jaket"],
       ["え", "gambar"],
       ["えいが", "film"],
       ["えいがかん", "bioskop"],
       ["えいご", "bahasa inggris"],
-      ["ええ", "iya nih"],
+      ["ええ", "iya"],
       ["えき", "stasiun"],
       ["エレベーター", "lift"],
-      ["えんぴつ", "pensil"],
       ["おいしい", "lezat"],
       ["おおい", "banyak"],
       ["おおきい", "besar"],
-      ["おおきな", "yg besar"],
-      ["おおぜい", "sejumlah besar orang"],
+      ["おおきな", "besar"],
+      ["おおぜい", "banyak orang"],
       ["おかあさん", "ibu"],
       ["おかし", "permen"],
-      ["あかね", "uang"],
       ["おきる", "bangun"],
       ["おく", "menaruh"],
       ["おくさん", "istri"],
       ["おさけ", "sake"],
-      ["おさら", "piring,hidangan"],
+      ["おさら", "piring"],
       ["おじいさん", "kakek"],
-      ["おしえる", "mengajar,memberitau"],
-      ["おじさん", "paman,om"],
-      ["おす", "mendorong,memecat"],
-      ["おそい", "terlambat,lambat"],
-      ["おちゃ", "teh"],
+      ["おしえる", "mengajar"],
+      ["おじさん", "paman"],
+      ["おす", "mendorong"],
+      ["おそい", "terlambat"],
       ["おてあらい", "kamar mandi"],
       ["おとうさん", "ayah"],
-      ["おとうと", "adik(laki-laki)"],
-      ["おとこ", "laki-laki,pria"],
+      ["おとこ", "laki-laki"],
       ["おとこのこ", "anak laki-laki"],
-      ["おととい", "2 hari yg lalu"],
-      ["おととし", "2 tahun yg lalu"],
+      ["おととい", "kemarin dulu"],
+      ["おととし", "dua tahun lalu"],
       ["おとな", "dewasa"],
       ["おなか", "perut"],
       ["おなじ", "sama"],
-      ["おにいさん", "kakak(laki-laki)"],
-      ["おねえさん", "kakak(perempuan)"],
+      ["おにいさん", "kakak"],
+      ["おねえさん", "kakak"],
       ["おばあさん", "nenek"],
-      ["おばさん", "bibi,tante"],
+      ["おばさん", "bibi"],
       ["おふろ", "mandi"],
       ["おべんとう", "kotak makan siang"],
+    ];
+
+    let questions = [], current = 0, score = 0;
+    
+    function shuffle(arr){
+      for(let i=arr.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [arr[i],arr[j]]=[arr[j],arr[i]];
+      }
+    }
+    
+    function updateProgress() {
+      const progress = ((current) / data.length) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+      document.getElementById('counter').textContent = `Pertanyaan: ${current+1}/${data.length}`;
+    }
+    
+    function loadQuestion(){
+      if(current>=questions.length){
+        showFinalScore();
+        return;
+      }
+      
+      const [romaji, correct] = questions[current];
+      document.getElementById("question").textContent = romaji;
+      document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = "";
+      
+      const options = new Set([correct]);
+      while(options.size < 4){
+        const rand = data[Math.floor(Math.random()*data.length)][1];
+        options.add(rand);
+      }
+      
+      const shuffled = Array.from(options).sort(()=>Math.random()-0.5);
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      
+      shuffled.forEach(opt=>{
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, correct);
+        optionsDiv.appendChild(btn);
+      });
+      
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
+    }
+    
+    function checkAnswer(selected, correct){
+      const result = document.getElementById("result");
+      if(selected === correct){
+        result.textContent = "✅ Benar!";
+        result.style.color = "green";
+        result.style.background = "#e8f5e8";
+        score++; 
+        current++;
+        setTimeout(loadQuestion, 500);
+      }else{
+        result.textContent = `❌ Salah! Jawaban: ${correct}`;
+        result.style.color = "red";
+        result.style.background = "#ffe8e8";
+      }
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
+    }
+    
+    function showFinalScore(){
+      document.getElementById("question").textContent = "🎉 Selesai!";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = `Nilai Akhir: ${score} dari ${data.length}`;
+      document.getElementById("restartBtn").style.display = "inline-block";
+      document.getElementById('progressBar').style.width = '100%';
+    }
+    
+    function startQuiz(){
+      score = 0; 
+      current = 0; 
+      questions = [...data]; 
+      shuffle(questions);
+      document.getElementById("restartBtn").style.display = "none"; 
+      loadQuestion();
+    }
+    
+    document.getElementById("restartBtn").onclick = startQuiz;
+    startQuiz();
+  </script>
+</body>
+</html>
     ];
 
     let questions = [];
