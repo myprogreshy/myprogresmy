@@ -3,317 +3,170 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quiz Bahasa Jepang by @husain.y.m</title>
+  <title>Quiz Bahasa Jepang</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary-color: #e74c3c;
-      --secondary-color: #c0392b;
-      --accent-color: #e67e22;
-      --light-color: #f8f9fa;
-      --dark-color: #2c3e50;
-      --success-color: #2ecc71;
-      --warning-color: #f39c12;
+      --primary: #e74c3c;
+      --primary-dark: #c0392b;
+      --dark: #2c3e50;
+      --light: #f8f9fa;
+      --gray: #6c757d;
     }
     
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
       padding: 20px;
-      color: #333;
     }
 
     .container {
-      background-color: white;
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-      padding: 40px;
-      max-width: 900px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       width: 100%;
-      text-align: center;
-      position: relative;
+      max-width: 800px;
       overflow: hidden;
-      animation: fadeIn 0.8s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .container::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 8px;
-      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
     }
 
     .header {
-      margin-bottom: 30px;
-      position: relative;
-    }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: var(--primary);
       color: white;
-      font-size: 2em;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 40px 30px;
+      text-align: center;
     }
 
-    h1 {
-      font-size: 2.8em;
-      margin-bottom: 0.2em;
-      color: var(--dark-color);
-      position: relative;
-      display: inline-block;
-      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .subtitle {
-      font-size: 1.3em;
-      color: #666;
+    .header h1 {
+      font-size: 2.5rem;
       margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 40px 30px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .intro p {
+      color: var(--gray);
+      font-size: 1.1rem;
       max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .author {
-      font-size: 1em;
-      color: #888;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .author i {
-      color: var(--primary-color);
-    }
-
-    .illustration {
-      margin: 30px auto;
-      max-width: 300px;
-      position: relative;
-    }
-
-    .illustration img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      transition: transform 0.3s ease;
-    }
-
-    .illustration:hover img {
-      transform: scale(1.03);
+      margin: 0 auto;
     }
 
     .menu {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 25px;
-      margin-top: 30px;
+      margin-bottom: 40px;
     }
 
-    .menu-item {
-      background-color: white;
-      border-radius: 15px;
-      padding: 30px 25px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      transition: all 0.4s ease;
-      cursor: pointer;
-      border: 2px solid transparent;
-      position: relative;
-      overflow: hidden;
+    .card {
+      background: var(--light);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
-    .menu-item::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
-    .menu-item:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-      border-color: rgba(231, 76, 60, 0.2);
-    }
-
-    .menu-item:hover::before {
-      transform: scaleX(1);
-    }
-
-    .menu-icon {
-      font-size: 3.5em;
+    .card-icon {
+      font-size: 3rem;
+      color: var(--primary);
       margin-bottom: 20px;
-      color: var(--primary-color);
-      transition: transform 0.3s ease;
     }
 
-    .menu-item:hover .menu-icon {
-      transform: scale(1.1);
-    }
-
-    .menu-title {
-      font-size: 1.5em;
-      font-weight: bold;
+    .card h3 {
+      font-size: 1.5rem;
       margin-bottom: 15px;
-      color: var(--dark-color);
+      color: var(--dark);
     }
 
-    .menu-description {
-      font-size: 1em;
-      color: #666;
+    .card p {
+      color: var(--gray);
       margin-bottom: 20px;
       line-height: 1.5;
     }
 
     .btn {
       display: inline-block;
-      padding: 12px 30px;
-      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+      background: var(--primary);
       color: white;
+      padding: 12px 30px;
       border-radius: 50px;
       text-decoration: none;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-      border: none;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      transition: left 0.5s;
+      font-weight: 600;
+      transition: background 0.3s, transform 0.2s;
     }
 
     .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 7px 20px rgba(231, 76, 60, 0.4);
-    }
-
-    .btn:hover::before {
-      left: 100%;
+      background: var(--primary-dark);
+      transform: translateY(-2px);
     }
 
     .stats {
       display: flex;
       justify-content: space-around;
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 1px solid #eee;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .stat-item {
       text-align: center;
-      flex: 1;
-      min-width: 120px;
+      padding: 30px 0;
+      border-top: 1px solid #eee;
     }
 
-    .stat-number {
-      font-size: 2.5em;
-      font-weight: bold;
-      color: var(--primary-color);
+    .stat-item .number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
       display: block;
     }
 
-    .stat-label {
-      font-size: 0.9em;
-      color: #666;
-      margin-top: 5px;
-    }
-
-    .progress-container {
-      margin-top: 30px;
-      background-color: #f0f0f0;
-      border-radius: 10px;
-      height: 10px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-      width: 65%;
-      border-radius: 10px;
-      transition: width 1s ease;
+    .stat-item .label {
+      color: var(--gray);
+      font-size: 0.9rem;
     }
 
     .footer {
-      margin-top: 30px;
-      color: #888;
-      font-size: 0.9em;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
+      text-align: center;
+      padding: 20px;
+      color: var(--gray);
+      font-size: 0.9rem;
+      border-top: 1px solid #eee;
     }
 
-    .social-links {
-      display: flex;
-      gap: 15px;
-    }
-
-    .social-links a {
-      color: #888;
-      font-size: 1.2em;
-      transition: color 0.3s ease;
-    }
-
-    .social-links a:hover {
-      color: var(--primary-color);
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 25px;
+    @media (max-width: 600px) {
+      .header {
+        padding: 30px 20px;
       }
       
-      h1 {
-        font-size: 2.2em;
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .content {
+        padding: 30px 20px;
       }
       
       .menu {
@@ -322,182 +175,62 @@
       
       .stats {
         flex-direction: column;
-        gap: 25px;
-      }
-      
-      .footer {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.8em;
-      }
-      
-      .subtitle {
-        font-size: 1.1em;
-      }
-      
-      .menu-item {
-        padding: 20px 15px;
-      }
-    }
-
-    /* Floating particles animation */
-    .particles {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: -1;
-    }
-
-    .particle {
-      position: absolute;
-      background-color: rgba(231, 76, 60, 0.1);
-      border-radius: 50%;
-      animation: float 15s infinite linear;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-1000px) rotate(720deg);
-        opacity: 0;
+        gap: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="particles" id="particles"></div>
-  
   <div class="container">
     <div class="header">
-      <div class="logo">
-        <i class="fas fa-language"></i>
-      </div>
       <h1>Quiz Bahasa Jepang</h1>
-      <p class="subtitle">Tingkatkan kemampuan bahasa Jepang Anda dengan kuis interaktif yang menyenangkan dan menantang</p>
-      <p class="author"><i class="fas fa-user"></i> by @husain.y.m</p>
+      <p>Tingkatkan kemampuan bahasa Jepang Anda dengan kuis interaktif</p>
     </div>
-
-    <div class="illustration">
-      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-        <rect x="50" y="50" width="200" height="120" rx="10" fill="#f8f9fa" stroke="#e74c3c" stroke-width="2"/>
-        <rect x="70" y="70" width="160" height="30" rx="5" fill="#e9ecef"/>
-        <rect x="70" y="110" width="160" height="30" rx="5" fill="#e9ecef"/>
-        <circle cx="240" cy="125" r="8" fill="#2ecc71"/>
-        <circle cx="260" cy="125" r="8" fill="#e74c3c"/>
-        <text x="150" y="40" text-anchor="middle" font-family="Arial" font-size="16" fill="#333">日本語クイズ</text>
-        <path d="M80 160 Q150 140 220 160" stroke="#e74c3c" stroke-width="2" fill="none"/>
-      </svg>
-    </div>
-
-    <p>Pilih jenis kuis di bawah ini untuk memulai perjalanan belajar bahasa Jepang Anda:</p>
-
-    <div class="menu">
-      <div class="menu-item" onclick="location.href='menuhuruf.html'">
-        <div class="menu-icon"><i class="fas fa-font"></i></div>
-        <div class="menu-title">Huruf Jepang</div>
-        <div class="menu-description">Pelajari dan uji pengetahuan tentang Hiragana, Katakana, dan Kanji dasar dengan latihan interaktif</div>
-        <a href="menuhuruf.html" class="btn">Mulai Belajar</a>
+    
+    <div class="content">
+      <div class="intro">
+        <p>Pilih jenis kuis di bawah ini untuk memulai perjalanan belajar bahasa Jepang Anda</p>
       </div>
       
-      <div class="menu-item" onclick="location.href='menukosakata.html'">
-        <div class="menu-icon"><i class="fas fa-book"></i></div>
-        <div class="menu-title">Kosakata Jepang</div>
-        <div class="menu-description">Tingkatkan perbendaharaan kata bahasa Jepang Anda dengan ratusan kosakata penting</div>
-        <a href="menukosakata.html" class="btn">Mulai Belajar</a>
+      <div class="menu">
+        <div class="card">
+          <div class="card-icon">
+            <i class="fas fa-font"></i>
+          </div>
+          <h3>Huruf Jepang</h3>
+          <p>Pelajari dan uji pengetahuan tentang Hiragana, Katakana, dan Kanji dasar</p>
+          <a href="menuhuruf.html" class="btn">Mulai Belajar</a>
+        </div>
+        
+        <div class="card">
+          <div class="card-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <h3>Kosakata Jepang</h3>
+          <p>Tingkatkan perbendaharaan kata bahasa Jepang Anda dengan kosakata penting</p>
+          <a href="menukosakata.html" class="btn">Mulai Belajar</a>
+        </div>
+      </div>
+      
+      <div class="stats">
+        <div class="stat-item">
+          <span class="number">2</span>
+          <span class="label">Jenis Kuis</span>
+        </div>
+        <div class="stat-item">
+          <span class="number">250+</span>
+          <span class="label">Pertanyaan</span>
+        </div>
+        <div class="stat-item">
+          <span class="number">1.2K+</span>
+          <span class="label">Pemain</span>
+        </div>
       </div>
     </div>
-
-    <div class="progress-container">
-      <div class="progress-bar"></div>
-    </div>
-
-    <div class="stats">
-      <div class="stat-item">
-        <span class="stat-number">2</span>
-        <div class="stat-label">Jenis Kuis</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">250+</span>
-        <div class="stat-label">Pertanyaan</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">1.2K+</span>
-        <div class="stat-label">Pemain</div>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">4.8</span>
-        <div class="stat-label">Rating</div>
-      </div>
-    </div>
-
+    
     <div class="footer">
-      <p>© 2023 Quiz Bahasa Jepang. Semua hak dilindungi.</p>
-      <div class="social-links">
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-        <a href="#"><i class="fab fa-github"></i></a>
-      </div>
+      <p>© 2023 Quiz Bahasa Jepang by @husain.y.m</p>
     </div>
   </div>
-
-  <script>
-    // Animasi untuk elemen menu saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', function() {
-      const menuItems = document.querySelectorAll('.menu-item');
-      menuItems.forEach((item, index) => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(30px)';
-        
-        setTimeout(() => {
-          item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-          item.style.opacity = '1';
-          item.style.transform = 'translateY(0)';
-        }, 300 + (index * 200));
-      });
-
-      // Animasi progress bar
-      setTimeout(() => {
-        document.querySelector('.progress-bar').style.width = '85%';
-      }, 1000);
-
-      // Membuat partikel
-      createParticles();
-    });
-
-    // Fungsi untuk membuat partikel
-    function createParticles() {
-      const particlesContainer = document.getElementById('particles');
-      const particleCount = 15;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        
-        // Ukuran dan posisi acak
-        const size = Math.random() * 60 + 10;
-        const posX = Math.random() * 100;
-        const delay = Math.random() * 15;
-        
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${posX}%`;
-        particle.style.animationDelay = `${delay}s`;
-        
-        particlesContainer.appendChild(particle);
-      }
-    }
-  </script>
 </body>
 </html>
