@@ -1,101 +1,360 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kotoba Minna no Nihongo</title>
+  <title>Kuis Kotoba Minna no Nihongo</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: sans-serif;
-      background: #f3f3f8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
     }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
     .quiz-container {
       background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
       text-align: center;
-      width: 360px;
-    }
-    #question {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    #options button {
-      display: block;
       width: 100%;
-      margin: 0.4rem 0;
-      padding: 0.75rem;
+      max-width: 500px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(to right, #ff6b6b, #667eea);
+    }
+
+    .quiz-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .quiz-subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .question-container {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 2rem 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+      border: 2px solid #e9ecef;
+    }
+
+    #question {
+      font-size: 2.2rem;
+      margin-bottom: 0;
+      font-weight: bold;
+      color: #333;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .question-label {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    #options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    #options button {
+      padding: 1.2rem 1rem;
       font-size: 1.1rem;
       cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      background: #667eea;
+      color: white;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      word-wrap: break-word;
     }
+
+    #options button:hover {
+      background: #5a6fd8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
     #result {
       margin-top: 1rem;
       font-weight: bold;
+      font-size: 1.2rem;
+      min-height: 1.8rem;
+      padding: 0.8rem;
+      border-radius: 8px;
     }
-    #score, #finalScore {
+
+    .progress-container {
+      background: #e9ecef;
+      border-radius: 10px;
+      height: 12px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #ff6b6b, #667eea);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .score-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-top: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
+    #score {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .counter {
       font-size: 1rem;
+      color: #666;
     }
+
+    #finalScore {
+      font-size: 1.4rem;
+      margin-top: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
     #restartBtn {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
+      margin-top: 1.5rem;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
       display: none;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    #restartBtn:hover {
+      background: #ff5252;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
+    .footer {
+      margin-top: 30px;
+      color: white;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .decoration {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.1;
+      z-index: 0;
+    }
+
+    .dec-1 { top: 20px; left: 20px; }
+    .dec-2 { top: 20px; right: 20px; }
+    .dec-3 { bottom: 20px; left: 20px; }
+    .dec-4 { bottom: 20px; right: 20px; }
+
+    .type-indicator {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: #667eea;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .book-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: #ff6b6b;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .quiz-container {
+        padding: 1.5rem;
+      }
+      
+      #question {
+        font-size: 1.8rem;
+      }
+      
+      #options button {
+        font-size: 1rem;
+        min-height: 55px;
+        padding: 1rem 0.8rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="quiz-container">
-    <h2>Kotoba Minna no Nihongo</h2>
-    <div id="question">...</div>
-    <div id="options"></div>
-    <div id="result"></div>
-    <div id="score">Skor: 0</div>
-    <div id="finalScore"></div>
-    <button id="restartBtn">Mulai Ulang</button>
+  <div class="header">
+    <h1>Kuis Kotoba Minna no Nihongo</h1>
+    <p>Pelajari kosakata dari buku Minna no Nihongo</p>
   </div>
+
+  <div class="quiz-container">
+    <div class="decoration dec-1">み</div>
+    <div class="decoration dec-2">ん</div>
+    <div class="decoration dec-3">な</div>
+    <div class="decoration dec-4">語</div>
+    
+    <div class="quiz-header">
+      <h2 class="quiz-title">Tebak Arti Kosakata</h2>
+      <p class="quiz-subtitle">Pilih terjemahan Indonesia yang tepat untuk kosakata Minna no Nihongo</p>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <div class="question-container">
+      <div class="type-indicator">Kata Jepang</div>
+      <div class="question-label">Apa arti dari:</div>
+      <div id="question">...</div>
+      <div class="book-badge">Minna no Nihongo</div>
+    </div>
+    
+    <div id="options"></div>
+    
+    <div id="result"></div>
+    
+    <div class="score-container">
+      <div id="score">Skor: 0</div>
+      <div class="counter" id="counter">Pertanyaan: 1/200</div>
+    </div>
+    
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang Kuis</button>
+  </div>
+
+  <div class="footer">
+    <p>Quiz Bahasa Jepang by @husain.y.m</p>
+  </div>
+
   <script>
     const data = [
       ["わたし", "saya"],
       ["わたしたち", "kami"],
       ["あなた", "kamu"],
       ["あのひと", "orang itu"],
-      ["あのかた", "orang itu(sopan)"],
+      ["あのかた", "orang itu"],
       ["みなさん", "anda sekalian"],
-      ["~さん", "(sdr,tuan,nyonya)"],
-      ["~ちゃん", "(akhiran anak lk/pr)"],
-      ["~くん", "(akhiran anak lk)"],
-      ["~じん", "(warga negara)"],
+      ["~さん", "sdr,tuan,nyonya"],
+      ["~ちゃん", "akhiran anak"],
+      ["~くん", "akhiran anak laki"],
+      ["~じん", "warga negara"],
       ["せんせい", "guru"],
-      ["きょうし", "guru(formal)"],
+      ["きょうし", "guru"],
       ["がくせい", "mahasiswa"],
       ["かいしゃいん", "pegawai perusahaan"],
-      ["しゃいん", "pegawai perusahaan(+nma prusahaan)"],
+      ["しゃいん", "pegawai perusahaan"],
       ["ぎんこういん", "pegawai bank"],
       ["いしゃ", "dokter"],
       ["けんきゅしゃ", "peneliti"],
-      ["エンジ二ア", "enginer"],
+      ["エンジ二ア", "engineer"],
       ["だいがく", "universitas"],
       ["びょういん", "rumah sakit"],
-      ["でんき", "lampu,listrik"],
+      ["でんき", "listrik"],
       ["だれ", "siapa"],
-      ["どなた", "siapa(sopan)"],
-      ["~さい", "umur,tahun"],
+      ["どなた", "siapa"],
+      ["~さい", "umur"],
       ["なんさい", "berapa umur"],
-      ["おいくつ", "berapa umur(sopan)"],
+      ["おいくつ", "berapa umur"],
       ["はい", "iya"],
       ["いいえ", "tidak"],
       ["しつれいですが", "permisi"],
-      ["おなまえは?", "nama anda siapa?"],
-      ["はじめまして", "apa kabar(pertama kali)"],
-      ["どうぞよろしく (おねがいします)", "senang bertemu anda"],
-      ["こちらは~さんてす", "ini adalah..(memprknalkan)"],
+      ["おなまえは?", "nama anda siapa"],
+      ["はじめまして", "salam kenal"],
+      ["どうぞよろしく", "senang bertemu anda"],
+      ["こちらは~さんてす", "ini adalah"],
       ["~からきました", "datang dari"],
       ["アメリカ", "amerika"],
       ["イギリス", "inggris"],
@@ -111,9 +370,9 @@
       ["これ", "ini"],
       ["それ", "itu"],
       ["あれ", "itu"],
-      ["この～ ", "ini(+benda)"],
-      ["その～ ", "itu(+benda)"],
-      ["あの～ ", "itu(+benda)"],
+      ["この～ ", "ini"],
+      ["その～ ", "itu"],
+      ["あの～ ", "itu"],
       ["ほん", "buku"],
       ["じしょ", "kamus"],
       ["ざっし", "majalah"],
@@ -127,10 +386,9 @@
       ["ボールペン", "ball point"],
       ["シャープペンシル", "pensil mekanik"],
       ["かぎ", "kunci"],
-      ["とけい", "jam,arloji"],
+      ["とけい", "jam"],
       ["かさ", "payung"],
       ["かばん", "tas"],
-      ["カャッート", "kaset"],
       ["テープレコーダー", "tape recorder"],
       ["テレビ", "televisi"],
       ["ラジオ", "radio"],
@@ -139,35 +397,32 @@
       ["じどうしゃ", "mobil"],
       ["つくえ", "meja tulis"],
       ["いつ", "kapan"],
-      ["ちこレート", "coklat"],
       ["コーヒー", "kopi"],
       ["えいご", "bahasa inggris"],
       ["にほんご", "bahasa jepang"],
-      ["~ご", "bahasa~"],
+      ["~ご", "bahasa"],
       ["なん", "apa"],
       ["そう", "begitu"],
-      ["らがいます", "bukan/tidak betul/salah"],
-      ["そうですか", "begitukah?"],
+      ["ちがいます", "salah"],
+      ["そうですか", "begitukah"],
       ["あのう", "emmm"],
-      ["ほんのきもちです", "ini(menyerahkan sesuatu)"],
       ["どうぞ", "silahkan"],
       ["どうも", "terimakasih"],
-      ["(どうも)ありがとう(ございます)", "terimakasih banyak"],
-      ["ごれからおせわになります", "mulai sekarang akan minta bantuanmu"],
-      ["こちらこそよろしく", "sama-sama dengan senang hati"],
+      ["ありがとう", "terimakasih"],
+      ["こちらこそよろしく", "sama-sama"],
       ["ここ", "di sini"],
       ["そこ", "di situ"],
       ["あそこ", "di sana"],
       ["どこ", "dimana"],
-      ["こちら", "sini(sopan)"],
-      ["そちら", "situ(sopan)"],
-      ["あちら", "sana(sopan)"],
-      ["どちら", "mana(sopan)"],
+      ["こちら", "sini"],
+      ["そちら", "situ"],
+      ["あちら", "sana"],
+      ["どちら", "mana"],
       ["きょうしつ", "ruang kelas"],
       ["しょくどう", "ruang makan"],
       ["じむしょ", "kantor"],
       ["かいぎしつ", "ruang rapat"],
-      ["うけつけ", "bagian penerima tamu"],
+      ["うけつけ", "penerima tamu"],
       ["ロビー", "ruang tunggu"],
       ["へや", "kamar"],
       ["トイレ", "toilet"],
@@ -180,23 +435,21 @@
       ["でんわ", "telepon"],
       ["くつ", "sepatu"],
       ["ネクタイ", "dasi"],
-      ["ワイン", "wine(anggur)"],
+      ["ワイン", "wine"],
       ["たばこ", "rokok"],
-      ["うりば", "toko serba ada"],
+      ["うりば", "toko"],
       ["ちか", "bawah tanah"],
-      ["ーかい", "lantai/tingkat"],
+      ["ーかい", "lantai"],
       ["なんがい", "lantai berapa"],
-      ["ーえん", "-yen"],
-      ["いくら", "berapa(harga)"],
+      ["ーえん", "yen"],
+      ["いくら", "berapa harga"],
       ["ひゃく", "seratus"],
       ["せん", "seribu"],
       ["まん", "sepuluh ribu"],
-      ["すみません", "maaf/permisi"],
-      ["ーでございます", "bentuk sopan です"],
-      ["(ーを) みせてください", "tolong perlihatkan (ー)"],
-      ["じゃ", "baiklah kalau begitu"],
-      ["(ーを) ください", "tolong berikan (ー)"],
-      ["しんおおさか", "nama stasiun di osaka"],
+      ["すみません", "maaf"],
+      ["みせてください", "tolong perlihatkan"],
+      ["じゃ", "baiklah"],
+      ["ください", "tolong berikan"],
       ["イタリア", "italia"],
       ["スイス", "swiss"],
       ["おきます", "bangun"],
@@ -208,18 +461,18 @@
       ["デパート", "toko serba ada"],
       ["ぎんこう", "bank"],
       ["ゆうびんきょく", "kantor pos"],
-      ["としょかん", "(gedung)perpustakaan"],
+      ["としょかん", "perpustakaan"],
       ["びじゅつかん", "gedung kesenian"],
       ["いま", "sekarang"],
-      ["ーじ", "pukulー"],
-      ["ーふん", "ーmenit"],
-      ["はん", "setengah (jam)"],
+      ["ーじ", "pukul"],
+      ["ーふん", "menit"],
+      ["はん", "setengah jam"],
       ["なんじ", "jam berapa"],
       ["なんぷん", "berapa menit"],
-      ["ごぜん", "waktu sebelum jam 12 siang"],
-      ["ごご", "waktu sesudah jam 12 siang"],
+      ["ごぜん", "sebelum jam 12"],
+      ["ごご", "sesudah jam 12"],
       ["あさ", "pagi"],
-      ["ひる", "siang,tengah hari"],
+      ["ひる", "siang"],
       ["ばん", "malam"],
       ["おととい", "kemarin dulu"],
       ["きのう", "kemarin"],
@@ -228,7 +481,7 @@
       ["あさって", "lusa"],
       ["けさ", "tadi pagi"],
       ["こんばん", "malam ini"],
-      ["やすみ", "istirahat,libur"],
+      ["やすみ", "istirahat"],
       ["ひるやすみ", "istirahat siang"],
       ["まいあさ", "setiap pagi"],
       ["まいばん", "setiap malam"],
@@ -243,16 +496,15 @@
       ["なにようび", "hari apa"],
       ["ばんごう", "nomor"],
       ["なんばん", "nomor berapa"],
-      ["~から", "dari~"],
-      ["まで", "sampai~"],
-      ["~と~", "~dan~(kata benda)"],
-      ["そちら", "di sana"],
-      ["たいへんですね", "sangat menyusahkan ya (simpati)"],
-      ["えーと", "aa.."],
+      ["~から", "dari"],
+      ["まで", "sampai"],
+      ["~と~", "dan"],
+      ["たいへんですね", "sangat menyusahkan ya"],
+      ["えーと", "aa"],
       ["おねがいします", "minta tolong"],
-      ["かしこまりました", "ya, telah mengerti"],
+      ["かしこまりました", "mengerti"],
       ["おといあわせのばんごう", "nomor yang ditanyakan"],
-      ["[とうも]ありがとうございました", "terimakasih banyak"],
+      ["ありがとうございました", "terimakasih banyak"],
       ["ニューヨーク", "new york"],
       ["ペキン", "beijing"],
       ["ロンドン", "london"],
@@ -260,7 +512,7 @@
       ["ロサンゼルス", "los angels"],
       ["いきます", "pergi"],
       ["きます", "datang"],
-      ["かえります", "pulang,kembali"],
+      ["かえります", "pulang"],
       ["がっこう", "sekolah"],
       ["スーパー", "pasar swalayan"],
       ["えき", "stasiun"],
@@ -268,17 +520,17 @@
       ["ふね", "kapal"],
       ["でんしゃ", "kereta"],
       ["ちかてつ", "kereta bawah tanah"],
-      ["しんかんせん", "(kereta super)"],
+      ["しんかんせん", "kereta super"],
       ["バス", "bus"],
       ["タクシー", "taksi"],
       ["じてんしゃ", "sepeda"],
-      ["あるいて", "dengan jalan kaki"],
+      ["あるいて", "jalan kaki"],
       ["ひと", "orang"],
       ["ともだち", "teman"],
-      ["かれ", "dia(laki-laki)"],
-      ["かのじょ", "dia(perempuan)"],
+      ["かれ", "dia laki-laki"],
+      ["かのじょ", "dia perempuan"],
       ["かぞく", "keluarga"],
-      ["ひとりで", "sendiri,seorang diri"],
+      ["ひとりで", "sendiri"],
       ["せんしゅう", "minggu lalu"],
       ["らいしゅう", "minggu depan"],
       ["せんげつ", "bulan lalu"],
@@ -287,20 +539,20 @@
       ["きょねん", "tahun lalu"],
       ["ことし", "tahun ini"],
       ["らいねん", "tahun depan"],
-      ["ーがつ", "bulanー"],
+      ["ーがつ", "bulan"],
       ["なんがつ", "bulan berapa"],
       ["ついたち", "tanggal 1"],
-      ["ふつか", "tanggal 2,/hari"],
-      ["みっか", "tanggal 3,/hari"],
-      ["よっか", "tanggal 4,/hari"],
-      ["いつか", "tanggal 5,/hari"],
-      ["むいか", "tanggal 6,/hari"],
-      ["なのか", "tanggal 7,/hari"],
-      ["ようか", "tanggal 8,/hari"],
-      ["ここのか", "tanggal 9,/hari"],
-      ["とおか", "tanggal 10,/hari"],
-      ["じゅうよっか", "tanggal 14,/hari"],
-      ["はつか", "tanggal 24,/20 hari"],
+      ["ふつか", "tanggal 2"],
+      ["みっか", "tanggal 3"],
+      ["よっか", "tanggal 4"],
+      ["いつか", "tanggal 5"],
+      ["むいか", "tanggal 6"],
+      ["なのか", "tanggal 7"],
+      ["ようか", "tanggal 8"],
+      ["ここのか", "tanggal 9"],
+      ["とおか", "tanggal 10"],
+      ["じゅうよっか", "tanggal 14"],
+      ["はつか", "tanggal 20"]
     ];
 
     let questions = [];
@@ -314,6 +566,12 @@
       }
     }
 
+    function updateProgress() {
+      const progress = ((current) / data.length) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+      document.getElementById('counter').textContent = `Pertanyaan: ${current+1}/${data.length}`;
+    }
+
     function loadQuestion() {
       if (current >= questions.length) {
         showFinalScore();
@@ -323,6 +581,7 @@
       const [romaji, correct] = questions[current];
       document.getElementById("question").textContent = romaji;
       document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = "";
 
       const options = new Set([correct]);
       while (options.size < 4) {
@@ -342,29 +601,34 @@
       });
 
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
     }
 
     function checkAnswer(selected, correct) {
       const result = document.getElementById("result");
       if (selected === correct) {
-        result.textContent = `✅ Benar!`;
+        result.textContent = "✅ Benar!";
         result.style.color = "green";
+        result.style.background = "#e8f5e8";
         score++;
         current++;
-        setTimeout(loadQuestion, 600);
+        setTimeout(loadQuestion, 500);
       } else {
         result.textContent = `❌ Salah! Jawaban: ${correct}`;
         result.style.color = "red";
+        result.style.background = "#ffe8e8";
       }
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
     }
 
     function showFinalScore() {
-      document.getElementById("question").textContent = "Selesai!";
+      document.getElementById("question").textContent = "🎉 Selesai!";
       document.getElementById("options").innerHTML = "";
       document.getElementById("result").textContent = "";
       document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
       document.getElementById("restartBtn").style.display = "inline-block";
+      document.getElementById('progressBar').style.width = '100%';
     }
 
     function startQuiz() {
