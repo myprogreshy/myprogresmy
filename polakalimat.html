@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Pola Kalimat Jepang</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 480px;
+      max-width: 90vw;
+    }
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 0.5rem;
+    }
+    #question {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      min-height: 80px;
+      color: #34495e;
+      line-height: 1.5;
+    }
+    #options button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      background-color: #ecf0f1;
+      border: 2px solid #bdc3c7;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    #options button:hover {
+      background-color: #3498db;
+      color: white;
+      border-color: #2980b9;
+      transform: translateY(-2px);
+    }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+      min-height: 24px;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+    #score, #finalScore {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #7f8c8d;
+    }
+    #restartBtn {
+      margin-top: 1rem;
+      padding: 0.7rem 1.5rem;
+      display: none;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    #restartBtn:hover {
+      background-color: #27ae60;
+    }
+    .example {
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      margin-top: 0.8rem;
+      font-style: italic;
+      background-color: #f8f9fa;
+      padding: 0.5rem;
+      border-radius: 5px;
+      line-height: 1.4;
+    }
+    .progress-bar {
+      height: 6px;
+      background-color: #ecf0f1;
+      border-radius: 3px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      background-color: #3498db;
+      width: 0%;
+      transition: width 0.5s;
+    }
+    .meaning {
+      font-size: 1rem;
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>Kuis Pola Kalimat Jepang</h2>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+    <div id="question">...</div>
+    <div class="meaning" id="meaning"></div>
+    <div id="options"></div>
+    <div id="result"></div>
+    <div id="score">Skor: 0</div>
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang</button>
+  </div>
+  <script>
+    const data = [
+      {
+        question: "watashi wa nihonjin (...)",
+        meaning: "Pola untuk menyatakan identitas/kebangsaan",
+        options: ["desu", "deshita", "desho", "ja arimasen"],
+        correct: "desu",
+        example: "私は日本人です。 (Saya orang Jepang.)"
+      },
+      {
+        question: "kinō wa ame (...)",
+        meaning: "Pola untuk menyatakan keadaan di masa lampau",
+        options: ["desu", "deshita", "da", "darō"],
+        correct: "deshita",
+        example: "昨日は雨でした。 (Kemarin hujan.)"
+      },
+      {
+        question: "ashita wa hareru (...)",
+        meaning: "Pola untuk menyatakan kemungkinan di masa depan",
+        options: ["desu", "deshita", "darō", "da"],
+        correct: "darō",
+        example: "明日は晴れるだろう。 (Besok mungkin cerah.)"
+      },
+      {
+        question: "kore wa hon (...)",
+        meaning: "Pola negatif untuk menyatakan 'bukan'",
+        options: ["desu", "deshita", "ja arimasen", "darō"],
+        correct: "ja arimasen",
+        example: "これは本じゃありません。 (Ini bukan buku.)"
+      },
+      {
+        question: "watashi wa mainichi terebi o (...)",
+        meaning: "Pola untuk menyatakan kegiatan rutin",
+        options: ["miru", "mimasu", "mita", "mirudarō"],
+        correct: "mimasu",
+        example: "私は毎日テレビを見ます。 (Saya menonton TV setiap hari.)"
+      },
+      {
+        question: "kinō eiga o (...)",
+        meaning: "Pola untuk menyatakan kegiatan di masa lampau",
+        options: ["miru", "mimasu", "mimashita", "mirudarō"],
+        correct: "mimashita",
+        example: "昨日映画を見ました。 (Kemarin menonton film.)"
+      },
+      {
+        question: "ashita gakkō ni (...)",
+        meaning: "Pola untuk menyatakan rencana/niat",
+        options: ["iku", "ikimasu", "itta", "ikudarō"],
+        correct: "ikimasu",
+        example: "明日学校に行きます。 (Besok akan pergi ke sekolah.)"
+      },
+      {
+        question: "hon o yomitai (...)",
+        meaning: "Pola untuk menyatakan keinginan",
+        options: ["desu", "da", "noda", "nodesu"],
+        correct: "desu",
+        example: "本を読みたいです。 (Saya ingin membaca buku.)"
+      },
+      {
+        question: "nihongo ga dekiru (...)",
+        meaning: "Pola untuk menyatakan kemampuan",
+        options: ["desu", "da", "yōda", "nodesu"],
+        correct: "yōda",
+        example: "日本語ができるようだ。 (Sepertinya bisa bahasa Jepang.)"
+      },
+      {
+        question: "tabete (...)",
+        meaning: "Pola permintaan sopan",
+        options: ["kudasai", "iru", "aru", "shimashita"],
+        correct: "kudasai",
+        example: "食べてください。 (Silakan makan.)"
+      },
+      {
+        question: "tabete (...)",
+        meaning: "Pola untuk menyatakan sedang melakukan sesuatu",
+        options: ["kudasai", "imasu", "arimasu", "shimashita"],
+        correct: "imasu",
+        example: "食べています。 (Sedang makan.)"
+      },
+      {
+        question: "hon o katte (...)",
+        meaning: "Pola untuk menyatakan telah menyelesaikan sesuatu",
+        options: ["kudasai", "imasu", "aru", "kimashita"],
+        correct: "kimashita",
+        example: "本を買ってきました。 (Telah membeli buku.)"
+      },
+      {
+        question: "ame ga futte (...)",
+        meaning: "Pola untuk menyatakan sebab-akibat",
+        options: ["kuru", "iku", "iru", "aru"],
+        correct: "iru",
+        example: "雨が降っている。 (Hujan sedang turun.)"
+      },
+      {
+        question: "iku (...)",
+        meaning: "Pola untuk menyatakan harus/perlu",
+        options: ["bekida", "tai", "rashii", "sōda"],
+        correct: "bekida",
+        example: "行くべきだ。 (Harus pergi.)"
+      },
+      {
+        question: "iku (...)",
+        meaning: "Pola untuk menyatakan rencana",
+        options: ["yoteida", "tai", "rashii", "sōda"],
+        correct: "yoteida",
+        example: "行く予定だ。 (Berencana pergi.)"
+      },
+      {
+        question: "samui (...)",
+        meaning: "Pola untuk menyatakan perasaan",
+        options: ["desu", "da", "nodesu", "noda"],
+        correct: "nodesu",
+        example: "寒いのです。 (Saya merasa dingin.)"
+      },
+      {
+        question: "iku (...)",
+        meaning: "Pola untuk menyatakan izin",
+        options: ["temoīidesu", "bekida", "tai", "yoteida"],
+        correct: "temoīidesu",
+        example: "行ってもいいです。 (Boleh pergi.)"
+      },
+      {
+        question: "ikanakute (...)",
+        meaning: "Pola untuk menyatakan ketidakbolehan",
+        options: ["īdesu", "damedesu", "bekida", "yoteida"],
+        correct: "damedesu",
+        example: "行かなくてだめです。 (Tidak boleh tidak pergi.)"
+      },
+      {
+        question: "tabete (...)",
+        meaning: "Pola untuk menyatakan pengalaman",
+        options: ["miru", "mimasu", "mita", "mirudarō"],
+        correct: "mita",
+        example: "食べてみた。 (Sudah mencoba makan.)"
+      },
+      {
+        question: "iku (...)",
+        meaning: "Pola untuk menyatakan kemungkinan",
+        options: ["kamoshirenai", "tai", "rashii", "sōda"],
+        correct: "kamoshirenai",
+        example: "行くかもしれない。 (Mungkin akan pergi.)"
+      }
+    ];
+
+    let questions = [];
+    let current = 0;
+    let score = 0;
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function updateProgress() {
+      const progress = document.getElementById("progress");
+      progress.style.width = `${(current / data.length) * 100}%`;
+    }
+
+    function loadQuestion() {
+      if (current >= questions.length) {
+        showFinalScore();
+        return;
+      }
+
+      const questionData = questions[current];
+      document.getElementById("question").innerHTML = 
+        `<div>${questionData.question}</div>`;
+      document.getElementById("meaning").textContent = questionData.meaning;
+      document.getElementById("result").textContent = "";
+
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+
+      questionData.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, questionData.correct, questionData.example);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
+    }
+
+    function checkAnswer(selected, correct, example) {
+      const result = document.getElementById("result");
+      if (selected === correct) {
+        result.innerHTML = `✅ Benar!<br><div class="example">${example}</div>`;
+        result.style.color = "green";
+        result.style.backgroundColor = "#d4edda";
+        score++;
+        current++;
+        setTimeout(loadQuestion, 1200);
+      } else {
+        result.innerHTML = `❌ Salah! Jawaban: ${correct}<br><div class="example">${example}</div>`;
+        result.style.color = "#721c24";
+        result.style.backgroundColor = "#f8d7da";
+      }
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+    }
+
+    function showFinalScore() {
+      document.getElementById("question").textContent = "Kuis Selesai!";
+      document.getElementById("meaning").textContent = "";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("result").textContent = "";
+      
+      let message = "";
+      const percentage = (score / data.length) * 100;
+      if (percentage >= 80) {
+        message = "Luar biasa! Pemahaman pola kalimat Anda sangat baik!";
+      } else if (percentage >= 60) {
+        message = "Bagus! Teruslah berlatih untuk meningkatkan pemahaman Anda.";
+      } else {
+        message = "Jangan menyerah! Pelajari lagi pola-pola kalimat dasar.";
+      }
+      
+      document.getElementById("finalScore").innerHTML = 
+        `Skor Akhir: ${score} dari ${data.length}<br>${message}`;
+      document.getElementById("restartBtn").style.display = "inline-block";
+      document.getElementById("progress").style.width = "100%";
+    }
+
+    function startQuiz() {
+      score = 0;
+      current = 0;
+      questions = [...data];
+      shuffle(questions);
+      document.getElementById("restartBtn").style.display = "none";
+      document.getElementById("finalScore").textContent = "";
+      document.getElementById("result").style.backgroundColor = "transparent";
+      loadQuestion();
+    }
+
+    document.getElementById("restartBtn").onclick = startQuiz;
+    startQuiz();
+  </script>
+</body>
+</html>
