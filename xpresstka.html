@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis TKA</title>
+  <title>Kuis Partikel Jepang</title>
   <style>
     body {
       font-family: sans-serif;
@@ -20,11 +20,12 @@
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
-      width: 360px;
+      width: 400px;
     }
     #question {
-      font-size: 2rem;
+      font-size: 1.5rem;
       margin-bottom: 1rem;
+      min-height: 60px;
     }
     #options button {
       display: block;
@@ -33,10 +34,18 @@
       padding: 0.75rem;
       font-size: 1.1rem;
       cursor: pointer;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+    #options button:hover {
+      background-color: #e0e0e0;
     }
     #result {
       margin-top: 1rem;
       font-weight: bold;
+      min-height: 24px;
     }
     #score, #finalScore {
       margin-top: 1rem;
@@ -46,12 +55,25 @@
       margin-top: 1rem;
       padding: 0.5rem 1rem;
       display: none;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #restartBtn:hover {
+      background-color: #45a049;
+    }
+    .example {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body>
   <div class="quiz-container">
-    <h2>Kuis Kun/On Kanji</h2>
+    <h2>Kuis Partikel Jepang</h2>
     <div id="question">...</div>
     <div id="options"></div>
     <div id="result"></div>
@@ -61,149 +83,126 @@
   </div>
   <script>
     const data = [
-      ["あさごはん", "sarapan"],
-["あける", "membuka"],
-["あそぶ", "bermain"],
-["あに", "kakak laki laki"],
-["アニメ", "anime"],
-["あびます", "mandi"],
-["あね", "kakak perempuan"],
-["あらいます", "mencuci(muka/tangan)"],
-["あるく", "berjalan"],
-["いう", "mengatakan"],
-["いきます", "pergi"],
-["いちねんせい", "siswa kelas 1"],
-      ["いしゅうかん", "satu minggu"],
-["いぬ", "anjing"],
-["いもうと", "adik perempuan"],
-["うさぎ", "kelinci"],
-["うたう", "menyanyi"],
-["うみ", "laut"],
-["え", "gambar"],
-["えいがかん", "bioskop"],
-["えいご", "bahasa inggris"],
-["えんぴつ", "pensil"],
-      ["おいのりします", "berdoa"],
-["おきます", "bangun"],
-["おくる", "mengirim"],
-["おかあさん", "ibu"],
-["おしゃべります", "mengobrol"],
-["おしえる", "mengajar/memberi tau"],
-["おちる", "jatuh"],
-["おとうと", "adik laki laki"],
-["おどる", "menari"],
-["おにぎり", "nasi kepal"],
-      ["おもちゃ", "mainan"],
-      ["およぐ", "berenang"],
-      ["おりる", "turun(kendaraan)"],
-      ["かいしゃいん", "karyawan perusahaan"],
-      ["がいこくご", "bahasa asing"],
-      ["かいます", "membeli"],
-      ["かく", "menulis"],
-      ["がっこう", "sekolah"],
-      ["かける", "memakai(kacamata)"],
-      ["かぶる", "memakai(topi)"],
-      ["カップ", "cangkir"],
-      ["カレンダ", "kalender"],
-      ["カんじ", "kanji"],
-      ["ガムラン", "gamelan"],
-      ["き", "pohon"],
-      ["きく", "mendengar"],
-      ["ギター", "gitar"],
-      ["キッチン", "dapur"],
-      ["きる", "memakai(baju)"],
-      ["くがつ", "bulan september"],
-      ["くつ", "sepatu"],
-      ["くるま", "mobil"],
-      ["けいたいでんわ", "telepon genggam"],
-      ["ケーキ", "kue"],
-      ["げいじゅつ", "seni"],
-      ["ゲーム", "game"],
-      ["こころ", "hati"],
-      ["ごがつ", "bulan mei"],
-      ["こうちょうしつ", "ruang kepala sekolah"],
-      ["サッカー", "sepak bola"],
-      ["さら", "piring"],
-      ["さんがい", "lantai 3"],
-      ["さんねんせい", "siswa kelas 3"],
-      ["しごと", "pekerjaan"],
-      ["しちがつ", "bulan juli"],
-      ["しめる", "menutup"],
-      ["シゃツ", "kemeja"],
-      ["しゅみ", "hobi"],
-      ["しょくいんしつ", "ruang guru"],
-      ["しょうがくせい", "siswa SD"],
-      ["しんぶん", "koran"],
-      ["じしょ", "kamus"],
-      ["じどうはんばいき", "mesin penjual otomatis"],
-      ["じむしつ", "kantor"],
-      ["ジャケット", "jaket"],
-      ["ジュース", "jus"],
-      ["すうがく", "matematika"],
-      ["する", "melakukan/memakai(dasi,jam)"],
-      ["すわる", "duduk"],
-      ["スラバヤ", "surabaya"],
-      ["せんせい", "guru"],
-      ["せんぷうき", "kipas angin"],
-      ["そうじします", "membersihkan"],
-      ["そぼ", "nenek"],
-      ["たたく", "memukul(drum)"],
-      ["たつ", "berdiri"],
-      ["たな", "rak"],
-      ["たまご", "telur"],
-      ["たんじょうび", "ulang tahun"],
-      ["たべます", "makan"],
-      ["たべましょう", "ayo makan"],
-      ["たべもの", "makanan"],
-      ["ダンス", "dansa"],
-      ["ちち", "ayah"],
-      ["ちゅうごくご", "bahasa mandarin"],
-      ["つかう", "menggunakan"],
-      ["つく", "tiba"],
-      ["つくる", "membuat"],
-      ["つかれる", "lelah"],
-      ["つり", "memancing"],
-      ["テニス", "tenis"],
-      ["でる", "keluar"],
-      ["でんわばんごう", "nomor telepon"],
-      ["てんいん", "pelayan toko"],
-      ["どいつご", "bahasa jerman"],
-      ["とけい", "jam"],
-      ["とだな", "lemari"],
-      ["とまる", "berhenti"],
-      ["とる", "mengambil"],
-      ["としょしつ", "perpustakaan"],
-      ["ドラマ", "drum"],
-      ["ならう", "belajar(dari guru)"],
-      ["なんかい", "berapa kali"],
-      ["にねんせい", "siswa kelas 2"],
-      ["にほんご", "bahasa jepang"],
-      ["にわ", "taman"],
-      ["にんぎょう", "boneka"],
-      ["ねこ", "kucing"],
-      ["ねます", "tidur"],
-      ["のぼる", "mendaki"],
-      ["のむ", "minum"],
-      ["のる", "naik(kendaraan)"],
-      ["ノート", "buku catatan"],
-      ["はいる", "masuk"],
-      ["はく", "memakai(celana,rok,sepatu)"],
-      ["はしる", "berlari"],
-      ["はちがつ", "agustus"],
-      ["はたらく", "bekerja"],
-      ["はなします", "berbicara"],
-      ["はは", "ibu"],
-      ["バドミントン", "badminton"],
-      ["バスケットボール", "bola basket"],
-      ["ばんごはん", "makan malam"],
-      ["ひく", "memainkan(alat musik petik)"],
-      ["ひこうき", "pesawat terbang"],
-      ["ひらがな", "hiragana"],
-      ["ピアノ", "piano"],
-      ["ふえ", "seruling"],
-      ["べッド", "tempat tidur"],
-      ["ぺッと", "hewan peliharaan"],
-      ["べんきょうします", "belajar"],
+      {
+        question: "Watashi ___ gakusei desu.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "は (wa)",
+        example: "私は学生です。 (Saya adalah pelajar.)"
+      },
+      {
+        question: "Kore ___ hon desu.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "は (wa)",
+        example: "これは本です。 (Ini adalah buku.)"
+      },
+      {
+        question: "Dare ___ kimashita ka?",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "が (ga)",
+        example: "誰が来ましたか？ (Siapa yang datang?)"
+      },
+      {
+        question: "Nani ___ tabemasu ka?",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "を (wo)",
+        example: "何を食べますか？ (Apa yang akan kamu makan?)"
+      },
+      {
+        question: "Gakkō ___ ikimasu.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "に (ni)",
+        example: "学校に行きます。 (Pergi ke sekolah.)"
+      },
+      {
+        question: "Toshokan ___ benkyō shimasu.",
+        options: ["で (de)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "で (de)",
+        example: "図書館で勉強します。 (Belajar di perpustakaan.)"
+      },
+      {
+        question: "Tomodachi ___ eiga o mimashita.",
+        options: ["と (to)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "と (to)",
+        example: "友達と映画を見ました。 (Menonton film dengan teman.)"
+      },
+      {
+        question: "Kono pen ___ kaite kudasai.",
+        options: ["で (de)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "で (de)",
+        example: "このペンで書いてください。 (Tolong tulis dengan pena ini.)"
+      },
+      {
+        question: "Kesa 7-ji ___ okimashita.",
+        options: ["は (wa)", "が (ga)", "に (ni)", "で (de)"],
+        correct: "に (ni)",
+        example: "今朝7時に起きました。 (Bangun jam 7 pagi ini.)"
+      },
+      {
+        question: "Kōen ___ arukimashita.",
+        options: ["を (wo)", "が (ga)", "に (ni)", "で (de)"],
+        correct: "を (wo)",
+        example: "公園を歩きました。 (Berjalan melalui taman.)"
+      },
+      {
+        question: "Kono resutoran ___ sushi ga oishii desu.",
+        options: ["は (wa)", "の (no)", "を (wo)", "に (ni)"],
+        correct: "の (no)",
+        example: "このレストランの寿司が美味しいです。 (Sushi di restoran ini enak.)"
+      },
+      {
+        question: "Ashita ___ kite kudasai.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "まで (made)"],
+        correct: "まで (made)",
+        example: "明日まで来てください。 (Tolong datang besok.)"
+      },
+      {
+        question: "Kono hon ___ yomimashita.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "から (kara)"],
+        correct: "を (wo)",
+        example: "この本を読みました。 (Saya membaca buku ini.)"
+      },
+      {
+        question: "Nihon ___ kimashita.",
+        options: ["は (wa)", "が (ga)", "から (kara)", "に (ni)"],
+        correct: "から (kara)",
+        example: "日本から来ました。 (Datang dari Jepang.)"
+      },
+      {
+        question: "Kono michi ___ massugu itte kudasai.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "を (wo)",
+        example: "この道をまっすぐ行ってください。 (Silakan lurus di jalan ini.)"
+      },
+      {
+        question: "Kono kēki ___ tabetai desu.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "が (ga)",
+        example: "このケーキが食べたいです。 (Saya ingin makan kue ini.)"
+      },
+      {
+        question: "Sensei ___ hanashimashita.",
+        options: ["は (wa)", "が (ga)", "と (to)", "に (ni)"],
+        correct: "と (to)",
+        example: "先生と話しました。 (Berbicara dengan guru.)"
+      },
+      {
+        question: "Kono heya ___ kirei desu.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "は (wa)",
+        example: "この部屋はきれいです。 (Kamar ini bersih.)"
+      },
+      {
+        question: "Watashi ___ sore ga hoshii desu.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "は (wa)",
+        example: "私はそれが欲しいです。 (Saya menginginkan itu.)"
+      },
+      {
+        question: "Kono hon ___ omoshiroi desu.",
+        options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
+        correct: "が (ga)",
+        example: "この本が面白いです。 (Buku ini menarik.)"
+      }
     ];
 
     let questions = [];
@@ -223,24 +222,19 @@
         return;
       }
 
-      const [romaji, correct] = questions[current];
-      document.getElementById("question").textContent = romaji;
+      const questionData = questions[current];
+      document.getElementById("question").innerHTML = 
+        `<div>${questionData.question}</div>
+         <div class="example" id="example">${questionData.example}</div>`;
       document.getElementById("result").textContent = "";
 
-      const options = new Set([correct]);
-      while (options.size < 4) {
-        const rand = data[Math.floor(Math.random() * data.length)][1];
-        options.add(rand);
-      }
-
-      const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
       const optionsDiv = document.getElementById("options");
       optionsDiv.innerHTML = "";
 
-      shuffled.forEach(opt => {
+      questionData.options.forEach(opt => {
         const btn = document.createElement("button");
         btn.textContent = opt;
-        btn.onclick = () => checkAnswer(opt, correct);
+        btn.onclick = () => checkAnswer(opt, questionData.correct);
         optionsDiv.appendChild(btn);
       });
 
@@ -254,7 +248,7 @@
         result.style.color = "green";
         score++;
         current++;
-        setTimeout(loadQuestion, 600);
+        setTimeout(loadQuestion, 800);
       } else {
         result.textContent = `❌ Salah! Jawaban: ${correct}`;
         result.style.color = "red";
@@ -266,6 +260,7 @@
       document.getElementById("question").textContent = "Selesai!";
       document.getElementById("options").innerHTML = "";
       document.getElementById("result").textContent = "";
+      document.getElementById("example").textContent = "";
       document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
       document.getElementById("restartBtn").style.display = "inline-block";
     }
@@ -276,6 +271,7 @@
       questions = [...data];
       shuffle(questions);
       document.getElementById("restartBtn").style.display = "none";
+      document.getElementById("finalScore").textContent = "";
       loadQuestion();
     }
 
