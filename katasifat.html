@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Kata Sifat Jepang</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .quiz-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 450px;
+      max-width: 90vw;
+    }
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #e74c3c;
+      padding-bottom: 0.5rem;
+    }
+    #question {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      min-height: 70px;
+      color: #34495e;
+      line-height: 1.5;
+    }
+    #options button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      background-color: #ecf0f1;
+      border: 2px solid #bdc3c7;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    #options button:hover {
+      background-color: #e74c3c;
+      color: white;
+      border-color: #c0392b;
+      transform: translateY(-2px);
+    }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+      min-height: 24px;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+    #score, #finalScore {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #7f8c8d;
+    }
+    #restartBtn {
+      margin-top: 1rem;
+      padding: 0.7rem 1.5rem;
+      display: none;
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    #restartBtn:hover {
+      background-color: #27ae60;
+    }
+    .example {
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      margin-top: 0.8rem;
+      font-style: italic;
+      background-color: #f8f9fa;
+      padding: 0.5rem;
+      border-radius: 5px;
+      line-height: 1.4;
+    }
+    .progress-bar {
+      height: 6px;
+      background-color: #ecf0f1;
+      border-radius: 3px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      background-color: #e74c3c;
+      width: 0%;
+      transition: width 0.5s;
+    }
+    .meaning {
+      font-size: 1rem;
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>Kuis Kata Sifat Jepang</h2>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+    <div id="question">...</div>
+    <div class="meaning" id="meaning"></div>
+    <div id="options"></div>
+    <div id="result"></div>
+    <div id="score">Skor: 0</div>
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang</button>
+  </div>
+  <script>
+    const data = [
+      {
+        question: "kono hon wa totemo (...) desu.",
+        meaning: "pilih kata sifat yang tepat untuk melengkapi kalimat",
+        options: ["omoshiroi", "omoshirokunai", "omoshirokatta", "omoshirokunakatta"],
+        correct: "omoshiroi",
+        example: "この本はとても(...)です。 (buku ini sangat menarik.)"
+      },
+      {
+        question: "kinō no shiken wa (...) deshita.",
+        meaning: "bentuk lampau dari kata sifat",
+        options: ["muzukashii", "muzukashikunai", "muzukashikatta", "muzukashikunakatta"],
+        correct: "muzukashikatta",
+        example: "昨日の試験は(...)でした。 (ujian kemarin sulit.)"
+      },
+      {
+        question: "kono heya wa (...) arimasen.",
+        meaning: "bentuk negatif dari kata sifat",
+        options: ["kirei", "kireina", "kireijanai", "kireidewa"],
+        correct: "kireidewa",
+        example: "この部屋は(...)ありません。 (kamar ini tidak bersih.)"
+      },
+      {
+        question: "ano resutoran no tabemono wa (...) desu.",
+        meaning: "kata sifat untuk rasa enak",
+        options: ["oishii", "oishikunai", "oishikatta", "oishikunakatta"],
+        correct: "oishii",
+        example: "あのレストランの食べ物は(...)です。 (makanan di restoran itu enak.)"
+      },
+      {
+        question: "fuyu wa totemo (...) desu.",
+        meaning: "kata sifat untuk menggambarkan suhu dingin",
+        options: ["atsui", "samui", "atatakai", "suzushii"],
+        correct: "samui",
+        example: "冬はとても(...)です。 (musim dingin sangat dingin.)"
+      },
+      {
+        question: "watashi no keitai wa (...) deshita.",
+        meaning: "bentuk lampau negatif",
+        options: ["atarashii", "atarashikunai", "atarashikatta", "atarashikunakatta"],
+        correct: "atarashikunakatta",
+        example: "私の携帯は(...)でした。 (ponsel saya tidak baru.)"
+      },
+      {
+        question: "kono kuruma wa (...) desu ne.",
+        meaning: "kata sifat untuk menggambarkan kecepatan",
+        options: ["hayai", "osoi", "omoi", "karui"],
+        correct: "hayai",
+        example: "この車は(...)ですね。 (mobil ini cepat ya.)"
+      },
+      {
+        question: "kono nimotsu wa (...) desu.",
+        meaning: "kata sifat untuk menggambarkan berat",
+        options: ["omoi", "karui", "yasui", "takai"],
+        correct: "omoi",
+        example: "この荷物は(...)です。 (barang bawaan ini berat.)"
+      },
+      {
+        question: "ano hito wa (...) desu.",
+        meaning: "kata sifat untuk menggambarkan orang pendiam",
+        options: ["shizukana", "shizukai", "shizukakatta", "shizukakunai"],
+        correct: "shizukana",
+        example: "あの人は(...)です。 (orang itu pendiam.)"
+      },
+      {
+        question: "kono mise no tabemono wa (...) desu.",
+        meaning: "kata sifat untuk harga murah",
+        options: ["takai", "yasui", "oishii", "kirei"],
+        correct: "yasui",
+        example: "この店の食べ物は(...)です。 (makanan di toko ini murah.)"
+      },
+      {
+        question: "kyō no tenki wa (...) desu ne.",
+        meaning: "kata sifat untuk cuaca bagus",
+        options: ["warui", "ii", "atsui", "samui"],
+        correct: "ii",
+        example: "今日の天気は(...)ですね。 (cuaca hari ini bagus ya.)"
+      },
+      {
+        question: "ano eiga wa (...) deshita.",
+        meaning: "bentuk lampau untuk kata sifat membosankan",
+        options: ["tsumaranai", "tsumaranakatta", "tsumaranakunai", "tsumaranakunakatta"],
+        correct: "tsumaranakatta",
+        example: "あの映画は(...)でした。 (film itu tidak menarik.)"
+      },
+      {
+        question: "kono kōen wa (...) desu.",
+        meaning: "kata sifat untuk tempat yang luas",
+        options: ["kireina", "shizukana", "hirona", "semaina"],
+        correct: "hirona",
+        example: "この公園は(...)です。 (taman ini luas.)"
+      },
+      {
+        question: "watashi no pasokon wa (...) desu.",
+        meaning: "kata sifat untuk teknologi baru",
+        options: ["furui", "atarashii", "yowai", "tsuyoi"],
+        correct: "atarashii",
+        example: "私のパソコンは(...)です。 (komputer saya baru.)"
+      },
+      {
+        question: "kono sētā wa (...) desu.",
+        meaning: "kata sifat untuk tekstur yang lembut",
+        options: ["katai", "yawarakai", "kurai", "akarui"],
+        correct: "yawarakai",
+        example: "このセーターは(...)です。 (sweater ini lembut.)"
+      },
+      {
+        question: "ano sensei wa (...) desu.",
+        meaning: "kata sifat untuk orang yang ramah",
+        options: ["shinsetsuna", "shinsetsui", "shinsetsukatta", "shinsetsukunai"],
+        correct: "shinsetsuna",
+        example: "あの先生は(...)です。 (guru itu baik hati.)"
+      },
+      {
+        question: "kono mizu wa (...) desu.",
+        meaning: "kata sifat untuk suhu dingin",
+        options: ["atsui", "tsumetai", "atatakai", "nurui"],
+        correct: "tsumetai",
+        example: "この水は(...)です。 (air ini dingin.)"
+      },
+      {
+        question: "ano biru wa (...) desu ne.",
+        meaning: "kata sifat untuk ketinggian",
+        options: ["hikui", "takai", "nagai", "mijikai"],
+        correct: "takai",
+        example: "あのビルは(...)ですね。 (gedung itu tinggi ya.)"
+      },
+      {
+        question: "kono hon wa (...) deshita.",
+        meaning: "bentuk lampau untuk kata sifat bermanfaat",
+        options: ["yakunitatsu", "yakunitatanai", "yakunitatta", "yakunitatanakatta"],
+        correct: "yakunitatta",
+        example: "この本は(...)でした。 (buku ini bermanfaat.)"
+      },
+      {
+        question: "ano ko wa totemo (...) desu.",
+        meaning: "kata sifat untuk kecerdasan",
+        options: ["kashikoi", "baka", "orokana", "erai"],
+        correct: "kashikoi",
+        example: "あの子はとても(...)です。 (anak itu sangat pintar.)"
+      }
+    ];
+
+    let questions = [];
+    let current = 0;
+    let score = 0;
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function updateProgress() {
+      const progress = document.getElementById("progress");
+      progress.style.width = `${(current / data.length) * 100}%`;
+    }
+
+    function loadQuestion() {
+      if (current >= questions.length) {
+        showFinalScore();
+        return;
+      }
+
+      const questionData = questions[current];
+      document.getElementById("question").innerHTML = 
+        `<div>${questionData.question}</div>`;
+      document.getElementById("meaning").textContent = questionData.meaning;
+      document.getElementById("result").textContent = "";
+
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+
+      questionData.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, questionData.correct, questionData.example);
+        optionsDiv.appendChild(btn);
+      });
+
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
+    }
+
+    function checkAnswer(selected, correct, example) {
+      const result = document.getElementById("result");
+      if (selected === correct) {
+        result.innerHTML = `✅ benar!<br><div class="example">${example}</div>`;
+        result.style.color = "green";
+        result.style.backgroundColor = "#d4edda";
+        score++;
+        current++;
+        setTimeout(loadQuestion, 1200);
+      } else {
+        result.innerHTML = `❌ salah! jawaban: ${correct}<br><div class="example">${example}</div>`;
+        result.style.color = "#721c24";
+        result.style.backgroundColor = "#f8d7da";
+      }
+      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+    }
+
+    function showFinalScore() {
+      document.getElementById("question").textContent = "kuis selesai!";
+      document.getElementById("meaning").textContent = "";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("result").textContent = "";
+      
+      let message = "";
+      const percentage = (score / data.length) * 100;
+      if (percentage >= 80) {
+        message = "luar biasa! pemahaman kata sifat anda sangat baik!";
+      } else if (percentage >= 60) {
+        message = "bagus! teruslah berlatih untuk meningkatkan pemahaman anda.";
+      } else {
+        message = "jangan menyerah! pelajari lagi kata sifat dasar bahasa jepang.";
+      }
+      
+      document.getElementById("finalScore").innerHTML = 
+        `skor akhir: ${score} dari ${data.length}<br>${message}`;
+      document.getElementById("restartBtn").style.display = "inline-block";
+      document.getElementById("progress").style.width = "100%";
+    }
+
+    function startQuiz() {
+      score = 0;
+      current = 0;
+      questions = [...data];
+      shuffle(questions);
+      document.getElementById("restartBtn").style.display = "none";
+      document.getElementById("finalScore").textContent = "";
+      document.getElementById("result").style.backgroundColor = "transparent";
+      loadQuestion();
+    }
+
+    document.getElementById("restartBtn").onclick = startQuiz;
+    startQuiz();
+  </script>
+</body>
+</html>
