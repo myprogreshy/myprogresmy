@@ -6,8 +6,8 @@
   <title>Kuis Partikel Jepang</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #f3f3f8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -18,62 +18,98 @@
       background: white;
       padding: 2rem;
       border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
       text-align: center;
-      width: 400px;
+      width: 420px;
+      max-width: 90vw;
+    }
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 0.5rem;
     }
     #question {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       margin-bottom: 1rem;
       min-height: 60px;
+      color: #34495e;
     }
     #options button {
       display: block;
       width: 100%;
-      margin: 0.4rem 0;
+      margin: 0.5rem 0;
       padding: 0.75rem;
       font-size: 1.1rem;
       cursor: pointer;
-      background-color: #f0f0f0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      transition: background-color 0.2s;
+      background-color: #ecf0f1;
+      border: 2px solid #bdc3c7;
+      border-radius: 8px;
+      transition: all 0.3s;
     }
     #options button:hover {
-      background-color: #e0e0e0;
+      background-color: #3498db;
+      color: white;
+      border-color: #2980b9;
+      transform: translateY(-2px);
     }
     #result {
       margin-top: 1rem;
       font-weight: bold;
       min-height: 24px;
+      padding: 0.5rem;
+      border-radius: 5px;
     }
     #score, #finalScore {
       margin-top: 1rem;
       font-size: 1rem;
+      color: #7f8c8d;
     }
     #restartBtn {
       margin-top: 1rem;
-      padding: 0.5rem 1rem;
+      padding: 0.7rem 1.5rem;
       display: none;
-      background-color: #4CAF50;
+      background-color: #2ecc71;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
     }
     #restartBtn:hover {
-      background-color: #45a049;
+      background-color: #27ae60;
     }
     .example {
       font-size: 0.9rem;
-      color: #666;
-      margin-top: 0.5rem;
+      color: #7f8c8d;
+      margin-top: 0.8rem;
+      font-style: italic;
+      background-color: #f8f9fa;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+    .progress-bar {
+      height: 6px;
+      background-color: #ecf0f1;
+      border-radius: 3px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      background-color: #3498db;
+      width: 0%;
+      transition: width 0.5s;
     }
   </style>
 </head>
 <body>
   <div class="quiz-container">
     <h2>Kuis Partikel Jepang</h2>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
     <div id="question">...</div>
     <div id="options"></div>
     <div id="result"></div>
@@ -84,124 +120,124 @@
   <script>
     const data = [
       {
-        question: "Watashi ___ gakusei desu.",
+        question: "watashi (...) gakusei desu.",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "は (wa)",
-        example: "私は学生です。 (Saya adalah pelajar.)"
+        example: "私(...)学生です。 (saya adalah pelajar.)"
       },
       {
-        question: "Kore ___ hon desu.",
+        question: "kore (...) hon desu.",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "は (wa)",
-        example: "これは本です。 (Ini adalah buku.)"
+        example: "これ(...)本です。 (ini adalah buku.)"
       },
       {
-        question: "Dare ___ kimashita ka?",
+        question: "dare (...) kimashita ka?",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "が (ga)",
-        example: "誰が来ましたか？ (Siapa yang datang?)"
+        example: "誰(...)来ましたか？ (siapa yang datang?)"
       },
       {
-        question: "Nani ___ tabemasu ka?",
+        question: "nani (...) tabemasu ka?",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "を (wo)",
-        example: "何を食べますか？ (Apa yang akan kamu makan?)"
+        example: "何(...)食べますか？ (apa yang akan kamu makan?)"
       },
       {
-        question: "Gakkō ___ ikimasu.",
+        question: "gakkō (...) ikimasu.",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "に (ni)",
-        example: "学校に行きます。 (Pergi ke sekolah.)"
+        example: "学校(...)行きます。 (pergi ke sekolah.)"
       },
       {
-        question: "Toshokan ___ benkyō shimasu.",
+        question: "toshokan (...) benkyō shimasu.",
         options: ["で (de)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "で (de)",
-        example: "図書館で勉強します。 (Belajar di perpustakaan.)"
+        example: "図書館(...)勉強します。 (belajar di perpustakaan.)"
       },
       {
-        question: "Tomodachi ___ eiga o mimashita.",
+        question: "tomodachi (...) eiga o mimashita.",
         options: ["と (to)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "と (to)",
-        example: "友達と映画を見ました。 (Menonton film dengan teman.)"
+        example: "友達(...)映画を見ました。 (menonton film dengan teman.)"
       },
       {
-        question: "Kono pen ___ kaite kudasai.",
+        question: "kono pen (...) kaite kudasai.",
         options: ["で (de)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "で (de)",
-        example: "このペンで書いてください。 (Tolong tulis dengan pena ini.)"
+        example: "このペン(...)書いてください。 (tolong tulis dengan pena ini.)"
       },
       {
-        question: "Kesa 7-ji ___ okimashita.",
+        question: "kesa 7-ji (...) okimashita.",
         options: ["は (wa)", "が (ga)", "に (ni)", "で (de)"],
         correct: "に (ni)",
-        example: "今朝7時に起きました。 (Bangun jam 7 pagi ini.)"
+        example: "今朝7時(...)起きました。 (bangun jam 7 pagi ini.)"
       },
       {
-        question: "Kōen ___ arukimashita.",
+        question: "kōen (...) arukimashita.",
         options: ["を (wo)", "が (ga)", "に (ni)", "で (de)"],
         correct: "を (wo)",
-        example: "公園を歩きました。 (Berjalan melalui taman.)"
+        example: "公園(...)歩きました。 (berjalan melalui taman.)"
       },
       {
-        question: "Kono resutoran ___ sushi ga oishii desu.",
+        question: "kono resutoran (...) sushi ga oishii desu.",
         options: ["は (wa)", "の (no)", "を (wo)", "に (ni)"],
         correct: "の (no)",
-        example: "このレストランの寿司が美味しいです。 (Sushi di restoran ini enak.)"
+        example: "このレストラン(...)寿司が美味しいです。 (sushi di restoran ini enak.)"
       },
       {
-        question: "Ashita ___ kite kudasai.",
+        question: "ashita (...) kite kudasai.",
         options: ["は (wa)", "が (ga)", "を (wo)", "まで (made)"],
         correct: "まで (made)",
-        example: "明日まで来てください。 (Tolong datang besok.)"
+        example: "明日(...)来てください。 (tolong datang besok.)"
       },
       {
-        question: "Kono hon ___ yomimashita.",
+        question: "kono hon (...) yomimashita.",
         options: ["は (wa)", "が (ga)", "を (wo)", "から (kara)"],
         correct: "を (wo)",
-        example: "この本を読みました。 (Saya membaca buku ini.)"
+        example: "この本(...)読みました。 (saya membaca buku ini.)"
       },
       {
-        question: "Nihon ___ kimashita.",
+        question: "nihon (...) kimashita.",
         options: ["は (wa)", "が (ga)", "から (kara)", "に (ni)"],
         correct: "から (kara)",
-        example: "日本から来ました。 (Datang dari Jepang.)"
+        example: "日本(...)来ました。 (datang dari jepang.)"
       },
       {
-        question: "Kono michi ___ massugu itte kudasai.",
+        question: "kono michi (...) massugu itte kudasai.",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "を (wo)",
-        example: "この道をまっすぐ行ってください。 (Silakan lurus di jalan ini.)"
+        example: "この道(...)まっすぐ行ってください。 (silakan lurus di jalan ini.)"
       },
       {
-        question: "Kono kēki ___ tabetai desu.",
+        question: "kono kēki (...) tabetai desu.",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "が (ga)",
-        example: "このケーキが食べたいです。 (Saya ingin makan kue ini.)"
+        example: "このケーキ(...)食べたいです。 (saya ingin makan kue ini.)"
       },
       {
-        question: "Sensei ___ hanashimashita.",
+        question: "sensei (...) hanashimashita.",
         options: ["は (wa)", "が (ga)", "と (to)", "に (ni)"],
         correct: "と (to)",
-        example: "先生と話しました。 (Berbicara dengan guru.)"
+        example: "先生(...)話しました。 (berbicara dengan guru.)"
       },
       {
-        question: "Kono heya ___ kirei desu.",
+        question: "kono heya (...) kirei desu.",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "は (wa)",
-        example: "この部屋はきれいです。 (Kamar ini bersih.)"
+        example: "この部屋(...)きれいです。 (kamar ini bersih.)"
       },
       {
-        question: "Watashi ___ sore ga hoshii desu.",
+        question: "watashi (...) sore ga hoshii desu.",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "は (wa)",
-        example: "私はそれが欲しいです。 (Saya menginginkan itu.)"
+        example: "私(...)それが欲しいです。 (saya menginginkan itu.)"
       },
       {
-        question: "Kono hon ___ omoshiroi desu.",
+        question: "kono hon (...) omoshiroi desu.",
         options: ["は (wa)", "が (ga)", "を (wo)", "に (ni)"],
         correct: "が (ga)",
-        example: "この本が面白いです。 (Buku ini menarik.)"
+        example: "この本(...)面白いです。 (buku ini menarik.)"
       }
     ];
 
@@ -216,6 +252,11 @@
       }
     }
 
+    function updateProgress() {
+      const progress = document.getElementById("progress");
+      progress.style.width = `${(current / data.length) * 100}%`;
+    }
+
     function loadQuestion() {
       if (current >= questions.length) {
         showFinalScore();
@@ -225,7 +266,7 @@
       const questionData = questions[current];
       document.getElementById("question").innerHTML = 
         `<div>${questionData.question}</div>
-         <div class="example" id="example">${questionData.example}</div>`;
+         <div class="example">${questionData.example}</div>`;
       document.getElementById("result").textContent = "";
 
       const optionsDiv = document.getElementById("options");
@@ -239,6 +280,7 @@
       });
 
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
     }
 
     function checkAnswer(selected, correct) {
@@ -246,23 +288,25 @@
       if (selected === correct) {
         result.textContent = `✅ Benar!`;
         result.style.color = "green";
+        result.style.backgroundColor = "#d4edda";
         score++;
         current++;
         setTimeout(loadQuestion, 800);
       } else {
         result.textContent = `❌ Salah! Jawaban: ${correct}`;
-        result.style.color = "red";
+        result.style.color = "#721c24";
+        result.style.backgroundColor = "#f8d7da";
       }
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
     }
 
     function showFinalScore() {
-      document.getElementById("question").textContent = "Selesai!";
+      document.getElementById("question").textContent = "Kuis Selesai!";
       document.getElementById("options").innerHTML = "";
       document.getElementById("result").textContent = "";
-      document.getElementById("example").textContent = "";
       document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
       document.getElementById("restartBtn").style.display = "inline-block";
+      document.getElementById("progress").style.width = "100%";
     }
 
     function startQuiz() {
@@ -272,6 +316,7 @@
       shuffle(questions);
       document.getElementById("restartBtn").style.display = "none";
       document.getElementById("finalScore").textContent = "";
+      document.getElementById("result").style.backgroundColor = "transparent";
       loadQuestion();
     }
 
