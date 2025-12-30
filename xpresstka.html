@@ -3,106 +3,368 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis TKA</title>
+  <title>Kuis Kun/On Kanji</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: sans-serif;
-      background: #f3f3f8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
     }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
     .quiz-container {
       background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
       text-align: center;
-      width: 360px;
-    }
-    #question {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    #options button {
-      display: block;
       width: 100%;
-      margin: 0.4rem 0;
-      padding: 0.75rem;
+      max-width: 500px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(to right, #ff6b6b, #667eea);
+    }
+
+    .quiz-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .quiz-subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .question-container {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 2rem 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+      border: 2px solid #e9ecef;
+    }
+
+    #question {
+      font-size: 2.2rem;
+      margin-bottom: 0;
+      font-weight: bold;
+      color: #333;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+    }
+
+    .question-label {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    #options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    #options button {
+      padding: 1.2rem 1rem;
       font-size: 1.1rem;
       cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      background: #667eea;
+      color: white;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      word-wrap: break-word;
     }
+
+    #options button:hover {
+      background: #5a6fd8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
     #result {
       margin-top: 1rem;
       font-weight: bold;
+      font-size: 1.2rem;
+      min-height: 1.8rem;
+      padding: 0.8rem;
+      border-radius: 8px;
     }
-    #score, #finalScore {
+
+    .progress-container {
+      background: #e9ecef;
+      border-radius: 10px;
+      height: 12px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #ff6b6b, #667eea);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .score-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-top: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
+    #score {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .counter {
       font-size: 1rem;
+      color: #666;
     }
+
+    #finalScore {
+      font-size: 1.4rem;
+      margin-top: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
     #restartBtn {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
+      margin-top: 1.5rem;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
       display: none;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    #restartBtn:hover {
+      background: #ff5252;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
+    .footer {
+      margin-top: 30px;
+      color: white;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .decoration {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.1;
+      z-index: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .dec-1 { top: 20px; left: 20px; }
+    .dec-2 { top: 20px; right: 20px; }
+    .dec-3 { bottom: 20px; left: 20px; }
+    .dec-4 { bottom: 20px; right: 20px; }
+
+    .type-indicator {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: #667eea;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tka-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: #ff6b6b;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .quiz-container {
+        padding: 1.5rem;
+      }
+      
+      #question {
+        font-size: 1.8rem;
+      }
+      
+      #options button {
+        font-size: 1rem;
+        min-height: 55px;
+        padding: 1rem 0.8rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="quiz-container">
-    <h2>Kuis Kun/On Kanji</h2>
-    <div id="question">...</div>
-    <div id="options"></div>
-    <div id="result"></div>
-    <div id="score">Skor: 0</div>
-    <div id="finalScore"></div>
-    <button id="restartBtn">Mulai Ulang</button>
+  <div class="header">
+    <h1>Kuis Kosakata TKA</h1>
+    <p>Uji pengetahuan kosakata dasar level</p>
   </div>
+
+  <div class="quiz-container">
+    <div class="decoration dec-1">訓</div>
+    <div class="decoration dec-2">音</div>
+    <div class="decoration dec-3">読</div>
+    <div class="decoration dec-4">み</div>
+    
+    <div class="quiz-header">
+      <h2 class="quiz-title">Tebak Arti Kata Jepang</h2>
+      <p class="quiz-subtitle">Pilih terjemahan Indonesia yang tepat untuk kata Jepang di bawah</p>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <div class="question-container">
+      <div class="type-indicator">Kata Jepang</div>
+      <div class="question-label">Apa arti dari:</div>
+      <div id="question">...</div>
+      <div class="tka-badge">Kosakata TKA</div>
+    </div>
+    
+    <div id="options"></div>
+    
+    <div id="result"></div>
+    
+    <div class="score-container">
+      <div id="score">Skor: 0</div>
+      <div class="counter" id="counter">Pertanyaan: 1/128</div>
+    </div>
+    
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang Kuis</button>
+  </div>
+
+  <div class="footer">
+    <p>Quiz Bahasa Jepang by @husain.y.m</p>
+  </div>
+
   <script>
     const data = [
       ["あさごはん", "sarapan"],
-["あける", "membuka"],
-["あそぶ", "bermain"],
-["あに", "kakak laki laki"],
-["アニメ", "anime"],
-["あびます", "mandi"],
-["あね", "kakak perempuan"],
-["あらいます", "mencuci(muka/tangan)"],
-["あるく", "berjalan"],
-["いう", "mengatakan"],
-["いきます", "pergi"],
-["いちねんせい", "siswa kelas 1"],
+      ["あける", "membuka"],
+      ["あそぶ", "bermain"],
+      ["あに", "kakak laki laki"],
+      ["アニメ", "anime"],
+      ["あびます", "mandi"],
+      ["あね", "kakak perempuan"],
+      ["あらいます", "mencuci"],
+      ["あるく", "berjalan"],
+      ["いう", "mengatakan"],
+      ["いきます", "pergi"],
+      ["いちねんせい", "siswa kelas 1"],
       ["いしゅうかん", "satu minggu"],
-["いぬ", "anjing"],
-["いもうと", "adik perempuan"],
-["うさぎ", "kelinci"],
-["うたう", "menyanyi"],
-["うみ", "laut"],
-["え", "gambar"],
-["えいがかん", "bioskop"],
-["えいご", "bahasa inggris"],
-["えんぴつ", "pensil"],
+      ["いぬ", "anjing"],
+      ["いもうと", "adik perempuan"],
+      ["うさぎ", "kelinci"],
+      ["うたう", "menyanyi"],
+      ["うみ", "laut"],
+      ["え", "gambar"],
+      ["えいがかん", "bioskop"],
+      ["えいご", "bahasa inggris"],
+      ["えんぴつ", "pensil"],
       ["おいのりします", "berdoa"],
-["おきます", "bangun"],
-["おくる", "mengirim"],
-["おかあさん", "ibu"],
-["おしゃべります", "mengobrol"],
-["おしえる", "mengajar/memberi tau"],
-["おちる", "jatuh"],
-["おとうと", "adik laki laki"],
-["おどる", "menari"],
-["おにぎり", "nasi kepal"],
+      ["おきます", "bangun"],
+      ["おくる", "mengirim"],
+      ["おかあさん", "ibu"],
+      ["おしゃべります", "mengobrol"],
+      ["おしえる", "mengajar"],
+      ["おちる", "jatuh"],
+      ["おとうと", "adik laki laki"],
+      ["おどる", "menari"],
+      ["おにぎり", "nasi kepal"],
       ["おもちゃ", "mainan"],
       ["およぐ", "berenang"],
-      ["おりる", "turun(kendaraan)"],
+      ["おりる", "turun"],
       ["かいしゃいん", "karyawan perusahaan"],
       ["がいこくご", "bahasa asing"],
       ["かいます", "membeli"],
       ["かく", "menulis"],
       ["がっこう", "sekolah"],
-      ["かける", "memakai(kacamata)"],
-      ["かぶる", "memakai(topi)"],
+      ["かける", "memakai kacamata"],
+      ["かぶる", "memakai topi"],
       ["カップ", "cangkir"],
       ["カレンダ", "kalender"],
       ["カんじ", "kanji"],
@@ -111,7 +373,7 @@
       ["きく", "mendengar"],
       ["ギター", "gitar"],
       ["キッチン", "dapur"],
-      ["きる", "memakai(baju)"],
+      ["きる", "memakai baju"],
       ["くがつ", "bulan september"],
       ["くつ", "sepatu"],
       ["くるま", "mobil"],
@@ -140,14 +402,14 @@
       ["ジャケット", "jaket"],
       ["ジュース", "jus"],
       ["すうがく", "matematika"],
-      ["する", "melakukan/memakai(dasi,jam)"],
+      ["する", "melakukan"],
       ["すわる", "duduk"],
       ["スラバヤ", "surabaya"],
       ["せんせい", "guru"],
       ["せんぷうき", "kipas angin"],
       ["そうじします", "membersihkan"],
       ["そぼ", "nenek"],
-      ["たたく", "memukul(drum)"],
+      ["たたく", "memukul"],
       ["たつ", "berdiri"],
       ["たな", "rak"],
       ["たまご", "telur"],
@@ -174,7 +436,7 @@
       ["とる", "mengambil"],
       ["としょしつ", "perpustakaan"],
       ["ドラマ", "drum"],
-      ["ならう", "belajar(dari guru)"],
+      ["ならう", "belajar"],
       ["なんかい", "berapa kali"],
       ["にねんせい", "siswa kelas 2"],
       ["にほんご", "bahasa jepang"],
@@ -184,10 +446,10 @@
       ["ねます", "tidur"],
       ["のぼる", "mendaki"],
       ["のむ", "minum"],
-      ["のる", "naik(kendaraan)"],
+      ["のる", "naik"],
       ["ノート", "buku catatan"],
       ["はいる", "masuk"],
-      ["はく", "memakai(celana,rok,sepatu)"],
+      ["はく", "memakai"],
       ["はしる", "berlari"],
       ["はちがつ", "agustus"],
       ["はたらく", "bekerja"],
@@ -196,14 +458,14 @@
       ["バドミントン", "badminton"],
       ["バスケットボール", "bola basket"],
       ["ばんごはん", "makan malam"],
-      ["ひく", "memainkan(alat musik petik)"],
+      ["ひく", "memainkan"],
       ["ひこうき", "pesawat terbang"],
       ["ひらがな", "hiragana"],
       ["ピアノ", "piano"],
       ["ふえ", "seruling"],
       ["べッド", "tempat tidur"],
-      ["ぺッと", "hewan peliharaan"],
-      ["べんきょうします", "belajar"],
+      ["ぺっと", "hewan peliharaan"],
+      ["べんきょうします", "belajar"]
     ];
 
     let questions = [];
@@ -217,6 +479,12 @@
       }
     }
 
+    function updateProgress() {
+      const progress = ((current) / data.length) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+      document.getElementById('counter').textContent = `Pertanyaan: ${current+1}/${data.length}`;
+    }
+
     function loadQuestion() {
       if (current >= questions.length) {
         showFinalScore();
@@ -226,6 +494,7 @@
       const [romaji, correct] = questions[current];
       document.getElementById("question").textContent = romaji;
       document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = "";
 
       const options = new Set([correct]);
       while (options.size < 4) {
@@ -245,29 +514,34 @@
       });
 
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
     }
 
     function checkAnswer(selected, correct) {
       const result = document.getElementById("result");
       if (selected === correct) {
-        result.textContent = `✅ Benar!`;
+        result.textContent = "✅ Benar!";
         result.style.color = "green";
+        result.style.background = "#e8f5e8";
         score++;
         current++;
-        setTimeout(loadQuestion, 600);
+        setTimeout(loadQuestion, 500);
       } else {
         result.textContent = `❌ Salah! Jawaban: ${correct}`;
         result.style.color = "red";
+        result.style.background = "#ffe8e8";
       }
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
     }
 
     function showFinalScore() {
-      document.getElementById("question").textContent = "Selesai!";
+      document.getElementById("question").textContent = "🎉 Selesai!";
       document.getElementById("options").innerHTML = "";
       document.getElementById("result").textContent = "";
       document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
       document.getElementById("restartBtn").style.display = "inline-block";
+      document.getElementById('progressBar').style.width = '100%';
     }
 
     function startQuiz() {
