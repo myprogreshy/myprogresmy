@@ -3,200 +3,361 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis Membaca Kanji</title>
+  <title>Kuis Kanji 2</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: sans-serif;
-      background: #f3f3f8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
     }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
     .quiz-container {
       background: white;
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
       text-align: center;
-      width: 360px;
-    }
-    #question {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    #options button {
-      display: block;
       width: 100%;
-      margin: 0.4rem 0;
-      padding: 0.75rem;
+      max-width: 500px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(to right, #ff6b6b, #667eea);
+    }
+
+    .quiz-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-title {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .quiz-subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .question-container {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 2rem 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+      border: 2px solid #e9ecef;
+    }
+
+    #question {
+      font-size: 2.5rem;
+      margin-bottom: 0;
+      font-weight: bold;
+      color: #333;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+    }
+
+    .question-label {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    #options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    #options button {
+      padding: 1.2rem 1rem;
       font-size: 1.1rem;
       cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      background: #667eea;
+      color: white;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      word-wrap: break-word;
     }
+
+    #options button:hover {
+      background: #5a6fd8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
     #result {
       margin-top: 1rem;
       font-weight: bold;
+      font-size: 1.2rem;
+      min-height: 1.8rem;
+      padding: 0.8rem;
+      border-radius: 8px;
     }
-    #score, #finalScore {
+
+    .progress-container {
+      background: #e9ecef;
+      border-radius: 10px;
+      height: 12px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #ff6b6b, #667eea);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+
+    .score-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-top: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
+    #score {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .counter {
       font-size: 1rem;
+      color: #666;
     }
+
+    #finalScore {
+      font-size: 1.4rem;
+      margin-top: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+    }
+
     #restartBtn {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
+      margin-top: 1.5rem;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
       display: none;
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    #restartBtn:hover {
+      background: #ff5252;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+
+    .footer {
+      margin-top: 30px;
+      color: white;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .decoration {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.1;
+      z-index: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .dec-1 { top: 20px; left: 20px; }
+    .dec-2 { top: 20px; right: 20px; }
+    .dec-3 { bottom: 20px; left: 20px; }
+    .dec-4 { bottom: 20px; right: 20px; }
+
+    .type-indicator {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: #667eea;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .kanji-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: #ff6b6b;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .quiz-container {
+        padding: 1.5rem;
+      }
+      
+      #question {
+        font-size: 2rem;
+        min-height: 60px;
+      }
+      
+      #options button {
+        font-size: 1rem;
+        min-height: 55px;
+        padding: 1rem 0.8rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="quiz-container">
-    <h2>Kuis Membaca Kanji</h2>
-    <div id="question">...</div>
-    <div id="options"></div>
-    <div id="result"></div>
-    <div id="score">Skor: 0</div>
-    <div id="finalScore"></div>
-    <button id="restartBtn">Mulai Ulang</button>
+  <div class="header">
+    <h1>Kuis Kanji 2</h1>
+    <p>Uji pengetahuan membaca kanji dasar</p>
   </div>
+
+  <div class="quiz-container">
+    <div class="decoration dec-1">漢</div>
+    <div class="decoration dec-2">字</div>
+    <div class="decoration dec-3">読</div>
+    <div class="decoration dec-4">書</div>
+    
+    <div class="quiz-header">
+      <h2 class="quiz-title">Tebak Cara Baca Kanji</h2>
+      <p class="quiz-subtitle">Pilih cara membaca yang tepat untuk kata kanji di bawah</p>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <div class="question-container">
+      <div class="type-indicator">Kata Kanji</div>
+      <div class="question-label">Bagaimana cara membaca:</div>
+      <div id="question">...</div>
+    </div>
+    
+    <div id="options"></div>
+    
+    <div id="result"></div>
+    
+    <div class="score-container">
+      <div id="score">Skor: 0</div>
+      <div class="counter" id="counter">Pertanyaan: 1/70</div>
+    </div>
+    
+    <div id="finalScore"></div>
+    <button id="restartBtn">Mulai Ulang Kuis</button>
+  </div>
+
+  <div class="footer">
+    <p>Quiz Bahasa Jepang by @husain.y.m</p>
+  </div>
+
   <script>
     const data = [
-      ["零", "0"],
-["一", "1"],
-["二", "2"],
-["三", "3"],
-["四", "4"],
-["五", "5"],
-["六", "6"],
-["七", "7"],
-["八", "8"],
-["九", "9"],
-["十", "10"],
-["一昨日", "ototoi"],
-["毎日", "mai-nichi"],
-["毎朝", "mai-asa"],
-["毎晩", "mai-ban"],
-["今週", "kon-shuu"],
-["先週", "sen-shuu"],
-["来週", "rai-shuu"],
-["一月", "ichi-gatsu"],
-["二月", "ni-gatsu"],
-["三月", "san-gatsu"],
-["四月", "shi-gatsu"],
-["五月", "go-gatsu"],
-["六月", "roku-gatsu"],
-["七月", "shichi-gatsu"],
-["八月", "hachi-gatsu"],
-["九月", "ku-gatsu"],
-["十月", "juu-gatsu"],
-["十一月", "juu-ichi-gatsu"],
-["十二月", "juu-ni-gatsu"],
-["人体", "jin-tai"],
-      ["肩", "kata"],
-["喉", "nodo"],
-["顔", "kao"],
-["頬", "hoho"],
-["歯", "ha"],
-["指", "yubi"],
-["胃", "i"],
-["爪", "tsume"],
-["額", "hitai"],
-["顎", "ago"],
-["鼻", "hana"],
-["口", "kuchi"],
-["唇", "kuchibiru"],
-["首", "kubi"],
-["掌", "tenohira"],
-["体", "karada"],
-["頭", "atama"],
-["手", "te"],
-["足", "ashi"],
-["腕", "ude"],
-["膝", "hiza"],
-["髪", "kami"],
-["背中", "senaka"],
-["腰", "koshi"],
-["目", "me"],
-["耳", "mimi"],
-["踵", "kakato"],
-["足指", "ashi-yubi"],
-["親指", "oya-yubi"],
-["人差し指", "hito-sashi-yubi"],
-["中指", "naka-yubi"],
-["薬指", "kusuri-yubi"],
-["小指", "ko-yubi"],
-["顎鬚", "ago-hige"],
-["髭", "hige"],
-["太股", "futomomo"],
-["皮膚", "hifu"],
-["血液", "ketsu-eki"],
-["血", "chi"],
-["眉", "mayu"],
-["胸", "mune"],
-["肘", "hiji"],
-["臍", "heso"],
-["脇の下", "wakinoshita"],
-["手首", "te-kubi"],
-["足首", "ashi-kubi"],
-["眼球", "gan-kyuu"],
-["内臓", "nai-zou"],
-["腎臓", "jin-zou"],
-["肝臓", "kan-zou"],
-["肋骨", "ro-kkotsu"],
-["卵巣", "ran-sou"],
-["胎児", "tai-ji"],
-["心臓", "shin-zou"],
-["脾臓", "hi-zou"],
-["脳", "nou"],
-["筋肉", "kin-niku"],
-["肺", "hai"],
-["血管", "ke-kkan"],
-["動脈", "dou-myaku"],
-["静脈", "jou-myaku"],
-["子宮", "shi-kyuu"],
-["網膜", "mou-maku"],
-["精子", "sei-shi"],
-["臍の緒", "heso-no-o"],
-["頭蓋骨", "zugai-kotsu"],
-["骨", "hone"],
-["腸", "chou"],
-["大腸", "dai-chou"],
-["鋏", "hasami"],
-["電卓", "den-taku"],
-["チョーク", "chooku"],
-["椅子", "isu"],
-["コンピュータ", "konpyuuta"],
-["辞書", "jisho"],
-["紙", "kami"],
-["机", "tsukue"],
-["教卓", "kyou-taku"],
-["黒板", "koku-ban"],
-["定規", "jougi"],
-["黒板消し", "kokuban-keshi"],
-["鉛筆", "en-pitsu"],
-["シャープペン", "shaapupen"],
-["地図", "chizu"],
-["ペン", "pen"],
-["本棚", "hon-dana"],
-["鉛筆削り", "enpitsu-kezuri"],
-["制服", "sei-fuku"],
-["ホッチキス", "hocchikisu"],
-["マーカー", "maakaa"],
-["通学鞄", "tsuugaku-kaban"],
-["筆箱", "fude-bako"],
-["ボールペン", "boorupen"],
-["分度器", "bun-doki"],
-["教科書", "kyou-kasho"],
-["百科事典", "hyakka-jiten"],
-["包丁", "houchou"],
-["まな板", "manaita"],
-["浄水器", "jou-sui-ki"],
-["鍋", "nabe"],
-["フライパン", "furaipan"],
-["やかん", "yakan"],
-["おたま", "otama"],
-["排水溝", "haisui-kou"],
-["ボウル", "bouru"],
+      ["零", "zero"],
+      ["一", "ichi"],
+      ["二", "ni"],
+      ["三", "san"],
+      ["四", "yon/shi"],
+      ["五", "go"],
+      ["六", "roku"],
+      ["七", "nana/sichi"],
+      ["八", "hachi"],
+      ["九", "kyuu"],
+      ["十", "juu"],
+      ["十一", "juu ichi"],
+      ["十二", "juu ni"],
+      ["十三", "juu san"],
+      ["十四", "juu yon"],
+      ["十五", "juu go"],
+      ["十六", "juu roku"],
+      ["十七", "juu nana"],
+      ["十八", "juu hachi"],
+      ["十九", "juu kyuu"],
+      ["二十", "ni juu"],
+      ["三十", "san juu"],
+      ["四十", "yon juu"],
+      ["五十", "go juu"],
+      ["六十", "roku juu"],
+      ["七十", "nana juu"],
+      ["八十", "hachi juu"],
+      ["九十", "kyuu juu"],
+      ["百", "hyaku"],
+      ["二百", "ni hyaku"],
+      ["三百", "sambyaku"],
+      ["六百", "roppyaku"],
+      ["八百", "happyaku"],
+      ["SAMPAI SINI", "SAMPAI SINI"],
+      ["話す", "はなす"]
     ];
 
     let questions = [];
@@ -210,15 +371,22 @@
       }
     }
 
+    function updateProgress() {
+      const progress = ((current) / data.length) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+      document.getElementById('counter').textContent = `Pertanyaan: ${current+1}/${data.length}`;
+    }
+
     function loadQuestion() {
       if (current >= questions.length) {
         showFinalScore();
         return;
       }
 
-      const [romaji, correct] = questions[current];
-      document.getElementById("question").textContent = romaji;
+      const [kanji, correct] = questions[current];
+      document.getElementById("question").textContent = kanji;
       document.getElementById("result").textContent = "";
+      document.getElementById("finalScore").textContent = "";
 
       const options = new Set([correct]);
       while (options.size < 4) {
@@ -238,29 +406,34 @@
       });
 
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
     }
 
     function checkAnswer(selected, correct) {
       const result = document.getElementById("result");
       if (selected === correct) {
-        result.textContent = `✅ Benar!`;
+        result.textContent = "✅ Benar!";
         result.style.color = "green";
+        result.style.background = "#e8f5e8";
         score++;
         current++;
-        setTimeout(loadQuestion, 600);
+        setTimeout(loadQuestion, 500);
       } else {
         result.textContent = `❌ Salah! Jawaban: ${correct}`;
         result.style.color = "red";
+        result.style.background = "#ffe8e8";
       }
       document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
+      updateProgress();
     }
 
     function showFinalScore() {
-      document.getElementById("question").textContent = "Selesai!";
+      document.getElementById("question").textContent = "🎉 Selesai!";
       document.getElementById("options").innerHTML = "";
       document.getElementById("result").textContent = "";
       document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
       document.getElementById("restartBtn").style.display = "inline-block";
+      document.getElementById('progressBar').style.width = '100%';
     }
 
     function startQuiz() {
