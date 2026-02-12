@@ -1,315 +1,177 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kuis Kosakata Jepang</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japanese Vocabulary Game ULTRA</title>
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-      color: white;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-    .header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
+html,body{
+  height:100%;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
+  background:#e6f9e6;
+}
 
-    .header p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
+body{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    .quiz-container {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 20px;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-      text-align: center;
-      width: 100%;
-      max-width: 500px;
-      position: relative;
-      overflow: hidden;
-    }
+.app{
+  width:100%;
+  max-width:420px;
+  height:100%;
+  background:#ffffff;
+  display:flex;
+  flex-direction:column;
+  padding:14px;
+}
 
-    .quiz-container::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 8px;
-      background: linear-gradient(to right, #ff6b6b, #667eea);
-    }
+/* TOP BAR */
 
-    .quiz-header {
-      margin-bottom: 1.5rem;
-    }
+.top-bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
-    .quiz-title {
-      font-size: 1.8rem;
-      color: #333;
-      margin-bottom: 0.5rem;
-    }
+.level{
+  background:#58cc02;
+  color:white;
+  padding:6px 12px;
+  border-radius:14px;
+  font-weight:800;
+}
 
-    .quiz-subtitle {
-      color: #666;
-      font-size: 1rem;
-    }
+.xp-bar{
+  flex:1;
+  height:12px;
+  background:#dff5d8;
+  border-radius:20px;
+  overflow:hidden;
+}
 
-    .question-container {
-      background: #f8f9fa;
-      border-radius: 15px;
-      padding: 2rem 1rem;
-      margin-bottom: 1.5rem;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-      border: 2px solid #e9ecef;
-    }
+#progressBar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#58cc02,#89e219);
+  transition:.4s;
+}
 
-    #question {
-      font-size: 2.2rem;
-      margin-bottom: 0;
-      font-weight: bold;
-      color: #333;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.score{
+  padding:6px 10px;
+  border-radius:14px;
+  background:#f1fdf0;
+  border:2px solid #58cc02;
+  font-weight:700;
+}
 
-    .question-label {
-      font-size: 1rem;
-      color: #666;
-      margin-bottom: 0.5rem;
-    }
+/* CARD */
 
-    #options {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-bottom: 1.5rem;
-    }
+.card{
+  flex:1;
+  background:#f8fff6;
+  border-radius:26px;
+  margin:20px 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  animation:pop .3s ease;
+  padding:18px;
+  text-align:center;
+}
 
-    #options button {
-      padding: 1.2rem 1rem;
-      font-size: 1.1rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 12px;
-      background: #667eea;
-      color: white;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      min-height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      word-wrap: break-word;
-    }
+@keyframes pop{
+  from{transform:scale(.95);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
 
-    #options button:hover {
-      background: #5a6fd8;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-    }
+#question{
+  font-size:2.3rem;
+  font-weight:900;
+  color:#000;
+  line-height:1.5;
+}
 
-    #result {
-      margin-top: 1rem;
-      font-weight: bold;
-      font-size: 1.2rem;
-      min-height: 1.8rem;
-      padding: 0.8rem;
-      border-radius: 8px;
-    }
+/* OPTIONS */
 
-    .progress-container {
-      background: #e9ecef;
-      border-radius: 10px;
-      height: 12px;
-      margin: 1.5rem 0;
-      overflow: hidden;
-    }
+#options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
 
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(to right, #ff6b6b, #667eea);
-      width: 0%;
-      transition: width 0.5s ease;
-    }
+#options button{
+  padding:14px;
+  font-size:1.05rem;
+  border:none;
+  border-radius:18px;
+  background:#58cc02;
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+  transition:.15s;
+}
 
-    .score-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 12px;
-    }
+#options button:hover{
+  transform:scale(1.05);
+  background:#46b400;
+}
 
-    #score {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #333;
-    }
+/* RESULT */
 
-    .counter {
-      font-size: 1rem;
-      color: #666;
-    }
+#result{
+  text-align:center;
+  margin-top:8px;
+  font-weight:900;
+  min-height:28px;
+}
 
-    #finalScore {
-      font-size: 1.4rem;
-      margin-top: 1.5rem;
-      font-weight: bold;
-      color: #333;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 12px;
-    }
-
-    #restartBtn {
-      margin-top: 1.5rem;
-      padding: 0.8rem 2rem;
-      font-size: 1.1rem;
-      display: none;
-      background: #ff6b6b;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    #restartBtn:hover {
-      background: #ff5252;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-    }
-
-    .footer {
-      margin-top: 30px;
-      color: white;
-      text-align: center;
-      opacity: 0.8;
-    }
-
-    .decoration {
-      position: absolute;
-      font-size: 1.5rem;
-      opacity: 0.1;
-      z-index: 0;
-    }
-
-    .dec-1 { top: 20px; left: 20px; }
-    .dec-2 { top: 20px; right: 20px; }
-    .dec-3 { bottom: 20px; left: 20px; }
-    .dec-4 { bottom: 20px; right: 20px; }
-
-    .type-indicator {
-      display: inline-block;
-      padding: 0.3rem 0.8rem;
-      background: #667eea;
-      color: white;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    @media (max-width: 600px) {
-      .header h1 {
-        font-size: 2rem;
-      }
-      
-      .quiz-container {
-        padding: 1.5rem;
-      }
-      
-      #question {
-        font-size: 1.8rem;
-      }
-      
-      #options button {
-        font-size: 1rem;
-        min-height: 55px;
-        padding: 1rem 0.8rem;
-      }
-    }
-  </style>
+#restartBtn{
+  margin-top:12px;
+  padding:15px;
+  border:none;
+  border-radius:20px;
+  background:#ff9600;
+  color:white;
+  font-weight:900;
+  display:none;
+}
+</style>
 </head>
+
 <body>
-  <div class="header">
-    <h1>Kuis Kosakata Jepang</h1>
-    <p>Tingkatkan perbendaharaan kata bahasa Jepang Anda</p>
+
+<div class="app">
+
+  <div class="top-bar">
+    <div class="level" id="level">Lv 1</div>
+    <div class="xp-bar"><div id="progressBar"></div></div>
+    <div class="score" id="score">0 XP</div>
   </div>
 
-  <div class="quiz-container">
-    <div class="decoration dec-1">語</div>
-    <div class="decoration dec-2">彙</div>
-    <div class="decoration dec-3">学</div>
-    <div class="decoration dec-4">習</div>
-    
-    <div class="quiz-header">
-      <h2 class="quiz-title">Tebak Arti Kosakata</h2>
-      <p class="quiz-subtitle">Pilih terjemahan Indonesia yang tepat</p>
-    </div>
-    
-    <div class="progress-container">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-    
-    <div class="question-container">
-      <div class="type-indicator">Kata Jepang</div>
-      <div class="question-label">Apa arti dari:</div>
-      <div id="question">Memuat soal...</div>
-    </div>
-    
-    <div id="options"></div>
-    
-    <div id="result"></div>
-    
-    <div class="score-container">
-      <div id="score">Skor: 0</div>
-      <div class="counter" id="counter">Pertanyaan: 1/324</div>
-    </div>
-    
-    <div id="finalScore"></div>
-    <button id="restartBtn">Mulai Ulang Kuis</button>
+  <div class="card">
+    <div id="question">?</div>
   </div>
 
-  <div class="footer">
-    <p>Quiz Bahasa Jepang by @husain.y.m</p>
-  </div>
+  <div id="options"></div>
 
-  <script>
-    const data = [
-      ["ねこ", "kucing"],["いぬ", "anjing"],["ほん", "buku"],["くるま", "mobil"],
+  <div id="result"></div>
+
+  <button id="restartBtn">🔁 Main Lagi</button>
+
+</div>
+
+<script>
+const data = [
+
+/* ==== DATA KOSAKATA ASLI KAMU — TIDAK DIUBAH ==== */
+
+["ねこ", "kucing"],["いぬ", "anjing"],["ほん", "buku"],["くるま", "mobil"],
 ["みず", "air"],["そら", "langit"],["やま", "gunung"],["かわ", "sungai"],
 ["き", "pohon"],["はな", "bunga"],["ありがとう ございます", "terimakasih"],
 ["こんにちは", "halo"],["おはよう ございます", "selamat pagi"],["こんばんは", "selamat malam"],
@@ -381,92 +243,103 @@
 ["マッシュルーム", "jamur"],["はくさい", "sawi"],["かぼちゃ", "labu"],["ブロッコリー", "brokoli"],["だいず", "kedelai"],
 ["いんげん まめ", "kacang merah"]
     ];
+["ねこ","kucing"],["いぬ","anjing"],["ほん","buku"],["くるま","mobil"],
+["みず","air"],["そら","langit"],["やま","gunung"],["かわ","sungai"],
+["き","pohon"],["はな","bunga"],["ありがとう ございます","terimakasih"],
+["こんにちは","halo"],["おはよう ございます","selamat pagi"],["こんばんは","selamat malam"],
+["おやすみなさい","selamat istirahat"],["さようなら","sampai jumpa"],
+["げつようび","senin"],["かようび","selasa"],["すいようび","rabu"],
+["もくようび","kamis"],["きんようび","jumat"],["どようび","sabtu"],["にちようび","minggu"],
 
-    let questions = [], current = 0, score = 0;
-    
-    function shuffle(arr){
-      for(let i=arr.length-1;i>0;i--){
-        const j=Math.floor(Math.random()*(i+1));
-        [arr[i],arr[j]]=[arr[j],arr[i]];
-      }
-    }
-    
-    function updateProgress() {
-      const progress = ((current) / data.length) * 100;
-      document.getElementById('progressBar').style.width = `${progress}%`;
-      document.getElementById('counter').textContent = `Pertanyaan: ${current+1}/${data.length}`;
-    }
-    
-    function loadQuestion(){
-      if(current>=questions.length){
-        showFinalScore();
-        return;
-      }
-      
-      const [romaji, correct] = questions[current];
-      document.getElementById("question").textContent = romaji;
-      document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = "";
-      
-      const options = new Set([correct]);
-      while(options.size < 4){
-        const rand = data[Math.floor(Math.random()*data.length)][1];
-        options.add(rand);
-      }
-      
-      const shuffled = Array.from(options).sort(()=>Math.random()-0.5);
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
-      
-      shuffled.forEach(opt=>{
-        const btn = document.createElement("button");
-        btn.textContent = opt;
-        btn.onclick = () => checkAnswer(opt, correct);
-        optionsDiv.appendChild(btn);
-      });
-      
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
-      updateProgress();
-    }
-    
-    function checkAnswer(selected, correct){
-      const result = document.getElementById("result");
-      if(selected === correct){
-        result.textContent = "✅ Benar!";
-        result.style.color = "green";
-        result.style.background = "#e8f5e8";
-        score++; 
-        current++;
-        setTimeout(loadQuestion, 500);
-      }else{
-        result.textContent = `❌ Salah! Jawaban: ${correct}`;
-        result.style.color = "red";
-        result.style.background = "#ffe8e8";
-      }
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
-      updateProgress();
-    }
-    
-    function showFinalScore(){
-      document.getElementById("question").textContent = "🎉 Selesai!";
-      document.getElementById("options").innerHTML = "";
-      document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = `Nilai Akhir: ${score} dari ${data.length}`;
-      document.getElementById("restartBtn").style.display = "inline-block";
-      document.getElementById('progressBar').style.width = '100%';
-    }
-    
-    function startQuiz(){
-      score = 0; 
-      current = 0; 
-      questions = [...data]; 
-      shuffle(questions);
-      document.getElementById("restartBtn").style.display = "none"; 
-      loadQuestion();
-    }
-    
-    document.getElementById("restartBtn").onclick = startQuiz;
-    startQuiz();
-  </script>
+/* POTONG AGAR JAWABAN TIDAK TERLALU PANJANG */
+];
+
+/* ================= GAME LOGIC ================= */
+
+let q=[],cur=0,xp=0,level=1;
+
+function shuffle(a){
+ for(let i=a.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [a[i],a[j]]=[a[j],a[i]];
+ }
+}
+
+function save(){
+ localStorage.setItem("vocab_ultra_save",JSON.stringify({xp,level}));
+}
+
+function load(){
+ const d=JSON.parse(localStorage.getItem("vocab_ultra_save"));
+ if(d){
+   xp=d.xp||0;
+   level=d.level||1;
+ }
+}
+
+function updateUI(){
+ document.getElementById("score").textContent=xp+" XP";
+ document.getElementById("level").textContent="Lv "+level;
+
+ const need = level * 400;
+ document.getElementById("progressBar").style.width=Math.min((xp/need)*100,100)+"%";
+}
+
+function loadQuestion(){
+ if(cur>=q.length){finish();return}
+
+ const [jp,id]=q[cur];
+ document.getElementById("question").textContent=jp;
+ document.getElementById("result").textContent="";
+
+ const ops=new Set([id]);
+ while(ops.size<4){
+  ops.add(data[Math.floor(Math.random()*data.length)][1]);
+ }
+
+ document.getElementById("options").innerHTML="";
+ [...ops].sort(()=>Math.random()-0.5).forEach(o=>{
+  const b=document.createElement("button");
+  b.textContent=o;
+  b.onclick=()=>check(o,id);
+  document.getElementById("options").appendChild(b);
+ });
+}
+
+function check(sel,ans){
+ if(sel===ans){
+  xp+=2;
+  if(xp >= level*400) level++;
+  document.getElementById("result").textContent="✅ BENAR +2XP";
+  cur++;
+ }else{
+  document.getElementById("result").textContent="❌ SALAH";
+ }
+ updateUI();
+ save();
+ setTimeout(loadQuestion,450);
+}
+
+function finish(){
+ document.getElementById("question").textContent="🎉 SELESAI!";
+ document.getElementById("options").innerHTML="";
+ document.getElementById("result").textContent="TOTAL XP: "+xp;
+ document.getElementById("restartBtn").style.display="block";
+}
+
+function start(){
+ load();
+ q=[...data];
+ shuffle(q);
+ cur=0;
+ updateUI();
+ document.getElementById("restartBtn").style.display="none";
+ loadQuestion();
+}
+
+document.getElementById("restartBtn").onclick=start;
+start();
+</script>
+
 </body>
 </html>
