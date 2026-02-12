@@ -1,326 +1,158 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis Kotoba Minna no Nihongo</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Kotoba Map Quiz</title>
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-      color: white;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(180deg,#58cc02,#1cb0f6);
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-    .header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
+.map{
+  padding:30px 0 120px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:80px;
+}
 
-    .header p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
+.level{
+  width:85px;
+  height:85px;
+  border-radius:50%;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:18px;
+  box-shadow:0 6px 15px rgba(0,0,0,.2);
+  cursor:pointer;
+  transition:.25s;
+  border:6px solid #58cc02;
+  position:relative;
+}
+.level:hover{transform:scale(1.08)}
 
-    .quiz-container {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 20px;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-      text-align: center;
-      width: 100%;
-      max-width: 500px;
-      position: relative;
-      overflow: hidden;
-    }
+.level span{
+  position:absolute;
+  top:-28px;
+  font-size:13px;
+  font-weight:700;
+  color:white;
+}
 
-    .quiz-container::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 8px;
-      background: linear-gradient(to right, #ff6b6b, #667eea);
-    }
+.path{
+  width:6px;
+  height:80px;
+  background:white;
+  border-radius:10px;
+}
 
-    .quiz-header {
-      margin-bottom: 1.5rem;
-    }
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:75px;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  box-shadow:0 -3px 15px rgba(0,0,0,.15);
+}
 
-    .quiz-title {
-      font-size: 1.8rem;
-      color: #333;
-      margin-bottom: 0.5rem;
-    }
+.nav-btn{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-size:12px;
+  font-weight:600;
+  color:#777;
+}
+.nav-btn img{
+  width:28px;
+  margin-bottom:5px;
+}
 
-    .quiz-subtitle {
-      color: #666;
-      font-size: 1rem;
-    }
+.quiz{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(180deg,#58cc02,#1cb0f6);
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
 
-    .question-container {
-      background: #f8f9fa;
-      border-radius: 15px;
-      padding: 2rem 1rem;
-      margin-bottom: 1.5rem;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-      border: 2px solid #e9ecef;
-    }
+.quiz-box{
+  background:white;
+  width:100%;
+  max-width:420px;
+  border-radius:20px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 15px 30px rgba(0,0,0,.25);
+}
 
-    #question {
-      font-size: 2.2rem;
-      margin-bottom: 0;
-      font-weight: bold;
-      color: #333;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+#question{
+  font-size:32px;
+  margin-bottom:20px;
+  font-weight:800;
+}
 
-    .question-label {
-      font-size: 1rem;
-      color: #666;
-      margin-bottom: 0.5rem;
-    }
+.options{
+  display:grid;
+  gap:12px;
+}
 
-    #options {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-bottom: 1.5rem;
-    }
+.options button{
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:600;
+  background:#58cc02;
+  color:white;
+  cursor:pointer;
+}
+.options button:hover{background:#46a302}
 
-    #options button {
-      padding: 1.2rem 1rem;
-      font-size: 1.1rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 12px;
-      background: #667eea;
-      color: white;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      min-height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      word-wrap: break-word;
-    }
-
-    #options button:hover {
-      background: #5a6fd8;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-    }
-
-    #result {
-      margin-top: 1rem;
-      font-weight: bold;
-      font-size: 1.2rem;
-      min-height: 1.8rem;
-      padding: 0.8rem;
-      border-radius: 8px;
-    }
-
-    .progress-container {
-      background: #e9ecef;
-      border-radius: 10px;
-      height: 12px;
-      margin: 1.5rem 0;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(to right, #ff6b6b, #667eea);
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-
-    .score-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 12px;
-    }
-
-    #score {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .counter {
-      font-size: 1rem;
-      color: #666;
-    }
-
-    #finalScore {
-      font-size: 1.4rem;
-      margin-top: 1.5rem;
-      font-weight: bold;
-      color: #333;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 12px;
-    }
-
-    #restartBtn {
-      margin-top: 1.5rem;
-      padding: 0.8rem 2rem;
-      font-size: 1.1rem;
-      display: none;
-      background: #ff6b6b;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    #restartBtn:hover {
-      background: #ff5252;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-    }
-
-    .footer {
-      margin-top: 30px;
-      color: white;
-      text-align: center;
-      opacity: 0.8;
-    }
-
-    .decoration {
-      position: absolute;
-      font-size: 1.5rem;
-      opacity: 0.1;
-      z-index: 0;
-    }
-
-    .dec-1 { top: 20px; left: 20px; }
-    .dec-2 { top: 20px; right: 20px; }
-    .dec-3 { bottom: 20px; left: 20px; }
-    .dec-4 { bottom: 20px; right: 20px; }
-
-    .type-indicator {
-      display: inline-block;
-      padding: 0.3rem 0.8rem;
-      background: #667eea;
-      color: white;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .book-badge {
-      display: inline-block;
-      padding: 0.3rem 0.8rem;
-      background: #ff6b6b;
-      color: white;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      margin-top: 0.5rem;
-      font-weight: bold;
-    }
-
-    @media (max-width: 600px) {
-      .header h1 {
-        font-size: 2rem;
-      }
-      
-      .quiz-container {
-        padding: 1.5rem;
-      }
-      
-      #question {
-        font-size: 1.8rem;
-      }
-      
-      #options button {
-        font-size: 1rem;
-        min-height: 55px;
-        padding: 1rem 0.8rem;
-      }
-    }
-  </style>
+#result{
+  margin-top:15px;
+  font-weight:700;
+  font-size:18px;
+}
+</style>
 </head>
+
 <body>
-  <div class="header">
-    <h1>Kuis Kotoba Minna no Nihongo</h1>
-    <p>Pelajari kosakata dari buku Minna no Nihongo</p>
-  </div>
 
-  <div class="quiz-container">
-    <div class="decoration dec-1">み</div>
-    <div class="decoration dec-2">ん</div>
-    <div class="decoration dec-3">な</div>
-    <div class="decoration dec-4">語</div>
-    
-    <div class="quiz-header">
-      <h2 class="quiz-title">Tebak Arti Kosakata</h2>
-      <p class="quiz-subtitle">Pilih terjemahan Indonesia yang tepat untuk kosakata Minna no Nihongo</p>
-    </div>
-    
-    <div class="progress-container">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-    
-    <div class="question-container">
-      <div class="type-indicator">Kata Jepang</div>
-      <div class="question-label">Apa arti dari:</div>
-      <div id="question">...</div>
-    </div>
-    
-    <div id="options"></div>
-    
+<div class="map" id="map"></div>
+
+<div class="quiz" id="quiz">
+  <div class="quiz-box">
+    <div id="question"></div>
+    <div class="options" id="options"></div>
     <div id="result"></div>
-    
-    <div class="score-container">
-      <div id="score">Skor: 0</div>
-      <div class="counter" id="counter">Pertanyaan: 1/200</div>
-    </div>
-    
-    <div id="finalScore"></div>
-    <button id="restartBtn">Mulai Ulang Kuis</button>
   </div>
+</div>
 
-  <div class="footer">
-    <p>Quiz Bahasa Jepang by @husain.y.m</p>
-  </div>
+<div class="bottom-nav">
+  <div class="nav-btn"><img src="https://cdn-icons-png.flaticon.com/512/1946/1946436.png"><span>Beranda</span></div>
+  <div class="nav-btn"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"><span>Profil</span></div>
+</div>
 
-  <script>
-    const data = [
-      ["わたし", "saya"],
+<script>
+const data = [
+  ["わたし", "saya"],
       ["わたしたち", "kami"],
       ["あなた", "kamu"],
       ["あのひと", "orang itu"],
@@ -590,93 +422,65 @@
       ["くだもの", "buah-buahan"],
     ];
 
-    let questions = [];
-    let current = 0;
-    let score = 0;
+let current = 0;
 
-    function shuffle(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
+function buildMap(){
+  const map = document.getElementById("map");
+  for(let i=0;i<data.length;i++){
+    const level = document.createElement("div");
+    level.className="level";
+    level.innerHTML=`<span>Lv ${i+1}</span>${i+1}`;
+    level.onclick=()=>startQuiz(i);
+    map.appendChild(level);
+    if(i < data.length-1){
+      const path=document.createElement("div");
+      path.className="path";
+      map.appendChild(path);
     }
+  }
+}
 
-    function updateProgress() {
-      const progress = ((current) / data.length) * 100;
-      document.getElementById('progressBar').style.width = `${progress}%`;
-      document.getElementById('counter').textContent = `Pertanyaan: ${current+1}/${data.length}`;
-    }
+function startQuiz(i){
+  current=i;
+  document.getElementById("quiz").style.display="flex";
+  loadQuestion();
+}
 
-    function loadQuestion() {
-      if (current >= questions.length) {
-        showFinalScore();
-        return;
-      }
+function loadQuestion(){
+  const [q,a] = data[current];
+  document.getElementById("question").textContent = q;
 
-      const [romaji, correct] = questions[current];
-      document.getElementById("question").textContent = romaji;
-      document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = "";
+  const opts=new Set([a]);
+  while(opts.size<4){
+    opts.add(data[Math.floor(Math.random()*data.length)][1]);
+  }
 
-      const options = new Set([correct]);
-      while (options.size < 4) {
-        const rand = data[Math.floor(Math.random() * data.length)][1];
-        options.add(rand);
-      }
+  const options=[...opts].sort(()=>Math.random()-0.5);
+  const box=document.getElementById("options");
+  box.innerHTML="";
+  options.forEach(o=>{
+    const btn=document.createElement("button");
+    btn.textContent=o;
+    btn.onclick=()=>check(o,a);
+    box.appendChild(btn);
+  });
+}
 
-      const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
+function check(sel,ans){
+  const res=document.getElementById("result");
+  if(sel===ans){
+    res.textContent="✅ Benar!";
+    setTimeout(()=>{
+      document.getElementById("quiz").style.display="none";
+      res.textContent="";
+    },600);
+  }else{
+    res.textContent="❌ Salah! "+ans;
+  }
+}
 
-      shuffled.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.textContent = opt;
-        btn.onclick = () => checkAnswer(opt, correct);
-        optionsDiv.appendChild(btn);
-      });
+buildMap();
+</script>
 
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
-      updateProgress();
-    }
-
-    function checkAnswer(selected, correct) {
-      const result = document.getElementById("result");
-      if (selected === correct) {
-        result.textContent = "✅ Benar!";
-        result.style.color = "green";
-        result.style.background = "#e8f5e8";
-        score++;
-        current++;
-        setTimeout(loadQuestion, 500);
-      } else {
-        result.textContent = `❌ Salah! Jawaban: ${correct}`;
-        result.style.color = "red";
-        result.style.background = "#ffe8e8";
-      }
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
-      updateProgress();
-    }
-
-    function showFinalScore() {
-      document.getElementById("question").textContent = "🎉 Selesai!";
-      document.getElementById("options").innerHTML = "";
-      document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
-      document.getElementById("restartBtn").style.display = "inline-block";
-      document.getElementById('progressBar').style.width = '100%';
-    }
-
-    function startQuiz() {
-      score = 0;
-      current = 0;
-      questions = [...data];
-      shuffle(questions);
-      document.getElementById("restartBtn").style.display = "none";
-      loadQuestion();
-    }
-
-    document.getElementById("restartBtn").onclick = startQuiz;
-    startQuiz();
-  </script>
 </body>
 </html>
