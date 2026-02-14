@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Japanese Vocabulary Game ULTRA</title>
+<title>Japanese Vocab Game ULTRA</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -61,7 +61,7 @@ body{
   transition:.4s;
 }
 
-.score{
+.score,.streak{
   padding:6px 10px;
   border-radius:14px;
   background:#f1fdf0;
@@ -80,21 +80,13 @@ body{
   align-items:center;
   justify-content:center;
   box-shadow:0 10px 25px rgba(0,0,0,.08);
-  animation:pop .3s ease;
-  padding:18px;
-  text-align:center;
-}
-
-@keyframes pop{
-  from{transform:scale(.95);opacity:0}
-  to{transform:scale(1);opacity:1}
 }
 
 #question{
-  font-size:2.3rem;
+  font-size:2.6rem;
   font-weight:900;
   color:#000;
-  line-height:1.5;
+  text-align:center;
 }
 
 /* OPTIONS */
@@ -106,8 +98,8 @@ body{
 }
 
 #options button{
-  padding:14px;
-  font-size:1.05rem;
+  padding:16px;
+  font-size:1.3rem;
   border:none;
   border-radius:18px;
   background:#58cc02;
@@ -127,8 +119,15 @@ body{
 #result{
   text-align:center;
   margin-top:8px;
-  font-weight:900;
+  font-weight:800;
   min-height:28px;
+}
+
+.badge{
+  text-align:center;
+  margin-top:4px;
+  font-weight:900;
+  color:#ff9600;
 }
 
 #restartBtn{
@@ -152,6 +151,7 @@ body{
     <div class="level" id="level">Lv 1</div>
     <div class="xp-bar"><div id="progressBar"></div></div>
     <div class="score" id="score">0 XP</div>
+    <div class="streak" id="streak">x 0</div>
   </div>
 
   <div class="card">
@@ -161,17 +161,15 @@ body{
   <div id="options"></div>
 
   <div id="result"></div>
+  <div class="badge" id="badge"></div>
 
   <button id="restartBtn">🔁 Main Lagi</button>
 
 </div>
 
 <script>
-const data = [
-
-/* ==== DATA KOSAKATA ASLI KAMU — TIDAK DIUBAH ==== */
-
-["ねこ", "kucing"],["いぬ", "anjing"],["ほん", "buku"],["くるま", "mobil"],
+const vocab=[
+      ["ねこ", "kucing"],["いぬ", "anjing"],["ほん", "buku"],["くるま", "mobil"],
 ["みず", "air"],["そら", "langit"],["やま", "gunung"],["かわ", "sungai"],
 ["き", "pohon"],["はな", "bunga"],["ありがとう ございます", "terimakasih"],
 ["こんにちは", "halo"],["おはよう ございます", "selamat pagi"],["こんばんは", "selamat malam"],
@@ -242,12 +240,9 @@ const data = [
 ["カリフラワー", "kembang kol"],["きゅうり", "mentimun"],["ピーマン", "cabe hijau"],["まめ", "kacang"],
 ["マッシュルーム", "jamur"],["はくさい", "sawi"],["かぼちゃ", "labu"],["ブロッコリー", "brokoli"],["だいず", "kedelai"],
 ["いんげん まめ", "kacang merah"],
-/* POTONG AGAR JAWABAN TIDAK TERLALU PANJANG */
 ];
 
-/* ================= GAME LOGIC ================= */
-
-let q=[],cur=0,xp=0,level=1;
+let q=[],cur=0,xp=0,streak=0,level=1;
 
 function shuffle(a){
  for(let i=a.length-1;i>0;i--){
@@ -271,58 +266,71 @@ function load(){
 function updateUI(){
  document.getElementById("score").textContent=xp+" XP";
  document.getElementById("level").textContent="Lv "+level;
+ document.getElementById("streak").textContent="x "+streak;
 
- const need = level * 400;
+ const need = level * 300;
  document.getElementById("progressBar").style.width=Math.min((xp/need)*100,100)+"%";
 }
 
 function loadQuestion(){
  if(cur>=q.length){finish();return}
 
- const [jp,id]=q[cur];
- document.getElementById("question").textContent=jp;
- document.getElementById("result").textContent="";
+ const [indo,jp]=q[cur];
+ document.getElementById("question").textContent=indo;
 
- const ops=new Set([id]);
+ document.getElementById("result").textContent="";
+ document.getElementById("badge").textContent="";
+
+ const ops=new Set([jp]);
  while(ops.size<4){
-  ops.add(data[Math.floor(Math.random()*data.length)][1]);
+  ops.add(vocab[Math.floor(Math.random()*vocab.length)][1]);
  }
 
  document.getElementById("options").innerHTML="";
  [...ops].sort(()=>Math.random()-0.5).forEach(o=>{
   const b=document.createElement("button");
   b.textContent=o;
-  b.onclick=()=>check(o,id);
+  b.onclick=()=>check(o,jp);
   document.getElementById("options").appendChild(b);
  });
 }
 
 function check(sel,ans){
  if(sel===ans){
-  xp+=2;
-  if(xp >= level*400) level++;
-  document.getElementById("result").textContent="✅ BENAR +2XP";
+  streak++;
+  let bonus = streak>=5 ? 5 : 2;
+  xp+=bonus;
+
+  if(xp >= level*300){
+    level++;
+  }
+
+  if(streak==5) document.getElementById("badge").textContent="🏆 COMBO x5";
+
+  document.getElementById("result").textContent=" BENAR +"+bonus+"XP";
   cur++;
  }else{
+  streak=0;
   document.getElementById("result").textContent="❌ SALAH";
  }
  updateUI();
  save();
- setTimeout(loadQuestion,450);
+ setTimeout(loadQuestion,500);
 }
 
 function finish(){
- document.getElementById("question").textContent="🎉 SELESAI!";
+ document.getElementById("question").textContent="🎉";
  document.getElementById("options").innerHTML="";
- document.getElementById("result").textContent="TOTAL XP: "+xp;
+ document.getElementById("result").textContent="SELESAI! TOTAL XP: "+xp;
  document.getElementById("restartBtn").style.display="block";
 }
 
 function start(){
  load();
- q=[...data];
+ q=[...vocab];
  shuffle(q);
  cur=0;
+ streak=0;
  updateUI();
  document.getElementById("restartBtn").style.display="none";
  loadQuestion();
