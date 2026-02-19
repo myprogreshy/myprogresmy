@@ -234,11 +234,11 @@ function shuffle(a){
 }
 
 function save(){
- localStorage.setItem("kanji_ultra_save",JSON.stringify({xp,level}));
+ localStorage.setItem("kana_ultra_save",JSON.stringify({xp,level}));
 }
 
 function load(){
- const d=JSON.parse(localStorage.getItem("kanji_ultra_save"));
+ const d=JSON.parse(localStorage.getItem("kana_ultra_save"));
  if(d){
    xp=d.xp||0;
    level=d.level||1;
