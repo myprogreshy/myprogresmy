@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japanese Vocab Game ULTRA</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{
+  height:100%;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
+  background:#e6f9e6;
+}
+
+body{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.app{
+  width:100%;
+  max-width:420px;
+  height:100%;
+  background:#ffffff;
+  display:flex;
+  flex-direction:column;
+  padding:14px;
+}
+
+/* TOP BAR */
+
+.top-bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.level{
+  background:#58cc02;
+  color:white;
+  padding:6px 12px;
+  border-radius:14px;
+  font-weight:800;
+}
+
+.xp-bar{
+  flex:1;
+  height:12px;
+  background:#dff5d8;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+#progressBar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#58cc02,#89e219);
+  transition:.4s;
+}
+
+.score,.streak{
+  padding:6px 10px;
+  border-radius:14px;
+  background:#f1fdf0;
+  border:2px solid #58cc02;
+  font-weight:700;
+}
+
+/* CARD */
+
+.card{
+  flex:1;
+  background:#f8fff6;
+  border-radius:26px;
+  margin:20px 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+#question{
+  font-size:2.6rem;
+  font-weight:900;
+  color:#000;
+  text-align:center;
+}
+
+/* OPTIONS */
+
+#options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+#options button{
+  padding:16px;
+  font-size:1.3rem;
+  border:none;
+  border-radius:18px;
+  background:#58cc02;
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+  transition:.15s;
+}
+
+#options button:hover{
+  transform:scale(1.05);
+  background:#46b400;
+}
+
+/* RESULT */
+
+#result{
+  text-align:center;
+  margin-top:8px;
+  font-weight:800;
+  min-height:28px;
+}
+
+.badge{
+  text-align:center;
+  margin-top:4px;
+  font-weight:900;
+  color:#ff9600;
+}
+
+#restartBtn{
+  margin-top:12px;
+  padding:15px;
+  border:none;
+  border-radius:20px;
+  background:#ff9600;
+  color:white;
+  font-weight:900;
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="top-bar">
+    <div class="level" id="level">Lv 1</div>
+    <div class="xp-bar"><div id="progressBar"></div></div>
+    <div class="score" id="score">0 XP</div>
+    <div class="streak" id="streak">x 0</div>
+  </div>
+
+  <div class="card">
+    <div id="question">?</div>
+  </div>
+
+  <div id="options"></div>
+
+  <div id="result"></div>
+  <div class="badge" id="badge"></div>
+
+  <button id="restartBtn">🔁 Main Lagi</button>
+
+</div>
+
+<script>
+const vocab=[
+    ["さようなら", "selamat tinggal"],["ばいばい", "bye-bye"],["おやすみなさい", "selamat tidur"],
+  ["こんばんは", "selamat sore/malam"],["こんいちは", "selamat siang"],["おはようございます", "salam kenal"],
+  ["こんいちは", "halo"],
+  
+  ["ねこ", "kucing"],["いぬ", "anjing"],["ほん", "buku"],["くるま", "mobil"],
+["みず", "air"],["そら", "langit"],["やま", "gunung"],["かわ", "sungai"],
+["き", "pohon"],["はな", "bunga"],["ありがとう ございます", "terimakasih"],
+["こんにちは", "halo"],["おはよう ございます", "selamat pagi"],["こんばんは", "selamat malam"],
+["おやすみなさい", "selamat istirahat"],["さようなら", "sampai jumpa"],["げつようび", "senin"],
+["かようび", "selasa"],["すいようび", "rabu"],["もくようび", "kamis"],["きんようび", "jumat"],
+["どようび", "sabtu"],["にちようび", "minggu"],["きょう", "hari ini"],["きのう", "kemarin"],
+["あさって", "lusa"],["おととい", "kemarin dulu"],["あさ", "pagi"],["けさ", "tadi pagi"],
+["ばん / よる", "malam"],["ゆうべ", "tadi malam"],["こんばん", "malam ini"],["あした", "besok"],
+["まいにち", "setiap hari"],["まいあさ", "setiap pagi"],["まいばん", "setiap malam"],
+["こんしゅう", "minggu ini"],["せんしゅう", "minggu lalu"],["らいしゅう", "minggu depan"],
+["しきさい", "warna"],["ピンク", "pink"],["きいろ", "kuning"],["きんいろ / こんじき", "emas"],
+["ぎんいろ", "perak"],["くろい", "hitam"],["いちがつ", "januari"],["にがつ", "februari"],
+["さんがつ", "maret"],["しがつ", "april"],["ごがつ", "mei"],["ろくがつ", "juni"],
+["しちがつ", "juli"],["はちがつ", "agustus"],["くがつ", "september"],["じゅうがつ", "oktober"],
+["じゅういちがつ", "november"],["じゅうにがつ", "desember"],["むらさき", "unggu"],["あおい", "biru"],
+["みずいろ", "biru muda"],["あかい", "merah"],["ちゃいろ", "coklat"],["しろい", "putih"],
+["みどり", "hijau"],["オレンジいろ", "orange"],["だいだいいろ", "jingga"],["まっか", "merah tua"],
+["まっしろ", "putih jernih"],["まっくろ", "hitam legam"],["まっさお", "biru tua"],["はいいろ", "abu-abu"],
+["こん", "biru laut"],["くれない", "merah terang"],["れい / ゼロ", "nol"],["いち", "satu"],["に", "dua"],
+["さん", "tiga"],["よん / し", "empat"],["ご", "lima"],["ろく", "enam"],["なな / しち", "tujuh"],["はち", "delapan"],
+["きゅう / く", "sembilan"],["じゅう", "sepuluh"],["じゅういち", "sebelas"],["じゅうに", "dua belas"],["じゅうさん", "tiga belas"],
+["じゅうよん / じゅうし", "empat belas"],["じゅうご", "lima belas"],["じゅうろく", "enam belas"],["じゅうなな / じゅうしち", "tujuh belas"],
+["じゅうはち", "delapan belas"],["じゅうきゅう / じゅうく", "sembilan belas"],["にじゅう", "dua puluh"],["にじゅういち", "dua puluh satu"],
+["にじゅうに", "dua puluh dua"],["にじゅうさん", "dua puluh tiga"],["ひゃく", "seratus"],["にひゃく", "dua ratus"],
+["さんびゃく", "tiga ratus"],["よんひゃく", "empat ratus"],["ごひゃく", "lima ratus"],["ろっぴゃく", "enam ratus"],
+["ななひゃく", "tujuh ratus"],["はっぴゃく", "delapan ratus"],["きゅうひゃく", "sembilan ratus"],["せん", "seribu"],
+["にせん", "dua ribu"],["さんぜん", "tiga ribu"],["よんせん", "empat ribu"],["ごせん", "lima ribu"],
+["ろくせん", "enam ribu"],["ななせん", "tujuh ribu"],["はっせん", "delapan ribu"],["きゅうせん", "sembilan ribu"],
+["まん", "sepuluh ribu"],["にまん", "dua puluh ribu"],["さんまん", "tiga puluh ribu"],["よんまん", "empat puluh ribu"],
+["ごまん", "lima puluh ribu"],["ろくまん", "enam puluh ribu"],["ななまん", "tujuh puluh ribu"],
+["はちまん", "delapan puluh ribu"],["じゅうまん", "seratus ribu"],["ひゃくまん", "sejuta"],["せんまん", "sepuluh juta"],
+["おく", "seratus juta"],["ちょう", "satu triliun"],["じんたい", "tubuh manusia"],["かた", "bahu"],["のど", "tenggorokan"],
+["かお", "muka"],["ほほ", "pipi"],["は", "gigi"],["ゆび", "jari"],["おなか", "perut"],["つめ", "kuku"],
+["ひたい", "dahi"],["あご", "dagu"],["はな", "hidung"],["くち", "mulut"],["くちびる", "bibir"],["くび", "leher"],
+["てのひら", "telapak tangan"],["からだ", "tubuh/badan"],["あたま", "kepala"],["て", "tangan"],["あし", "kaki"],
+["うで", "lengan"],["ひざ", "lutut"],["かみ", "rambut"],["せなか", "punggung"],["こし", "pinggang"],["め", "mata"],
+["みみ", "telinga"],["かかと", "tumit"],["あしゆび", "jari kaki"],["おやゆび", "jempol"],["ひとさしゆび", "jari telunjuk"],
+["なかゆび", "jari tengah"],["くすりゆび", "jari manis"],["こゆび", "jari kelingking"],["あごひげ", "janggut"],
+["ひげ", "kumis"],["ふともも", "paha"],["わたし", "saya"],["わたくし", "saya"],["ぼく", "saya"],["あたし", "saya"],
+["おれ", "saya"],["わたしたち", "kami"],["ぼくたち", "kami"],["ぼくら", "kami"],["あたしたち", "kami"],
+["おれたち", "kami"],["あなた", "kamu"],["きみ", "kamu"],["おまえら", "kamu"],["かれ", "dia(laki)"],["かれら", "mereka(laki)"],
+["かのじょ", "dia(perempuan)"],["かのじょら", "mereka(perempuan)"],["これ", "ini"],["これら", "ini(jamak)"],["それ", "itu"],
+["あれ", "itu"],["それら", "itu(jamak)"],["あれら", "itu(jamak)"],["ひふ", "kulit"],["けつえき", "darah"],["まゆ", "alis"],
+["むね", "dada"],["ひじ", "siku"],["へそ", "pusar"],["わきのした", "ketiak"],["あしくび", "pergelangan kaki"],
+["てくび", "pergelangan tangan"],["がんきゅう", "bola mata"],["ないぞう", "tubuh bagian dalam"],["じんぞう", "ginjal"],
+["かんぞう", "hati"],["ろっこつ", "tulang rusuk"],["たいじ", "janin"],["しんぞう", "jantung"],["ひぞう", "limpa"],
+["のう", "otak"],["きんにく", "otot"],["はい", "paru-paru"],["けっかん", "pembulu darah"],["どうみゃく", "nadi"],
+["じょうみゃく", "urat"],["しきゅう", "rahim"],["せいし", "sperma"],["へそのお", "tali pusar"],["ずがいこつ", "tengkorak"],
+["ほね", "tulang"],["ちょう", "usus"],["だいちょう", "usus besar"],["ボールペン", "pulpen"],["ほん", "buku"],
+["ぶんどき", "busur derajat"],["きょうかしょ", "buku pelajaran"],["ひゃっかじてん", "ensiklopedia"],["はさみ", "gunting"],
+["でんたく けいさんき", "kalkulator"],["チョーク", "kapur"],["いす", "kursi"],["コンピューター", "komputer"],["じしょ", "kamus"],
+["かみ", "kertas"],["つくえ", "meja"],["こくばん", "papan tulis hitam"],["じょうぎ", "penggaris"],
+["こくばん けし", "penghapus papan hitam"],["えんぴつ", "pensil"],["シャーペン", "pensil mekanik"],["ちず", "peta"],
+["ペン", "pulpen"],["ほんだな", "rak buku"],["えんぴつ けずり", "rautan pensil"],["せいふく", "seragam"],
+["ホチキス", "staples"],["マーカー", "spidol"],["つうがく かばん", "tas sekolah"],["ふでばこ", "tempat pensil"],
+["ほうちょう", "pisau dapur"],["まないた", "talenan"],["じょうすいき", "penyuling air"],["なべ", "panci"],["フライパン", "wajan"],
+["やかん", "ketel"],["おたま", "sendok sayur"],["はいすいこう", "saringan"],["ボウル", "mangkuk"],["ミキサー", "blender"],
+["おろしがね", "parutan"],["かわむきき", "alat pengupas"],["せんぬき", "pembuka botol"],["かんきり", "pembuka kaleng"],
+["コルクぬき", "kotrek"],["くだもの", "buah"],["いちご", "strawberry"],["みかん", "jeruk mandarin"],["オレンジ", "jeruk"],
+["レモン", "lemon"],["すいか", "semangka"],["ぶどう", "anggur"],["パイナップル", "nanas"],["りんご", "apel"],
+["ドリアン", "durian"],["パパイヤ", "pepaya"],["もも", "buah persik"],["マンゴー", "mangga"],["アボカド", "alpukat"],
+["キウイ", "kiwi"],["グアバ", "jambu biji"],["ほしぶどう", "kismis"],["ざくろ", "delima"],["ココナッツ", "kelapa"],
+["きいちご", "rasbery"],["なし", "pir"],["やさい", "sayur"],["だいこん", "lobak jepang"],["レタス", "selada"],
+["トマト", "tomat"],["じゃがいも", "kentang"],["キャベツ", "kubis"],["しょうが", "jahe"],["なす", "terong"],
+["ブルーベリー", "bluberry"],["ブラックベリー", "blackberry"],["さくらんぼう", "cherry"],["オリーブ", "buah jaitun"],
+["バナナ", "pisang"],["ナツメヤシ の み", "kurma"],["にんじん", "wortel"],["たまねぎ", "bawang merah"],
+["にんにく", "bawang putih"],["さやえんどう", "kacang panjang"],["えんどう まめ / あおまめ", "kacang polong"],
+["カリフラワー", "kembang kol"],["きゅうり", "mentimun"],["ピーマン", "cabe hijau"],["まめ", "kacang"],
+["マッシュルーム", "jamur"],["はくさい", "sawi"],["かぼちゃ", "labu"],["ブロッコリー", "brokoli"],["だいず", "kedelai"],
+["いんげん まめ", "kacang merah"],
+];
+
+let q=[],cur=0,xp=0,streak=0,level=1;
+
+function shuffle(a){
+ for(let i=a.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [a[i],a[j]]=[a[j],a[i]];
+ }
+}
+
+function save(){
+ localStorage.setItem("kana_ultra_save",JSON.stringify({xp,level}));
+}
+
+function load(){
+ const d=JSON.parse(localStorage.getItem("kana_ultra_save"));
+ if(d){
+   xp=d.xp||0;
+   level=d.level||1;
+ }
+}
+
+function updateUI(){
+ document.getElementById("score").textContent=xp+" XP";
+ document.getElementById("level").textContent="Lv "+level;
+ document.getElementById("streak").textContent="x "+streak;
+
+ const need = level * 300;
+ document.getElementById("progressBar").style.width=Math.min((xp/need)*100,100)+"%";
+}
+
+function loadQuestion(){
+ if(cur>=q.length){finish();return}
+
+ const [indo,jp]=q[cur];
+ document.getElementById("question").textContent=indo;
+
+ document.getElementById("result").textContent="";
+ document.getElementById("badge").textContent="";
+
+ const ops=new Set([jp]);
+ while(ops.size<4){
+  ops.add(vocab[Math.floor(Math.random()*vocab.length)][1]);
+ }
+
+ document.getElementById("options").innerHTML="";
+ [...ops].sort(()=>Math.random()-0.5).forEach(o=>{
+  const b=document.createElement("button");
+  b.textContent=o;
+  b.onclick=()=>check(o,jp);
+  document.getElementById("options").appendChild(b);
+ });
+}
+
+function check(sel,ans){
+ if(sel===ans){
+  streak++;
+  let bonus = streak>=5 ? 5 : 2;
+  xp+=bonus;
+
+  if(xp >= level*300){
+    level++;
+  }
+
+  if(streak==5) document.getElementById("badge").textContent="🏆 COMBO x5";
+
+  document.getElementById("result").textContent=" BENAR +"+bonus+"XP";
+  cur++;
+ }else{
+  streak=0;
+  document.getElementById("result").textContent="❌ SALAH";
+ }
+ updateUI();
+ save();
+ setTimeout(loadQuestion,500);
+}
+
+function finish(){
+ document.getElementById("question").textContent="🎉";
+ document.getElementById("options").innerHTML="";
+ document.getElementById("result").textContent="SELESAI! TOTAL XP: "+xp;
+ document.getElementById("restartBtn").style.display="block";
+}
+
+function start(){
+ load();
+ q=[...vocab];
+ shuffle(q);
+ cur=0;
+ streak=0;
+ updateUI();
+ document.getElementById("restartBtn").style.display="none";
+ loadQuestion();
+}
+
+document.getElementById("restartBtn").onclick=start;
+start();
+</script>
+
+</body>
+</html>
