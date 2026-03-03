@@ -1,230 +1,245 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quiz Bahasa Jepang</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #e74c3c;
-      --primary-dark: #c0392b;
-      --dark: #2c3e50;
-      --light: #f8f9fa;
-      --gray: #6c757d;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Quiz Jepang</title>
 
-    .container {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      width: 100%;
-      max-width: 800px;
-      overflow: hidden;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-    .header {
-      background: var(--primary);
-      color: white;
-      padding: 40px 30px;
-      text-align: center;
-    }
+<style>
+:root{
+  --primary:#2c7be5;
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+}
 
-    .header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+}
 
-    .header p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
+body{
+  background:var(--bg);
+  color:var(--text);
+}
 
-    .content {
-      padding: 40px 30px;
-    }
+.container{
+  max-width:900px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
 
-    .intro {
-      text-align: center;
-      margin-bottom: 40px;
-    }
+/* HEADER */
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  padding:20px 25px;
+}
 
-    .intro p {
-      color: var(--gray);
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+header h1{
+  font-size:20px;
+  font-weight:600;
+}
 
-    .menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      margin-bottom: 40px;
-    }
+header p{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
 
-    .card {
-      background: var(--light);
-      border-radius: 12px;
-      padding: 30px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-    }
+/* MAIN */
+main{
+  flex:1;
+  padding:25px;
+}
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
+h2{
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:15px;
+}
 
-    .card-icon {
-      font-size: 3rem;
-      color: var(--primary);
-      margin-bottom: 20px;
-    }
+/* GRID MENU */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:15px;
+}
 
-    .card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-      color: var(--dark);
-    }
+/* CARD */
+.card{
+  background:var(--card);
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:16px 18px;
+  cursor:pointer;
+  transition:.2s;
+}
 
-    .card p {
-      color: var(--gray);
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
+.card:hover{
+  border-color:var(--primary);
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
 
-    .btn {
-      display: inline-block;
-      background: var(--primary);
-      color: white;
-      padding: 12px 30px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.3s, transform 0.2s;
-    }
+.card h3{
+  font-size:15px;
+  font-weight:600;
+}
 
-    .btn:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-    }
+.card span{
+  font-size:12px;
+  color:var(--muted);
+}
 
-    .stats {
-      display: flex;
-      justify-content: space-around;
-      text-align: center;
-      padding: 30px 0;
-      border-top: 1px solid #eee;
-    }
+/* LIST */
+.list{
+  display:grid;
+  gap:10px;
+}
 
-    .stat-item .number {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--primary);
-      display: block;
-    }
+.item{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  padding:14px 16px;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+  transition:.15s;
+}
 
-    .stat-item .label {
-      color: var(--gray);
-      font-size: 0.9rem;
-    }
+.item:hover{
+  border-color:var(--primary);
+  background:#f0f6ff;
+}
 
-    .footer {
-      text-align: center;
-      padding: 20px;
-      color: var(--gray);
-      font-size: 0.9rem;
-      border-top: 1px solid #eee;
-    }
+.back{
+  margin-top:15px;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  padding:12px;
+  cursor:pointer;
+}
 
-    @media (max-width: 600px) {
-      .header {
-        padding: 30px 20px;
-      }
-      
-      .header h1 {
-        font-size: 2rem;
-      }
-      
-      .content {
-        padding: 30px 20px;
-      }
-      
-      .menu {
-        grid-template-columns: 1fr;
-      }
-      
-      .stats {
-        flex-direction: column;
-        gap: 20px;
-      }
-    }
-  </style>
+/* FOOTER */
+footer{
+  border-top:1px solid #e5e7eb;
+  padding:12px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* HIDDEN */
+.hidden{display:none}
+</style>
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>Quiz Bahasa Jepang</h1>
-      <p>Tingkatkan kemampuan bahasa Jepang Anda dengan kuis interaktif</p>
-    </div>
-    
-    <div class="content">
-      <div class="intro">
-        <p>Pilih jenis kuis di bawah ini untuk memulai perjalanan belajar bahasa Jepang Anda</p>
-      </div>
-      
-      <div class="menu">
-        <div class="card">
-          <div class="card-icon">
-            <i class="fas fa-font"></i>
-          </div>
-          <h3>Huruf Jepang</h3>
-          <p>Pelajari dan uji pengetahuan tentang Hiragana, Katakana, dan Kanji dasar</p>
-          <a href="menuhuruf.html" class="btn">Mulai Belajar</a>
-        </div>
-        
-        <div class="card">
-          <div class="card-icon">
-            <i class="fas fa-book"></i>
-          </div>
-          <h3>Kosakata Jepang</h3>
-          <p>Tingkatkan perbendaharaan kata bahasa Jepang Anda dengan kosakata penting</p>
-          <a href="menukosakata.html" class="btn">Mulai Belajar</a>
-        </div>
-      </div>
 
-      <div class="card">
-          <div class="card-icon">
-            <i class="fas fa-book"></i>
-          </div>
-          <h3>Tata Bahasa</h3>
-          <p>Tingkatkan pemahaman tentang tata bahasa jepang dengan pelatihan soal-soal</p>
-          <a href="menutatabahasa.html" class="btn">Mulai Belajar</a>
-        </div>
-      </div>
-    
-    <div class="footer">
-      <p>© 2023 Quiz Bahasa Jepang by @husain.y.m</p>
+<body>
+
+<div class="container">
+
+<header>
+  <h1>Quiz Bahasa Jepang</h1>
+  <p>Menu Utama</p>
+</header>
+
+<main>
+
+<!-- MENU -->
+<section id="menu">
+  <h2>Kategori</h2>
+  <div class="grid">
+    <div class="card" onclick="openHiragana()">
+      <h3>Mulai Sekarang</h3>
+      <span>Kumpulan Latihan Soal</span>
+    </div>
+    <div class="card" onclick="openKanji()">
+      <h3>Pengaturan</h3>
+      <span>Buat Quiz Anda Sendiri</span>
+    </div>
+    <div class="card" onclick="openMasukan()">
+      <h3>Saran & Masukan</h3>
+      <span>Berikan Masukan Kepada Kami</span>
     </div>
   </div>
+</section>
+
+<!-- SUBMENU -->
+<section id="submenu" class="hidden"></section>
+
+</main>
+
+<footer>© 2026 Quiz Jepang</footer>
+
+</div>
+
+<script>
+const quizLinks={
+  hiragana:{
+    "Kuis Huruf":"menuhuruf.html",
+    "Kuis Kosakata":"menukosakata.html",
+    "Kuis Tata Bahasa":"menutatabahasa.html"
+  },
+  kanji:{
+    "Mode Developer":"kanji1.html",
+    "Privacy Policy":"kanji2.html",
+   "Donasi":"kanji2.html",
+  "Tentang Kami":"kanji2.html"
+  },
+  masukan:{
+    "Kirim Masukan":"kanji1.html",
+  "Laporkan Bug":"kanji1.html"
+  }
+};
+
+function show(id){
+  document.getElementById("menu").classList.add("hidden");
+  document.getElementById("submenu").classList.add("hidden");
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function openHiragana(){ 
+  buildSub("Hiragana","hiragana"); 
+}
+
+function openKanji(){ 
+  buildSub("Kanji","kanji"); 
+}
+
+function openMasukan(){ 
+  buildSub("Saran & Masukan","masukan"); 
+}
+
+function buildSub(title,key){
+  const box=document.getElementById("submenu");
+  box.innerHTML=`
+    <h2>${title}</h2>
+    <div class="list">
+      ${Object.keys(quizLinks[key]).map(k=>
+        `<div class="item" onclick="go('${quizLinks[key][k]}')">
+          ${k}<span>→</span>
+        </div>`
+      ).join('')}
+      <button class="back" onclick="show('menu')">Kembali</button>
+    </div>
+  `;
+  show("submenu");
+}
+
+function go(url){
+  window.location.href=url;
+}
+</script>
+
 </body>
 </html>
