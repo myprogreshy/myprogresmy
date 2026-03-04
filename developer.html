@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japanese Vocab Game ULTRA</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{
+  height:100%;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
+  background:#e6f9e6;
+}
+
+body{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.app{
+  width:100%;
+  max-width:420px;
+  height:100%;
+  background:#ffffff;
+  display:flex;
+  flex-direction:column;
+  padding:14px;
+}
+
+/* ===== MENU ===== */
+
+.menu h2{margin-bottom:10px}
+
+.menu button{
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  font-weight:800;
+  cursor:pointer;
+  background:#58cc02;
+  color:white;
+  margin-bottom:10px;
+}
+
+.set-item{
+  background:#f1fdf0;
+  padding:10px;
+  border-radius:12px;
+  margin-bottom:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.set-item span{
+  font-weight:700;
+  cursor:pointer;
+}
+
+.edit-btn{
+  background:#ff9600;
+  border:none;
+  padding:6px 10px;
+  border-radius:8px;
+  color:white;
+  cursor:pointer;
+}
+
+/* ===== BUILDER ===== */
+
+.builder{
+  display:none;
+  flex-direction:column;
+}
+
+.builder input{
+  padding:8px;
+  margin-bottom:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+.vocab-item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:4px;
+}
+
+/* ===== QUIZ (ASLI) ===== */
+
+.quiz{
+  display:none;
+  flex-direction:column;
+  height:100%;
+}
+
+.top-bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.level{
+  background:#58cc02;
+  color:white;
+  padding:6px 12px;
+  border-radius:14px;
+  font-weight:800;
+}
+
+.xp-bar{
+  flex:1;
+  height:12px;
+  background:#dff5d8;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+#progressBar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#58cc02,#89e219);
+  transition:.4s;
+}
+
+.score,.streak{
+  padding:6px 10px;
+  border-radius:14px;
+  background:#f1fdf0;
+  border:2px solid #58cc02;
+  font-weight:700;
+}
+
+.card{
+  flex:1;
+  background:#f8fff6;
+  border-radius:26px;
+  margin:20px 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+#question{
+  font-size:2.6rem;
+  font-weight:900;
+  text-align:center;
+}
+
+#options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+#options button{
+  padding:16px;
+  font-size:1.3rem;
+  border:none;
+  border-radius:18px;
+  background:#58cc02;
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+}
+
+#result{
+  text-align:center;
+  margin-top:8px;
+  font-weight:800;
+  min-height:28px;
+}
+
+#restartBtn{
+  margin-top:12px;
+  padding:15px;
+  border:none;
+  border-radius:20px;
+  background:#ff9600;
+  color:white;
+  font-weight:900;
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- MENU -->
+<div class="menu" id="menu">
+  <h2>Latihan Saya</h2>
+  <button onclick="openBuilder()">+ Buat Latihan Baru</button>
+  <div id="setList"></div>
+</div>
+
+<!-- BUILDER -->
+<div class="builder" id="builder">
+  <input id="setName" placeholder="Nama Latihan">
+  <input id="indoInput" placeholder="Arti Indonesia">
+  <input id="jpInput" placeholder="Bahasa Jepang">
+  <button onclick="addVocab()">Tambah Kosakata</button>
+  <div id="vocabList"></div>
+  <button onclick="saveSet()">💾 Simpan Latihan</button>
+  <button onclick="backMenu()">Kembali</button>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz" id="quiz">
+
+  <div class="top-bar">
+    <div class="level" id="level">Lv 1</div>
+    <div class="xp-bar"><div id="progressBar"></div></div>
+    <div class="score" id="score">0 XP</div>
+    <div class="streak" id="streak">x 0</div>
+  </div>
+
+  <div class="card">
+    <div id="question">?</div>
+  </div>
+
+  <div id="options"></div>
+  <div id="result"></div>
+  <button id="restartBtn">🔁 Main Lagi</button>
+
+</div>
+
+</div>
+
+<script>
+let sets=JSON.parse(localStorage.getItem("vocab_sets"))||[];
+let currentSet=null;
+let vocab=[];
+let q=[],cur=0,xp=0,streak=0,level=1;
+
+/* ===== MENU ===== */
+
+function renderSets(){
+ setList.innerHTML="";
+ sets.forEach((s,i)=>{
+  setList.innerHTML+=`
+   <div class="set-item">
+     <span onclick="startQuiz(${i})">${s.name}</span>
+     <button class="edit-btn" onclick="openEdit(${i})">Edit</button>
+   </div>
+  `;
+ });
+}
+renderSets();
+
+function openBuilder(){
+ menu.style.display="none";
+ builder.style.display="flex";
+ vocab=[];
+ vocabList.innerHTML="";
+ setName.value="";
+ currentSet=null;
+}
+
+function openEdit(i){
+ currentSet=i;
+ menu.style.display="none";
+ builder.style.display="flex";
+
+ setName.value=sets[i].name;
+ vocab=[...sets[i].vocab];
+ renderVocabList();
+}
+
+function backMenu(){
+ builder.style.display="none";
+ menu.style.display="block";
+ renderSets();
+}
+
+/* ===== BUILDER ===== */
+
+function renderVocabList(){
+ vocabList.innerHTML="";
+ vocab.forEach((v,index)=>{
+  vocabList.innerHTML+=`
+   <div class="vocab-item">
+    ${v[0]} - ${v[1]}
+    <button onclick="deleteVocab(${index})">X</button>
+   </div>
+  `;
+ });
+}
+
+function addVocab(){
+ if(!indoInput.value||!jpInput.value)return;
+ vocab.push([indoInput.value,jpInput.value]);
+ renderVocabList();
+ indoInput.value="";
+ jpInput.value="";
+}
+
+function deleteVocab(i){
+ vocab.splice(i,1);
+ renderVocabList();
+}
+
+function saveSet(){
+ if(!setName.value||vocab.length<2)
+   return alert("Isi nama & minimal 2 kosakata");
+
+ if(currentSet!==null){
+   sets[currentSet]={name:setName.value,vocab:vocab};
+ }else{
+   sets.push({name:setName.value,vocab:vocab});
+ }
+
+ localStorage.setItem("vocab_sets",JSON.stringify(sets));
+ backMenu();
+}
+
+/* ===== QUIZ ===== */
+
+function startQuiz(i){
+ currentSet=i;
+ vocab=sets[i].vocab;
+ menu.style.display="none";
+ quiz.style.display="flex";
+ q=[...vocab];
+ shuffle(q);
+ cur=0;
+ xp=0;
+ streak=0;
+ level=1;
+ updateUI();
+ loadQuestion();
+}
+
+function shuffle(a){
+ for(let i=a.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [a[i],a[j]]=[a[j],a[i]];
+ }
+}
+
+function updateUI(){
+ score.textContent=xp+" XP";
+ level.textContent="Lv "+level;
+ streak.textContent="x "+streak;
+ const need=level*300;
+ progressBar.style.width=Math.min((xp/need)*100,100)+"%";
+}
+
+function loadQuestion(){
+ if(cur>=q.length){finish();return}
+
+ const [indo,jp]=q[cur];
+ question.textContent=indo;
+ result.textContent="";
+
+ let allAnswers=[];
+ sets.forEach(set=>{
+   set.vocab.forEach(v=>{
+     allAnswers.push(v[1]);
+   });
+ });
+
+ allAnswers=[...new Set(allAnswers)];
+ shuffle(allAnswers);
+
+ let optionsList=allAnswers.slice(0,Math.min(4,allAnswers.length));
+
+ if(!optionsList.includes(jp)){
+   optionsList[0]=jp;
+ }
+
+ shuffle(optionsList);
+
+ options.innerHTML="";
+ optionsList.forEach(o=>{
+   const b=document.createElement("button");
+   b.textContent=o;
+   b.onclick=()=>check(o,jp);
+   options.appendChild(b);
+ });
+}
+
+function check(sel,ans){
+ if(sel===ans){
+  streak++;
+  let bonus=streak>=5?5:2;
+  xp+=bonus;
+  if(xp>=level*300) level++;
+  result.textContent="BENAR +"+bonus+"XP";
+  cur++;
+ }else{
+  streak=0;
+  result.textContent="❌ SALAH";
+ }
+ updateUI();
+ setTimeout(loadQuestion,500);
+}
+
+function finish(){
+ question.textContent="🎉";
+ options.innerHTML="";
+ result.textContent="SELESAI! TOTAL XP: "+xp;
+ restartBtn.style.display="block";
+}
+
+restartBtn.onclick=()=>location.reload();
+</script>
+
+</body>
+</html>
