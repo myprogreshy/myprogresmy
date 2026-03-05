@@ -188,7 +188,7 @@ gap:12px;
 
 #options button{
 padding:16px;
-font-size:1.1rem;
+font-size:1.3rem;
 border:none;
 border-radius:18px;
 background:#58cc02;
@@ -248,7 +248,7 @@ color:white;
 
 <table class="info-table">
 <tr>
-<td class="quiz-name">Nama Bulan</td>
+<td class="quiz-name">Japanese Month Quiz</td>
 <td class="q-number" id="qNumber">1 / 12</td>
 </tr>
 </table>
@@ -282,6 +282,7 @@ let correct=0;
 let wrong=0;
 let wrongList=[];
 let firstWrong=null;
+let perfectCorrect=0;
 
 function shuffle(a){
 for(let i=a.length-1;i>0;i--){
@@ -290,22 +291,12 @@ const j=Math.floor(Math.random()*(i+1));
 }
 }
 
-/* TTS Jepang */
-
-function speak(text){
-const msg=new SpeechSynthesisUtterance(text);
-msg.lang="ja-JP";
-msg.rate=0.9;
-speechSynthesis.cancel();
-speechSynthesis.speak(msg);
-}
-
 function updateUI(){
 
 document.getElementById("score").textContent=xp+" XP";
 document.getElementById("streak").textContent="x "+streak;
 
-const progress=(cur/q.length)*100;
+const progress=(perfectCorrect/q.length)*100;
 document.getElementById("progressBar").style.width=progress+"%";
 
 document.getElementById("qNumber").textContent=(cur+1)+" / "+q.length;
@@ -321,16 +312,13 @@ return;
 
 firstWrong=null;
 
-const [jp,indo]=q[cur];
+const [indo,jp]=q[cur];
 
-document.getElementById("question").textContent=jp;
-
+document.getElementById("question").textContent=indo;
 document.getElementById("result").textContent="";
 document.getElementById("badge").textContent="";
 
-speak(jp);
-
-const ops=new Set([indo]);
+const ops=new Set([jp]);
 
 while(ops.size<4){
 ops.add(vocab[Math.floor(Math.random()*vocab.length)][1]);
@@ -341,22 +329,19 @@ document.getElementById("options").innerHTML="";
 [...ops].sort(()=>Math.random()-0.5).forEach(o=>{
 const b=document.createElement("button");
 b.textContent=o;
-b.onclick=()=>check(o,indo,jp);
+b.onclick=()=>check(o,jp,indo);
 document.getElementById("options").appendChild(b);
 });
 
 updateUI();
 }
 
-function check(sel,ans,jp){
+function check(sel,ans,indo){
 
 if(sel===ans){
 
 streak++;
-
-if(!firstWrong){
 correct++;
-}
 
 let bonus=streak>=5?5:2;
 xp+=bonus;
@@ -367,9 +352,13 @@ document.getElementById("badge").textContent="🏆 COMBO x5";
 
 document.getElementById("result").textContent="BENAR +"+bonus+"XP";
 
+if(!firstWrong){
+perfectCorrect++;
+}
+
 if(firstWrong){
 wrongList.push({
-q:jp,
+q:indo,
 your:firstWrong,
 correct:ans
 });
@@ -461,6 +450,8 @@ streak=0;
 
 correct=0;
 wrong=0;
+perfectCorrect=0;
+
 wrongList=[];
 
 document.querySelector(".card").innerHTML='<div id="question">?</div>';
