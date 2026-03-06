@@ -9,137 +9,229 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 html,body{
-  height:100%;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
-  background:#e6f9e6;
+height:100%;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
+background:#e6f9e6;
 }
 
 body{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
 .app{
-  width:100%;
-  max-width:420px;
-  height:100%;
-  background:#ffffff;
-  display:flex;
-  flex-direction:column;
-  padding:14px;
+width:100%;
+max-width:420px;
+height:100%;
+background:#ffffff;
+display:flex;
+flex-direction:column;
+padding:14px;
 }
 
 /* TOP BAR */
 
 .top-bar{
-  display:flex;
-  align-items:center;
-  gap:10px;
+display:flex;
+align-items:center;
+gap:10px;
 }
 
 .level{
-  background:#58cc02;
-  color:white;
-  padding:6px 12px;
-  border-radius:14px;
-  font-weight:800;
+background:#58cc02;
+color:white;
+padding:6px 12px;
+border-radius:14px;
+font-weight:800;
 }
 
 .xp-bar{
-  flex:1;
-  height:12px;
-  background:#dff5d8;
-  border-radius:20px;
-  overflow:hidden;
+flex:1;
+height:12px;
+background:#dff5d8;
+border-radius:20px;
+overflow:hidden;
 }
 
 #progressBar{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#58cc02,#89e219);
-  transition:.4s;
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#58cc02,#89e219);
+transition:.4s;
 }
 
 .score,.streak{
-  padding:6px 10px;
-  border-radius:14px;
-  background:#f1fdf0;
-  border:2px solid #58cc02;
-  font-weight:700;
+padding:6px 10px;
+border-radius:14px;
+background:#f1fdf0;
+border:2px solid #58cc02;
+font-weight:700;
+}
+
+/* INFO TABLE */
+
+.info-table{
+width:100%;
+margin-top:6px;
+border-collapse:collapse;
+background:#f1fdf0;
+border:2px solid #58cc02;
+border-radius:12px;
+overflow:hidden;
+font-weight:800;
+font-size:0.9rem;
+}
+
+.info-table td{
+padding:6px 10px;
+}
+
+.quiz-name{
+color:#58cc02;
+text-align:left;
+}
+
+.q-number{
+text-align:right;
+color:#333;
 }
 
 /* CARD */
 
 .card{
-  flex:1;
-  background:#f8fff6;
-  border-radius:26px;
-  margin:20px 0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 10px 25px rgba(0,0,0,.08);
+flex:1;
+background:#f8fff6;
+border-radius:26px;
+margin:20px 0;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+overflow:hidden;
 }
 
 #question{
-  font-size:2.6rem;
-  font-weight:900;
-  color:#000;
-  text-align:center;
+font-size:2.6rem;
+font-weight:900;
+color:#000;
+text-align:center;
+}
+
+/* RESULT AREA */
+
+.result-box{
+width:100%;
+height:100%;
+overflow-y:auto;
+padding:20px;
+}
+
+.result-header{
+text-align:center;
+margin-bottom:16px;
+}
+
+.result-header h2{
+font-size:1.6rem;
+font-weight:900;
+color:#58cc02;
+margin-bottom:6px;
+}
+
+.result-header p{
+font-size:.9rem;
+color:#666;
+}
+
+.review-table{
+width:100%;
+border-collapse:collapse;
+font-size:.9rem;
+border-radius:10px;
+overflow:hidden;
+}
+
+.review-table th{
+background:#58cc02;
+color:white;
+padding:8px;
+text-align:left;
+}
+
+.review-table td{
+padding:8px;
+border-bottom:1px solid #eee;
+}
+
+.review-table tr:nth-child(even){
+background:#f9fff7;
+}
+
+.correct{
+color:#2e7d32;
+font-weight:700;
+}
+
+.wrong{
+color:#c62828;
+font-weight:700;
 }
 
 /* OPTIONS */
 
 #options{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
 }
 
 #options button{
-  padding:16px;
-  font-size:1.3rem;
-  border:none;
-  border-radius:18px;
-  background:#58cc02;
-  color:white;
-  font-weight:800;
-  cursor:pointer;
-  transition:.15s;
+padding:16px;
+font-size:1.3rem;
+border:none;
+border-radius:18px;
+background:#58cc02;
+color:white;
+font-weight:800;
+cursor:pointer;
+transition:.15s;
 }
 
 #options button:hover{
-  transform:scale(1.05);
-  background:#46b400;
+transform:scale(1.05);
+background:#46b400;
 }
 
-/* RESULT */
+/* RESULT TEXT */
 
 #result{
-  text-align:center;
-  margin-top:8px;
-  font-weight:800;
-  min-height:28px;
+text-align:center;
+margin-top:8px;
+font-weight:800;
+min-height:28px;
 }
 
 .badge{
-  text-align:center;
-  margin-top:4px;
-  font-weight:900;
-  color:#ff9600;
+text-align:center;
+margin-top:4px;
+font-weight:900;
+color:#ff9600;
 }
 
-#restartBtn{
-  margin-top:12px;
-  padding:15px;
-  border:none;
-  border-radius:20px;
-  background:#ff9600;
-  color:white;
-  font-weight:900;
-  display:none;
+/* BUTTON */
+
+.restart{
+padding:14px;
+border:none;
+border-radius:16px;
+font-weight:800;
+font-size:1rem;
+cursor:pointer;
+background:#ff9600;
+color:white;
 }
+
 </style>
 </head>
 
@@ -147,412 +239,231 @@ body{
 
 <div class="app">
 
-  <div class="top-bar">
-    <div class="level" id="level">Lv 1</div>
-    <div class="xp-bar"><div id="progressBar"></div></div>
-    <div class="score" id="score">0 XP</div>
-    <div class="streak" id="streak">x 0</div>
-  </div>
+<div class="top-bar">
+<div class="level">XP</div>
+<div class="xp-bar"><div id="progressBar"></div></div>
+<div class="score" id="score">0 XP</div>
+<div class="streak" id="streak">x 0</div>
+</div>
 
-  <div class="card">
-    <div id="question">?</div>
-  </div>
+<table class="info-table">
+<tr>
+<td class="quiz-name">Kosakata Random 3</td>
+<td class="q-number" id="qNumber">1 / 12</td>
+</tr>
+</table>
 
-  <div id="options"></div>
+<div class="card">
+<div id="question">?</div>
+</div>
 
-  <div id="result"></div>
-  <div class="badge" id="badge"></div>
+<div id="options"></div>
 
-  <button id="restartBtn">🔁 Main Lagi</button>
+<div id="result"></div>
+<div class="badge" id="badge"></div>
+
+<button class="restart" id="restartBtn" onclick="start()" style="display:none;">
+Mulai Ulang
+</button>
 
 </div>
 
 <script>
+
 const vocab=[
-["あう", "bertemu"],
-      ["あお", "biru"],
-      ["あおい", "biru"],
-      ["あか", "merah"],
-      ["あかい", "merah"],
-      ["あかるい", "cerah"],
-      ["あき", "musim gugur"],
-      ["あく,ひらく", "membuka"],
-      ["あける", "membuka"],
-      ["あげる", "mengangkat"],
-      ["あさ", "pagi"],
-      ["あさごはん", "sarapan"],
-      ["あさって", "lusa"],
-      ["あし", "kaki"],
-      ["あした", "besok"],
-      ["あそこ", "disana"],
-      ["あそぶ", "bermain"],
-      ["おはようございます", "selamat pagi"],
-      ["こんにちは", "selamat siang"],
-      ["こんばんは", "selamat malam"],
-      ["おやすみなさい", "selamat tidur"],
-      ["さようなら", "selamat tinggal"],
-      ["はじめまして", "salam kenal"],
-      ["よろしくおねがいします", "mohon kerja samanya"],
-      ["ありがとう", "terima kasih"],
-      ["ありがとうございます", "terima kasih"],
-      ["すみません", "permisi"],
-      ["ごめんなさい", "maaf"],
-      ["はい", "ya"],
-      ["いいえ", "tidak"],
-      ["おねがいします", "tolong"],
-      ["どういたしまして", "sama-sama"],
-      ["わたし", "saya"],
-      ["あなた", "kamu"],
-      ["かれ", "dia"],
-      ["かのじょ", "dia"],
-      ["ともだち", "teman"],
-      ["せんせい", "guru"],
-      ["がくせい", "murid"],
-      ["ちち", "ayah"],
-      ["はは", "ibu"],
-      ["あに", "kakak"],
-      ["あね", "kakak"],
-      ["おとうと", "adik"],
-      ["いもうと", "adik"],
-      ["おじいさん", "kakek"],
-      ["おばあさん", "nenek"],
-      ["いち", "satu"],
-      ["に", "dua"],
-      ["さん", "tiga"],
-      ["よん", "empat"],
-      ["ご", "lima"],
-      ["ろく", "enam"],
-      ["なな", "tujuh"],
-      ["はち", "delapan"],
-      ["きゅう", "sembilan"],
-      ["じゅう", "sepuluh"],
-      ["ひゃく", "seratus"],
-      ["せん", "seribu"],
-      ["まん", "sepuluh ribu"],
-      ["いま", "sekarang"],
-      ["きょう", "hari ini"],
-      ["きのう", "kemarin"],
-      ["ひる", "siang"],
-      ["よる", "malam"],
-      ["しゅうまつ", "akhir pekan"],
-      ["じ", "jam"],
-      ["ふん", "menit"],
-      ["とき", "waktu"],
-      ["なんじ", "jam berapa"],
-      ["がっこう", "sekolah"],
-      ["だいがく", "universitas"],
-      ["いえ", "rumah"],
-      ["へや", "kamar"],
-      ["としょかん", "perpustakaan"],
-      ["えき", "stasiun"],
-      ["みせ", "toko"],
-      ["ぎんこう", "bank"],
-      ["びょういん", "rumah sakit"],
-      ["レストラン", "restoran"],
-      ["コンビニ", "minimarket"],
-      ["こうえん", "taman"],
-      ["まち", "kota"],
-      ["くに", "negara"],
-      ["みち", "jalan"],
-      ["ほん", "buku"],
-      ["ざっし", "majalah"],
-      ["しんぶん", "koran"],
-      ["ノート", "buku catatan"],
-      ["えんぴつ", "pensil"],
-      ["ペン", "pulpen"],
-      ["スマホ", "HP"],
-      ["コンピューター", "komputer"],
-      ["つくえ", "meja"],
-      ["いす", "kursi"],
-      ["くるま", "mobil"],
-      ["じてんしゃ", "sepeda"],
-      ["でんしゃ", "kereta"],
-      ["ひこうき", "pesawat"],
-      ["ふね", "kapal"],
-      ["かばん", "tas"],
-      ["くつ", "sepatu"],
-      ["シャツ", "kemeja"],
-      ["ズボン", "celana"],
-      ["ドア", "pintu"],
-      ["まど", "jendela"],
-      ["ごはん", "nasi"],
-      ["パン", "roti"],
-      ["にく", "daging"],
-      ["さかな", "ikan"],
-      ["やさい", "sayur"],
-      ["くだもの", "buah"],
-      ["りんご", "apel"],
-      ["バナナ", "pisang"],
-      ["みかん", "jeruk"],
-      ["みず", "air"],
-      ["おちゃ", "teh"],
-      ["こうちゃ", "teh hitam"],
-      ["コーヒー", "kopi"],
-      ["ジュース", "jus"],
-      ["ぎゅうにゅう", "susu"],
-      ["いきます", "pergi"],
-      ["きます", "datang"],
-      ["かえります", "pulang"],
-      ["たべます", "makan"],
-      ["のみます", "minum"],
-      ["みます", "melihat"],
-      ["ききます", "mendengar"],
-      ["よみます", "membaca"],
-      ["かきます", "menulis"],
-      ["べんきょうします", "belajar"],
-      ["はなします", "berbicara"],
-      ["あいます", "bertemu"],
-      ["ねます", "tidur"],
-      ["おきます", "bangun"],
-      ["かいます", "membeli"],
-      ["つかいます", "menggunakan"],
-      ["あります", "ada"],
-      ["います", "ada"],
-      ["します", "melakukan"],
-      ["いい", "baik"],
-      ["わるい", "buruk"],
-      ["おおきい", "besar"],
-      ["ちいさい", "kecil"],
-      ["たかい", "tinggi"],
-      ["やすい", "murah"],
-      ["あたらしい", "baru"],
-      ["ふるい", "lama"],
-      ["いそがしい", "sibuk"],
-      ["ひま", "senggang"],
-      ["たのしい", "menyenangkan"],
-      ["おいしい", "enak"],
-      ["あつい", "panas"],
-      ["さむい", "dingin"],
-      ["しろい", "putih"],
-      ["くろい", "hitam"],
-      ["なに", "apa"],
-      ["どこ", "di mana"],
-      ["だれ", "siapa"],
-      ["いつ", "kapan"],
-      ["なんにち", "tanggal berapa"],
-      ["いくつ", "berapa"],
-      ["なんさい", "umur berapa"],
-      ["どうして", "kenapa"],
-      ["どう", "bagaimana"],
-      ["とても", "sangat"],
-      ["すこし", "sedikit"],
-      ["たくさん", "banyak"],
-      ["そして", "lalu"],
-      ["でも", "tetapi"],
-      ["から", "karena"],
-      ["まで", "sampai"],
-      ["と", "dan"],
-      ["もしもし", "halo"],
-      ["これ", "ini"],
-      ["それ", "itu"],
-      ["あれ", "itu"],
-      ["どれ", "yang mana"],
-      ["またね", "sampai jumpa"],
-      ["じゃあね", "sampai nanti"],
-      ["では、また", "sampai jumpa"],
-      ["またね", "sampai jumpa"],
-      ["おげんきですか", "apa kabar"],
-      ["はい、げんきです", "saya baik"],
-      ["いってきます", "saya pergi"],
-      ["いってらっしゃい", "hati-hati"],
-      ["ただいま", "saya pulang"],
-      ["おかえりなさい", "selamat datang"],
-      ["いただきます", "selamat makan"],
-      ["ごちそうさまでした", "terima kasih"],
-      ["あたたかい", "hangat"],
-      ["あたま", "kepala"],
-      ["あたらし", "baru"],
-      ["あちら", "sana"],
-      ["あつい", "panas"],
-      ["あっち", "disana"],
-      ["あと", "setelah itu"],
-      ["アパート", "apartemen"],
-      ["あびる", "mandi"],
-      ["あぶない", "berbahaya"],
-      ["あまい", "manis"],
-      ["あまり", "tidak terlalu"],
-      ["あめ", "hujan"],
-      ["あめ", "permen"],
-      ["あらう", "mencuci"],
-      ["ある", "ada"],
-      ["あるく", "berjalan"],
-      ["いい", "iya"],
-      ["よい", "iya"],
-      ["いう", "mengatakan"],
-      ["いえ", "rumah"],
-      ["いかが", "bagaimana"],
-      ["いく", "pergi"],
-      ["いくつ", "berapa umur"],
-      ["いくら", "berapa banyak"],
-      ["いけ", "kolam"],
-      ["いしゃ", "dokter"],
-      ["いそがしい", "sibuk"],
-      ["いたい", "menyakiti"],
-      ["いちにち", "satu hari"],
-      ["いちばん", "terbaik"],
-      ["いつ", "kapan"],
-      ["いつか", "lima hari"],
-      ["いっしょ", "bersama"],
-      ["いつつ", "lima"],
-      ["いつも", "selalu"],
-      ["いぬ", "anjing"],
-      ["いま", "sekarang"],
-      ["いみ", "arti"],
-      ["いもうと", "adik"],
-      ["いや", "tidak"],
-      ["いりぐち", "jalan masuk"],
-      ["いる", "ada"],
-      ["いる", "membutuhkan"],
-      ["いれる", "memasukan"],
-      ["いろ", "warna"],
-      ["いろいろ", "berbagai macam"],
-      ["うえ", "diatas"],
-      ["うしろ", "dibelakang"],
-      ["うすい", "kurus"],
-      ["うた", "lagu"],
-      ["うたう", "menyanyikan"],
-      ["うまれる", "terlahir"],
-      ["うみ", "laut"],
-      ["うる", "menjual"],
-      ["うるさい", "berisik"],
-      ["うわぎ", "jaket"],
-      ["え", "gambar"],
-      ["えいが", "film"],
-      ["えいがかん", "bioskop"],
-      ["えいご", "bahasa inggris"],
-      ["ええ", "iya"],
-      ["えき", "stasiun"],
-      ["エレベーター", "lift"],
-      ["おいしい", "lezat"],
-      ["おおい", "banyak"],
-      ["おおきい", "besar"],
-      ["おおきな", "besar"],
-      ["おおぜい", "banyak orang"],
-      ["おかあさん", "ibu"],
-      ["おかし", "permen"],
-      ["おきる", "bangun"],
-      ["おく", "menaruh"],
-      ["おくさん", "istri"],
-      ["おさけ", "sake"],
-      ["おさら", "piring"],
-      ["おじいさん", "kakek"],
-      ["おしえる", "mengajar"],
-      ["おじさん", "paman"],
-      ["おす", "mendorong"],
-      ["おそい", "terlambat"],
-      ["おてあらい", "kamar mandi"],
-      ["おとうさん", "ayah"],
-      ["おとこ", "laki-laki"],
-      ["おとこのこ", "anak laki-laki"],
-      ["おととい", "kemarin dulu"],
-      ["おととし", "dua tahun lalu"],
-      ["おとな", "dewasa"],
-      ["おなか", "perut"],
-      ["おなじ", "sama"],
-      ["おにいさん", "kakak"],
-      ["おねえさん", "kakak"],
-      ["おばあさん", "nenek"],
-      ["おばさん", "bibi"],
-      ["おふろ", "mandi"],
-      ["おべんとう", "kotak makan siang"],
+["いちがつ","januari"],["にがつ","februari"],
+["さんがつ","maret"],["しがつ","april"],["ごがつ","mei"],["ろくがつ","juni"],
+["しちがつ","juli"],["はちがつ","agustus"],["くがつ","september"],["じゅうがつ","oktober"],
+["じゅういちがつ","november"],["じゅうにがつ","desember"],
 ];
 
-let q=[],cur=0,xp=0,streak=0,level=1;
+let q=[],cur=0,xp=0,streak=0;
+let correct=0;
+let wrong=0;
+let wrongList=[];
+let firstWrong=null;
+let perfectCorrect=0;
 
 function shuffle(a){
- for(let i=a.length-1;i>0;i--){
-  const j=Math.floor(Math.random()*(i+1));
-  [a[i],a[j]]=[a[j],a[i]];
- }
+for(let i=a.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[a[i],a[j]]=[a[j],a[i]];
 }
-
-function save(){
- localStorage.setItem("kana_ultra_save",JSON.stringify({xp,level}));
-}
-
-function load(){
- const d=JSON.parse(localStorage.getItem("kana_ultra_save"));
- if(d){
-   xp=d.xp||0;
-   level=d.level||1;
- }
 }
 
 function updateUI(){
- document.getElementById("score").textContent=xp+" XP";
- document.getElementById("level").textContent="Lv "+level;
- document.getElementById("streak").textContent="x "+streak;
 
- const need = level * 300;
- document.getElementById("progressBar").style.width=Math.min((xp/need)*100,100)+"%";
+document.getElementById("score").textContent=xp+" XP";
+document.getElementById("streak").textContent="x "+streak;
+
+const progress=(perfectCorrect/q.length)*100;
+document.getElementById("progressBar").style.width=progress+"%";
+
+document.getElementById("qNumber").textContent=(cur+1)+" / "+q.length;
+
 }
 
 function loadQuestion(){
- if(cur>=q.length){finish();return}
 
- const [indo,jp]=q[cur];
- document.getElementById("question").textContent=indo;
-
- document.getElementById("result").textContent="";
- document.getElementById("badge").textContent="";
-
- const ops=new Set([jp]);
- while(ops.size<4){
-  ops.add(vocab[Math.floor(Math.random()*vocab.length)][1]);
- }
-
- document.getElementById("options").innerHTML="";
- [...ops].sort(()=>Math.random()-0.5).forEach(o=>{
-  const b=document.createElement("button");
-  b.textContent=o;
-  b.onclick=()=>check(o,jp);
-  document.getElementById("options").appendChild(b);
- });
+if(cur>=q.length){
+finish();
+return;
 }
 
-function check(sel,ans){
- if(sel===ans){
-  streak++;
-  let bonus = streak>=5 ? 5 : 2;
-  xp+=bonus;
+firstWrong=null;
 
-  if(xp >= level*300){
-    level++;
-  }
+const [indo,jp]=q[cur];
 
-  if(streak==5) document.getElementById("badge").textContent="🏆 COMBO x5";
+document.getElementById("question").textContent=indo;
+document.getElementById("result").textContent="";
+document.getElementById("badge").textContent="";
 
-  document.getElementById("result").textContent=" BENAR +"+bonus+"XP";
-  cur++;
- }else{
-  streak=0;
-  document.getElementById("result").textContent="❌ SALAH";
- }
- updateUI();
- save();
- setTimeout(loadQuestion,500);
+const ops=new Set([jp]);
+
+while(ops.size<4){
+ops.add(vocab[Math.floor(Math.random()*vocab.length)][1]);
+}
+
+document.getElementById("options").innerHTML="";
+
+[...ops].sort(()=>Math.random()-0.5).forEach(o=>{
+const b=document.createElement("button");
+b.textContent=o;
+b.onclick=()=>check(o,jp,indo);
+document.getElementById("options").appendChild(b);
+});
+
+updateUI();
+}
+
+function check(sel,ans,indo){
+
+if(sel===ans){
+
+streak++;
+correct++;
+
+let bonus=streak>=5?5:2;
+xp+=bonus;
+
+if(streak==5){
+document.getElementById("badge").textContent="🏆 COMBO x5";
+}
+
+document.getElementById("result").textContent="BENAR +"+bonus+"XP";
+
+if(!firstWrong){
+perfectCorrect++;
+}
+
+if(firstWrong){
+wrongList.push({
+q:indo,
+your:firstWrong,
+correct:ans
+});
+}
+
+cur++;
+
+updateUI();
+
+setTimeout(loadQuestion,500);
+
+}else{
+
+streak=0;
+
+if(!firstWrong){
+firstWrong=sel;
+wrong++;
+}
+
+document.getElementById("result").textContent="SALAH";
+
+}
+
 }
 
 function finish(){
- document.getElementById("question").textContent="🎉";
- document.getElementById("options").innerHTML="";
- document.getElementById("result").textContent="SELESAI! TOTAL XP: "+xp;
- document.getElementById("restartBtn").style.display="block";
+
+document.getElementById("options").innerHTML="";
+document.getElementById("result").textContent="";
+document.getElementById("badge").textContent="";
+
+let html=`
+<div class="result-box">
+
+<div class="result-header">
+<h2>Quiz Selesai 🎉</h2>
+<p>Lihat progres belajarmu</p>
+</div>
+`;
+
+if(wrongList.length>0){
+
+html+=`
+<table class="review-table">
+<tr>
+<th>Soal</th>
+<th>Jawaban Kamu</th>
+<th>Jawaban Benar</th>
+</tr>
+`;
+
+wrongList.forEach(i=>{
+html+=`
+<tr>
+<td>${i.q}</td>
+<td class="wrong">${i.your}</td>
+<td class="correct">${i.correct}</td>
+</tr>
+`;
+});
+
+html+=`</table>`;
+
+}else{
+
+html+=`<p style="text-align:center;font-weight:700;color:#2e7d32;">Semua jawaban benar! 🔥</p>`;
+
+}
+
+html+=`</div>`;
+
+document.querySelector(".card").innerHTML=html;
+
+document.getElementById("progressBar").style.width="100%";
+
+document.getElementById("restartBtn").style.display="block";
+
 }
 
 function start(){
- load();
- q=[...vocab];
- shuffle(q);
- cur=0;
- streak=0;
- updateUI();
- document.getElementById("restartBtn").style.display="none";
- loadQuestion();
+
+q=[...vocab];
+shuffle(q);
+
+cur=0;
+xp=0;
+streak=0;
+
+correct=0;
+wrong=0;
+perfectCorrect=0;
+
+wrongList=[];
+
+document.querySelector(".card").innerHTML='<div id="question">?</div>';
+
+document.getElementById("restartBtn").style.display="none";
+
+loadQuestion();
+
 }
 
-document.getElementById("restartBtn").onclick=start;
 start();
+
 </script>
 
 </body>
