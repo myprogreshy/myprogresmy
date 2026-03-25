@@ -167,17 +167,13 @@ footer{
       <h3>Minna no Nihongo</h3>
       <span>Kosakata Per Bab</span>
     </div>
-    <div class="card" onclick="openN5()">
-      <h3>JLPT N5</h3>
-      <span>Level Dasar</span>
-    </div>
-    <div class="card" onclick="openN4()">
-      <h3>JLPT N4</h3>
-      <span>Level Menengah</span>
-    </div>
  <div class="card" onclick="openRandom()">
       <h3>Kosakata Random</h3>
       <span>Kosakata Acak</span>
+  </div>
+    <div class="card" onclick="openBuild()">
+      <h3>Buat Kosakata</h3>
+      <span>Buat Kosakata Anda</span>
   </div>
 </div>
 </section>
@@ -260,18 +256,6 @@ const quizLinks={
     "Bab 49":"bab49.html",
     "Bab 50":"bab50.html",
   },
-  n5:{
-    "Kata Benda":"n5/benda.html",
-    "Kata Kerja":"n5/kerja.html",
-    "Kata Sifat":"n5/sifat.html",
-    "Partikel":"n5/partikel.html"
-  },
-  n4:{
-    "Kata Benda":"n4/benda.html",
-    "Kata Kerja":"n4/kerja.html",
-    "Kata Sifat":"n4/sifat.html",
-    "Partikel":"n4/partikel.html"
-  },
 random:{
     "Kosakata 1":"kosakata.html",
     "Kosakata 2":"kotoba.html",
@@ -283,6 +267,9 @@ random:{
     "Kosakata 8":"xpresstka.html",
       "Kosakata 9":"kosakata.html",
     "Kosakata 10":"kotoba.html",
+},
+  build:{
+    "Buat Kosakata":"developer.html",
 }
 };
 
@@ -294,9 +281,8 @@ function show(id){
 
 function openPemula(){ buildSub("Kosakata Pemula","pemula"); }
 function openMinna(){ buildSub("Minna no Nihongo","minna"); }
-function openN5(){ buildSub("JLPT N5","n5"); }
-function openN4(){ buildSub("JLPT N4","n4"); }
 function openRandom(){ buildSub("Kosakata Ramdom","random"); }
+  function openBuild(){ buildSub("Buat Kosakata","build"); }
 
 function buildSub(title,key){
   const box=document.getElementById("submenu");
