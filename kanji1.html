@@ -30,8 +30,6 @@ flex-direction:column;
 padding:14px;
 }
 
-/* TOP BAR */
-
 .top-bar{
 display:flex;
 align-items:center;
@@ -69,8 +67,6 @@ border:2px solid #58cc02;
 font-weight:700;
 }
 
-/* INFO */
-
 .info-table{
 width:100%;
 margin-top:6px;
@@ -89,8 +85,6 @@ padding:6px 10px;
 
 .quiz-name{color:#58cc02;}
 .q-number{text-align:right;color:#333;}
-
-/* CARD */
 
 .card{
 flex:1;
@@ -115,8 +109,6 @@ color:#666;
 margin-top:8px;
 }
 
-/* OPTIONS */
-
 #options{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -134,19 +126,16 @@ font-weight:800;
 cursor:pointer;
 }
 
-/* HANYA BENAR YANG HIJAU */
 .correct{
 background:#58cc02 !important;
 }
-
-/* RESULT */
 
 #result{
 text-align:center;
 margin-top:8px;
 font-weight:800;
 min-height:28px;
-color:#000; /* SEMUA HITAM */
+color:#000;
 }
 
 .badge{
@@ -204,9 +193,7 @@ Mulai Ulang
 
 <script>
 
-/* FORMAT: [KANJI, ARTI, BACAAN] */
 const vocab=[
-  // Gambar 1
   ["人", "orang", "ひと"],
   ["大", "besar", "おお"],
   ["分", "bagian", "わ"],
@@ -302,6 +289,9 @@ let perfectCorrect=0;
 let wrongList=[];
 let firstWrong=null;
 
+/* TAMBAHAN */
+let currentOptions=[];
+
 function shuffle(a){
 for(let i=a.length-1;i>0;i--){
 const j=Math.floor(Math.random()*(i+1));
@@ -337,9 +327,14 @@ while(ops.size<4){
 ops.add(vocab[Math.floor(Math.random()*vocab.length)][2]);
 }
 
+/* HANYA ACAK SEKALI */
+if(currentOptions.length===0){
+currentOptions=[...ops].sort(()=>Math.random()-0.5);
+}
+
 document.getElementById("options").innerHTML="";
 
-[...ops].sort(()=>Math.random()-0.5).forEach(o=>{
+currentOptions.forEach(o=>{
 const b=document.createElement("button");
 b.textContent=o;
 b.onclick=()=>check(o,baca,kanji);
@@ -361,7 +356,6 @@ btn.classList.add("correct");
 }
 });
 
-/* BENAR */
 if(sel===ans){
 
 let bonus=streak>=5?5:2;
@@ -378,13 +372,8 @@ if(!firstWrong){
 perfectCorrect++;
 }
 
-if(firstWrong){
-wrongList.push({
-q:kanji,
-your:firstWrong,
-correct:ans
-});
-}
+/* RESET OPSI UNTUK SOAL BARU */
+currentOptions=[];
 
 setTimeout(()=>{
 cur++;
@@ -393,10 +382,9 @@ loadQuestion();
 
 }else{
 
-/* SALAH */
 streak=0;
 
-document.getElementById("result").textContent="SALAH ";
+document.getElementById("result").textContent="SALAH";
 
 if(!firstWrong){
 firstWrong=sel;
@@ -429,6 +417,7 @@ xp=0;
 streak=0;
 perfectCorrect=0;
 wrongList=[];
+currentOptions=[];
 
 document.querySelector(".card").innerHTML=`
 <div id="question">?</div>
