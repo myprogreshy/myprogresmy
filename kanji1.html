@@ -30,6 +30,8 @@ flex-direction:column;
 padding:14px;
 }
 
+/* TOP BAR */
+
 .top-bar{
 display:flex;
 align-items:center;
@@ -67,6 +69,8 @@ border:2px solid #58cc02;
 font-weight:700;
 }
 
+/* INFO */
+
 .info-table{
 width:100%;
 margin-top:6px;
@@ -83,15 +87,10 @@ font-size:0.9rem;
 padding:6px 10px;
 }
 
-.quiz-name{
-color:#58cc02;
-text-align:left;
-}
+.quiz-name{color:#58cc02;}
+.q-number{text-align:right;color:#333;}
 
-.q-number{
-text-align:right;
-color:#333;
-}
+/* CARD */
 
 .card{
 flex:1;
@@ -103,7 +102,6 @@ flex-direction:column;
 align-items:center;
 justify-content:center;
 box-shadow:0 10px 25px rgba(0,0,0,.08);
-overflow:hidden;
 }
 
 #question{
@@ -116,6 +114,8 @@ font-size:1rem;
 color:#666;
 margin-top:8px;
 }
+
+/* OPTIONS */
 
 #options{
 display:grid;
@@ -134,10 +134,19 @@ font-weight:800;
 cursor:pointer;
 }
 
+/* HANYA BENAR YANG HIJAU */
+.correct{
+background:#58cc02 !important;
+}
+
+/* RESULT */
+
 #result{
 text-align:center;
 margin-top:8px;
 font-weight:800;
+min-height:28px;
+color:#000; /* SEMUA HITAM */
 }
 
 .badge{
@@ -173,7 +182,7 @@ color:white;
 <table class="info-table">
 <tr>
 <td class="quiz-name">Kanji Reading</td>
-<td class="q-number" id="qNumber">1 / 12</td>
+<td class="q-number" id="qNumber"></td>
 </tr>
 </table>
 
@@ -197,18 +206,95 @@ Mulai Ulang
 
 /* FORMAT: [KANJI, ARTI, BACAAN] */
 const vocab=[
-["山","gunung","やま"],
-["川","sungai","かわ"],
-["水","air","みず"],
-["火","api","ひ"],
-["木","pohon","き"],
-["金","emas","かね"],
-["土","tanah","つち"],
-["日","hari","ひ"],
-["月","bulan","つき"],
-["人","orang","ひと"],
-["女","wanita","おんな"],
-["男","laki-laki","おとこ"]
+  // Gambar 1
+  ["人", "orang", "ひと"],
+  ["大", "besar", "おお"],
+  ["分", "bagian", "わ"],
+  ["一", "satu", "いち"],
+  ["見", "lihat", "み"],
+  ["出", "keluar", "で"],
+  ["日", "hari", "ひ"],
+  ["行", "pergi", "い"],
+  ["前", "di depan", "まえ"],
+  ["時", "waktu", "とき"],
+  ["生", "kehidupan", "なま"],
+  ["本", "buku", "ほん"],
+  ["中", "di dalam", "なか"],
+  ["今", "sekarang", "いま"],
+  ["間", "interval", "あいだ"],
+  ["年", "tahun", "とし"],
+  ["子", "anak", "こ"],
+  ["長", "panjang", "なが"],
+
+  // Gambar 2
+  ["上", "di atas", "うえ"],
+  ["入", "masuk", "はい"],
+  ["後", "di belakang", "うしろ"],
+  ["気", "semangat", "き"],
+  ["来", "datang", "く"],
+  ["話", "dongeng/bicara", "はなし"],
+  ["女", "wanita", "おんな"],
+  ["国", "negara", "くに"],
+  ["金", "emas", "かね"],
+  ["高", "tinggi", "たか"],
+  ["下", "di bawah", "した"],
+  ["学", "belajar", "まな"],
+  ["先", "sebelum", "さき"],
+  ["外", "di luar", "そと"],
+  ["何", "apa", "なに"],
+  ["男", "laki-laki", "おとこ"],
+  ["名", "nama", "なまえ"],
+  ["月", "bulan", "つき"],
+
+  // Gambar 3
+  ["小", "kecil", "ちい"],
+  ["聞", "dengar", "き"],
+  ["食", "makan", "た"],
+  ["書", "tulis", "か"],
+  ["山", "gunung", "やま"],
+  ["電", "listrik", "でん"],
+  ["二", "dua", "に"],
+  ["車", "mobil", "くるま"],
+  ["水", "air", "みず"],
+  ["木", "pohon", "き"],
+  ["母", "ibu", "はは"],
+  ["校", "ujian/sekolah", "こう"],
+
+  // Gambar 4
+  ["父", "ayah", "ちち"],
+  ["白", "putih", "しろ"],
+  ["語", "kata/bahasa", "ご"],
+  ["十", "sepuluh", "じゅう"],
+  ["万", "sepuluh ribu", "まん"],
+  ["友", "teman", "とも"],
+  ["川", "sungai", "かわ"],
+  ["三", "tiga", "さん"],
+  ["天", "surga/langit", "てん"],
+  ["東", "timur", "ひがし"],
+  ["半", "setengah", "はん"],
+  ["北", "utara", "きた"],
+  ["火", "api", "ひ"],
+  ["土", "tanah", "つち"],
+  ["南", "selatan", "みなみ"],
+  ["千", "seribu", "せん"],
+  ["西", "barat", "にし"],
+  ["毎", "setiap", "まい"],
+
+  // Gambar 5
+  ["休", "istirahat", "やす"],
+  ["八", "delapan", "はち"],
+  ["読", "baca", "よ"],
+  ["五", "lima", "ご"],
+  ["四", "empat", "よん"],
+  ["百", "seratus", "ひゃく"],
+  ["円", "lingkaran/yen", "えん"],
+  ["午", "siang", "ご"],
+  ["七", "tujuh", "なな"],
+  ["左", "kiri", "ひだり"],
+  ["右", "kanan", "みぎ"],
+  ["雨", "hujan", "あめ"],
+  ["六", "enam", "ろく"],
+  ["九", "sembilan", "きゅう"]
 ];
 
 let q=[],cur=0,xp=0,streak=0;
@@ -226,11 +312,10 @@ const j=Math.floor(Math.random()*(i+1));
 function updateUI(){
 document.getElementById("score").textContent=xp+" XP";
 document.getElementById("streak").textContent="x "+streak;
+document.getElementById("qNumber").textContent=(cur+1)+" / "+q.length;
 
 const progress=(perfectCorrect/q.length)*100;
 document.getElementById("progressBar").style.width=progress+"%";
-
-document.getElementById("qNumber").textContent=(cur+1)+" / "+q.length;
 }
 
 function loadQuestion(){
@@ -243,6 +328,8 @@ const [kanji,arti,baca]=q[cur];
 
 document.getElementById("question").textContent=kanji;
 document.getElementById("meaning").textContent=arti;
+document.getElementById("result").textContent="";
+document.getElementById("badge").textContent="";
 
 const ops=new Set([baca]);
 
@@ -264,14 +351,32 @@ updateUI();
 
 function check(sel,ans,kanji){
 
+const buttons=document.querySelectorAll("#options button");
+
+buttons.forEach(btn=>{
+btn.disabled=true;
+
+if(btn.textContent===ans){
+btn.classList.add("correct");
+}
+});
+
+/* BENAR */
 if(sel===ans){
+
+let bonus=streak>=5?5:2;
+xp+=bonus;
+streak++;
+
+document.getElementById("result").textContent="BENAR +"+bonus+" XP";
+
+if(streak==5){
+document.getElementById("badge").textContent="🏆 COMBO x5";
+}
 
 if(!firstWrong){
 perfectCorrect++;
 }
-
-streak++;
-xp+=2;
 
 if(firstWrong){
 wrongList.push({
@@ -281,17 +386,25 @@ correct:ans
 });
 }
 
+setTimeout(()=>{
 cur++;
-setTimeout(loadQuestion,400);
+loadQuestion();
+},700);
 
 }else{
+
+/* SALAH */
+streak=0;
+
+document.getElementById("result").textContent="SALAH ";
 
 if(!firstWrong){
 firstWrong=sel;
 }
 
-streak=0;
-
+setTimeout(()=>{
+loadQuestion();
+},700);
 }
 
 updateUI();
@@ -300,13 +413,7 @@ updateUI();
 function finish(){
 
 document.getElementById("options").innerHTML="";
-
-document.querySelector(".card").innerHTML=`
-<div style="text-align:center">
-<h2>Quiz Selesai 🎉</h2>
-<p>Progres kamu:</p>
-</div>
-`;
+document.querySelector(".card").innerHTML="<h2>Quiz Selesai 🎉</h2>";
 
 document.getElementById("progressBar").style.width="100%";
 document.getElementById("restartBtn").style.display="block";
