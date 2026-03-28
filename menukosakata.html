@@ -163,6 +163,10 @@ footer{
       <h3>Kosakata Pemula</h3>
       <span>Kosakata Untuk Pemula</span>
     </div>
+    <div class="card" onclick="openKata()">
+      <h3>Kata Kerja & Sifat</h3>
+      <span>Kata Kerja Dan Kata Sifat</span>
+    </div>
     <div class="card" onclick="openMinna()">
       <h3>Minna no Nihongo</h3>
       <span>Kosakata Per Bab</span>
@@ -201,9 +205,11 @@ const quizLinks={
     "Peralatan Sekolah":"psekolah.html",
     "Peralatan Dapur":"pemuladapur.html",
     "Buah dan Sayur":"pemulasayur.html",
-    "Kata Sifat Dasar":"katasifat.html",
-    "Kata Kerja Dasar":"katakerja.html",
   },
+  kata:{
+    "Kata Kerja":"katakerja.html",
+    "Kata Sifat":"katasifat.html",
+},
   minna:{
     "Bab 1":"bab1.html",
     "Bab 2":"bab2.html",
@@ -280,6 +286,7 @@ function show(id){
 }
 
 function openPemula(){ buildSub("Kosakata Pemula","pemula"); }
+function openKata(){ buildSub("Kata Kerja & Sifat","kata"); }
 function openMinna(){ buildSub("Minna no Nihongo","minna"); }
 function openRandom(){ buildSub("Kosakata Ramdom","random"); }
   function openBuild(){ buildSub("Buat Kosakata","build"); }
