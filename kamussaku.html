@@ -271,8 +271,33 @@ Mulai Ulang
 <script>
 
 const vocab=[
-["かようび", "selasa"],["すいようび", "rabu"],["もくようび", "kamis"],["きんようび", "jumat"],
-["どようび", "sabtu"],["にちようび", "minggu"],["げつようび", "senin"]
+  ["いち", "satu"], ["に", "dua"], ["さん", "tiga"], ["よん / し", "empat"],
+  ["ご", "lima"], ["ろく", "enam"], ["なな / しち", "tujuh"], ["はち", "delapan"],
+  ["きゅう", "sembilan"], ["じゅう", "sepuluh"], ["じゅういち", "sebelas"], 
+  ["じゅうに", "dua belas"], ["じゅうさん", "tiga belas"], ["じゅうよん", "empat belas"],
+  ["じゅうご", "lima belas"], ["じゅうろく", "enam belas"], ["じゅうなな", "tujuh belas"],
+  ["じゅうはち", "delapan belas"], ["じゅうきゅう", "sembilan belas"], ["にじゅう", "dua puluh"],
+  ["にじゅういち", "dua puluh satu"], ["さんじゅう", "tiga puluh"], ["よんじゅう", "empat puluh"],
+  ["ごじゅう", "lima puluh"], ["ろくじゅう", "enam puluh"], ["ななじゅう", "tujuh puluh"],
+  ["はちじゅう", "delapan puluh"], ["きゅうじゅう", "sembilan puluh"], ["ひゃく", "seratus"],
+  ["にひゃく", "dua ratus"], ["さんびゃく", "tiga ratus"], ["よんひゃく", "empat ratus"],
+  ["ごひゃく", "lima ratus"], ["ろっぴゃく", "enam ratus"], ["ななひゃく", "tujuh ratus"],
+  ["はっぴゃく", "delapan ratus"], ["きゅうひゃく", "sembilan ratus"], ["せん", "seribu"],
+  ["にせん", "dua ribu"], ["さんぜん", "tiga ribu"], ["よんせん", "empat ribu"],
+  ["ごせん", "lima ribu"], ["ろくせん", "enam ribu"], ["ななせん", "tujuh ribu"],
+  ["はっせん", "delapan ribu"], ["きゅうせん", "sembilan ribu"], ["いちまん", "sepuluh ribu"],
+  ["にまん", "dua puluh ribu"], ["さんまん", "tiga puluh ribu"], ["よんまん", "empat puluh ribu"],
+  ["ごまん", "lima puluh ribu"], ["ろくまん", "enam puluh ribu"], ["ななまん", "tujuh puluh ribu"],
+  ["はちまん", "delapan puluh ribu"], ["きゅうまん", "sembilan puluh ribu"], ["じゅうまん", "seratus ribu"],
+  ["にじゅうまん", "dua ratus ribu"], ["さんじゅうまん", "tiga ratus ribu"], ["よんじゅうまん", "empat ratus ribu"],
+  ["ごじゅうまん", "lima ratus ribu"], ["ろくじゅうまん", "enam ratus ribu"], ["ななじゅうまん", "tujuh ratus ribu"],
+  ["はちじゅうまん", "delapan ratus ribu"], ["きゅうじゅうまん", "sembilan ratus ribu"], ["ひゃくまん", "satu juta"],
+  ["にひゃくまん", "dua juta"], ["さんびゃくまん", "tiga juta"], ["よんひゃくまん", "empat juta"],
+  ["ごひゃくまん", "lima juta"], ["ろっぴゃくまん", "enam juta"], ["ななひゃくまん", "tujuh juta"],
+  ["はっぴゃくまん", "delapan juta"], ["きゅうひゃくまん", "sembilan juta"], ["せんまん", "sepuluh juta"],
+  ["にせんまん", "dua puluh juta"], ["さんぜんまん", "tiga puluh juta"], ["よんせんまん", "empat puluh juta"],
+  ["ごせんまん", "lima puluh juta"], ["ろくせんまん", "enam puluh juta"], ["ななせんまん", "tujuh puluh juta"],
+  ["はっせんまん", "delapan puluh juta"], ["きゅうせんman", "sembilan puluh juta"], ["いちおく", "seratus juta"]
 ];
 
 let q=[],cur=0,xp=0,streak=0;
