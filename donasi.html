@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donasi</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#2c7be5;
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* HEADER */
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  padding:20px 25px;
+}
+
+header h1{
+  font-size:20px;
+  font-weight:600;
+}
+
+header p{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* MAIN */
+main{
+  flex:1;
+  padding:25px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:20px;
+  text-align:center;
+}
+
+.card h2{
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+.card p{
+  font-size:14px;
+  color:var(--text);
+  margin-bottom:15px;
+}
+
+/* DONATION BOX */
+.donate-box{
+  background:#f9fafb;
+  border:1px dashed #e5e7eb;
+  border-radius:10px;
+  padding:15px;
+  margin:10px 0;
+}
+
+.donate-box span{
+  display:block;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.donate-box strong{
+  font-size:16px;
+}
+
+/* BUTTON */
+.btn{
+  margin-top:10px;
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  width:100%;
+}
+
+.btn:hover{
+  opacity:.9;
+}
+
+/* BACK */
+.back{
+  margin-top:15px;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  padding:12px;
+  cursor:pointer;
+  width:100%;
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid #e5e7eb;
+  padding:12px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+  <h1>Donasi</h1>
+  <p>Dukung Pengembangan Quiz Jepang</p>
+</header>
+
+<main>
+
+<div class="card">
+
+<h2>Dukung Kami</h2>
+<p>
+Jika kamu merasa website ini bermanfaat, kamu bisa mendukung pengembangan dengan berdonasi.
+Dukungan kamu akan membantu kami menambahkan fitur baru dan memperbaiki kualitas website ini.
+</p>
+
+<!-- DANA -->
+<div class="donate-box">
+  <span>DANA</span>
+  <strong>0882008184423</strong>
+</div>
+
+<button class="btn" onclick="copyNumber()">Salin Nomor</button>
+
+<button class="back" onclick="history.back()">Kembali</button>
+
+</div>
+
+</main>
+
+<footer>© 2026 Quiz Jepang</footer>
+
+</div>
+
+<script>
+function copyNumber(){
+  const number = "0882008184423";
+  navigator.clipboard.writeText(number);
+  alert("Nomor berhasil disalin!");
+}
+</script>
+
+</body>
+</html>
