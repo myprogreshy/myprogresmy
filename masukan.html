@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kirim Masukan</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- EMAILJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+  emailjs.init("5A_j5oQ7f8c2NtuP7"); // GANTI
+})();
+</script>
+
+<style>
+:root{
+  --primary:#2c7be5;
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* HEADER */
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  padding:20px 25px;
+}
+
+header h1{
+  font-size:20px;
+  font-weight:600;
+}
+
+header p{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* MAIN */
+main{
+  flex:1;
+  padding:25px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:20px;
+}
+
+.card h2{
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+.card p{
+  font-size:14px;
+  margin-bottom:15px;
+}
+
+/* FORM */
+.form-group{
+  margin-bottom:12px;
+}
+
+label{
+  font-size:13px;
+  display:block;
+  margin-bottom:5px;
+}
+
+input, textarea{
+  width:100%;
+  padding:10px;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  font-size:14px;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+/* BUTTON */
+.btn{
+  margin-top:10px;
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+  width:100%;
+}
+
+.btn:hover{
+  opacity:.9;
+}
+
+/* BACK */
+.back{
+  margin-top:10px;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  padding:12px;
+  cursor:pointer;
+  width:100%;
+}
+
+/* ALERT */
+.alert{
+  display:none;
+  margin-top:10px;
+  padding:10px;
+  background:#e6fffa;
+  border:1px solid #b2f5ea;
+  border-radius:8px;
+  font-size:13px;
+}
+
+/* LOADING */
+.loading{
+  display:none;
+  font-size:13px;
+  margin-top:10px;
+  color:var(--muted);
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid #e5e7eb;
+  padding:12px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+  <h1>Kirim Masukan</h1>
+  <p>Bantu kami menjadi lebih baik</p>
+</header>
+
+<main>
+
+<div class="card">
+
+<h2> Saran & Masukan</h2>
+<p>
+Punya ide, kritik, atau saran? Kirimkan ke kami agar aplikasi ini bisa terus berkembang.
+</p>
+
+<div class="form-group">
+  <label>Nama (opsional)</label>
+  <input type="text" id="nama" placeholder="Nama kamu">
+</div>
+
+<div class="form-group">
+  <label>Pesan</label>
+  <textarea id="pesan" placeholder="Tulis masukan kamu..." required></textarea>
+</div>
+
+<button class="btn" onclick="kirim()">Kirim Masukan</button>
+
+<div class="loading" id="loading">⏳ Mengirim...</div>
+
+<div class="alert" id="alert">
+   Masukan berhasil dikirim!
+</div>
+
+<button class="back" onclick="history.back()">Kembali</button>
+
+</div>
+
+</main>
+
+<footer>© 2026 Quiz Jepang</footer>
+
+</div>
+
+<script>
+function kirim(){
+  const nama = document.getElementById("nama").value;
+  const pesan = document.getElementById("pesan").value;
+
+  if(pesan.trim() === ""){
+    alert("Pesan tidak boleh kosong!");
+    return;
+  }
+
+  document.getElementById("loading").style.display = "block";
+
+  emailjs.send("service_sskzgxn","template_y4o0v0a",{
+    nama: nama,
+    pesan: pesan
+  })
+  .then(function(){
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("alert").style.display = "block";
+
+    document.getElementById("nama").value = "";
+    document.getElementById("pesan").value = "";
+  })
+  .catch(function(error){
+    document.getElementById("loading").style.display = "none";
+    alert(" Gagal mengirim!");
+    console.log(error);
+  });
+}
+</script>
+
+</body>
+</html>
