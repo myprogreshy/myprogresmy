@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tentang Kami</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#2c7be5;
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* HEADER */
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  padding:20px 25px;
+}
+
+header h1{
+  font-size:20px;
+  font-weight:600;
+}
+
+header p{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* MAIN */
+main{
+  flex:1;
+  padding:25px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:20px;
+  line-height:1.7;
+}
+
+.card h2{
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+.card p{
+  font-size:14px;
+  margin-bottom:12px;
+}
+
+.card ul{
+  padding-left:18px;
+  margin-bottom:12px;
+}
+
+.card li{
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+/* HIGHLIGHT BOX */
+.highlight{
+  background:#f0f6ff;
+  border:1px solid #dbeafe;
+  padding:12px;
+  border-radius:8px;
+  margin:12px 0;
+}
+
+/* BACK BUTTON */
+.back{
+  margin-top:20px;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  padding:12px;
+  cursor:pointer;
+  width:100%;
+}
+
+/* FOOTER */
+footer{
+  border-top:1px solid #e5e7eb;
+  padding:12px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+  <h1>Tentang Kami</h1>
+  <p>Quiz Bahasa Jepang</p>
+</header>
+
+<main>
+
+<div class="card">
+
+<h2>Tentang Aplikasi</h2>
+<p>
+Quiz Bahasa Jepang adalah platform belajar kosakata yang dirancang untuk membantu pengguna memahami dan menghafal bahasa Jepang dengan cara yang interaktif dan menyenangkan.
+</p>
+
+<div class="highlight">
+Aplikasi ini cocok untuk pemula hingga tingkat dasar (N5 - N4).
+</div>
+
+<h2>Tujuan Kami</h2>
+<ul>
+  <li>Membantu belajar kosakata Jepang dengan mudah</li>
+  <li>Menyediakan latihan quiz interaktif</li>
+  <li>Meningkatkan kemampuan bahasa Jepang pengguna</li>
+</ul>
+
+<h2>Fitur Utama</h2>
+<ul>
+  <li>Kategori kosakata lengkap</li>
+  <li>Quiz interaktif</li>
+  <li>Kosakata berdasarkan Minna no Nihongo</li>
+  <li>Mode random untuk latihan cepat</li>
+  <li>Fitur buat kosakata sendiri</li>
+</ul>
+
+<h2>Pengembang</h2>
+<p>
+Aplikasi ini dikembangkan secara mandiri sebagai bagian dari proyek pembelajaran dan pengembangan skill di bidang teknologi dan edukasi.
+</p>
+
+<h2>Kontak</h2>
+<p>
+Jika kamu memiliki saran atau masukan, silakan hubungi kami melalui platform yang tersedia.
+</p>
+
+<button class="back" onclick="history.back()">Kembali</button>
+
+</div>
+
+</main>
+
+<footer>© 2026 Quiz Jepang</footer>
+
+</div>
+
+</body>
+</html>
