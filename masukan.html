@@ -9,9 +9,10 @@
 
 <!-- EMAILJS -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
 <script>
 (function(){
-  emailjs.init("5A_j5oQ7f8c2NtuP7"); // GANTI
+  emailjs.init("5A_j5oQ7f8c2NtuP7");
 })();
 </script>
 
@@ -44,7 +45,6 @@ body{
   flex-direction:column;
 }
 
-/* HEADER */
 header{
   background:#fff;
   border-bottom:1px solid #e5e7eb;
@@ -62,13 +62,11 @@ header p{
   margin-top:4px;
 }
 
-/* MAIN */
 main{
   flex:1;
   padding:25px;
 }
 
-/* CARD */
 .card{
   background:var(--card);
   border:1px solid #e5e7eb;
@@ -86,7 +84,6 @@ main{
   margin-bottom:15px;
 }
 
-/* FORM */
 .form-group{
   margin-bottom:12px;
 }
@@ -110,7 +107,6 @@ textarea{
   resize:vertical;
 }
 
-/* BUTTON */
 .btn{
   margin-top:10px;
   background:var(--primary);
@@ -122,22 +118,13 @@ textarea{
   width:100%;
 }
 
-.btn:hover{
-  opacity:.9;
-}
-
-/* BACK */
-.back{
+.loading{
+  display:none;
+  font-size:13px;
   margin-top:10px;
-  background:#f3f4f6;
-  border:1px solid #e5e7eb;
-  border-radius:8px;
-  padding:12px;
-  cursor:pointer;
-  width:100%;
+  color:var(--muted);
 }
 
-/* ALERT */
 .alert{
   display:none;
   margin-top:10px;
@@ -148,15 +135,16 @@ textarea{
   font-size:13px;
 }
 
-/* LOADING */
-.loading{
-  display:none;
-  font-size:13px;
+.back{
   margin-top:10px;
-  color:var(--muted);
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  padding:12px;
+  cursor:pointer;
+  width:100%;
 }
 
-/* FOOTER */
 footer{
   border-top:1px solid #e5e7eb;
   padding:12px;
@@ -180,10 +168,7 @@ footer{
 
 <div class="card">
 
-<h2> Saran & Masukan</h2>
-<p>
-Punya ide, kritik, atau saran? Kirimkan ke kami agar aplikasi ini bisa terus berkembang.
-</p>
+<h2>💬 Saran & Masukan</h2>
 
 <div class="form-group">
   <label>Nama (opsional)</label>
@@ -192,16 +177,14 @@ Punya ide, kritik, atau saran? Kirimkan ke kami agar aplikasi ini bisa terus ber
 
 <div class="form-group">
   <label>Pesan</label>
-  <textarea id="pesan" placeholder="Tulis masukan kamu..." required></textarea>
+  <textarea id="pesan" placeholder="Tulis masukan kamu..."></textarea>
 </div>
 
 <button class="btn" onclick="kirim()">Kirim Masukan</button>
 
 <div class="loading" id="loading">⏳ Mengirim...</div>
 
-<div class="alert" id="alert">
-   Masukan berhasil dikirim!
-</div>
+<div class="alert" id="alert">✅ Masukan berhasil dikirim!</div>
 
 <button class="back" onclick="history.back()">Kembali</button>
 
@@ -226,8 +209,9 @@ function kirim(){
   document.getElementById("loading").style.display = "block";
 
   emailjs.send("service_sskzgxn","template_y4o0v0a",{
-    nama: nama,
-    pesan: pesan
+    nama: nama || "Anonim",
+    pesan: pesan,
+    time: new Date().toLocaleString()
   })
   .then(function(){
     document.getElementById("loading").style.display = "none";
@@ -238,8 +222,8 @@ function kirim(){
   })
   .catch(function(error){
     document.getElementById("loading").style.display = "none";
-    alert(" Gagal mengirim!");
-    console.log(error);
+    alert("❌ Gagal mengirim!");
+    console.log("ERROR:", error);
   });
 }
 </script>
