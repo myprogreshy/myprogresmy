@@ -25,132 +25,62 @@
   --muted:#6b7280;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
-}
-
 body{
+  margin:0;
+  font-family:'Inter',sans-serif;
   background:var(--bg);
-  color:var(--text);
 }
 
 .container{
-  max-width:900px;
-  margin:auto;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-header{
-  background:#fff;
-  border-bottom:1px solid #e5e7eb;
-  padding:20px 25px;
-}
-
-header h1{
-  font-size:20px;
-  font-weight:600;
-}
-
-header p{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:4px;
-}
-
-main{
-  flex:1;
-  padding:25px;
-}
-
-.card{
-  background:var(--card);
-  border:1px solid #e5e7eb;
-  border-radius:10px;
+  max-width:500px;
+  margin:50px auto;
   padding:20px;
 }
 
-.card h2{
-  font-size:18px;
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+}
+
+h2{
   margin-bottom:10px;
-}
-
-.card p{
-  font-size:14px;
-  margin-bottom:15px;
-}
-
-.form-group{
-  margin-bottom:12px;
-}
-
-label{
-  font-size:13px;
-  display:block;
-  margin-bottom:5px;
 }
 
 input, textarea{
   width:100%;
-  padding:10px;
-  border:1px solid #e5e7eb;
+  padding:12px;
+  margin-top:10px;
+  border:1px solid #ddd;
   border-radius:8px;
-  font-size:14px;
 }
 
 textarea{
   min-height:120px;
-  resize:vertical;
 }
 
-.btn{
-  margin-top:10px;
-  background:var(--primary);
+button{
+  margin-top:15px;
+  width:100%;
+  padding:12px;
+  background:#2c7be5;
   color:#fff;
   border:none;
-  padding:12px;
   border-radius:8px;
   cursor:pointer;
-  width:100%;
 }
 
 .loading{
   display:none;
-  font-size:13px;
   margin-top:10px;
-  color:var(--muted);
+  font-size:13px;
 }
 
-.alert{
+.success{
   display:none;
   margin-top:10px;
-  padding:10px;
-  background:#e6fffa;
-  border:1px solid #b2f5ea;
-  border-radius:8px;
-  font-size:13px;
-}
-
-.back{
-  margin-top:10px;
-  background:#f3f4f6;
-  border:1px solid #e5e7eb;
-  border-radius:8px;
-  padding:12px;
-  cursor:pointer;
-  width:100%;
-}
-
-footer{
-  border-top:1px solid #e5e7eb;
-  padding:12px;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
+  color:green;
 }
 </style>
 </head>
@@ -158,42 +88,17 @@ footer{
 <body>
 
 <div class="container">
+  <div class="card">
+    <h2>💬 Kirim Masukan</h2>
 
-<header>
-  <h1>Kirim Masukan</h1>
-  <p>Bantu kami menjadi lebih baik</p>
-</header>
+    <input type="text" id="nama" placeholder="Nama (opsional)">
+    <textarea id="pesan" placeholder="Tulis masukan..."></textarea>
 
-<main>
+    <button onclick="kirim()">Kirim</button>
 
-<div class="card">
-
-<h2>💬 Saran & Masukan</h2>
-
-<div class="form-group">
-  <label>Nama (opsional)</label>
-  <input type="text" id="nama" placeholder="Nama kamu">
-</div>
-
-<div class="form-group">
-  <label>Pesan</label>
-  <textarea id="pesan" placeholder="Tulis masukan kamu..."></textarea>
-</div>
-
-<button class="btn" onclick="kirim()">Kirim Masukan</button>
-
-<div class="loading" id="loading">⏳ Mengirim...</div>
-
-<div class="alert" id="alert">✅ Masukan berhasil dikirim!</div>
-
-<button class="back" onclick="history.back()">Kembali</button>
-
-</div>
-
-</main>
-
-<footer>© 2026 Quiz Jepang</footer>
-
+    <div class="loading" id="loading">⏳ Mengirim...</div>
+    <div class="success" id="success">✅ Berhasil dikirim!</div>
+  </div>
 </div>
 
 <script>
@@ -210,20 +115,19 @@ function kirim(){
 
   emailjs.send("service_sskzgxn","template_y4o0v0a",{
     nama: nama || "Anonim",
-    pesan: pesan,
-    time: new Date().toLocaleString()
+    pesan: pesan
   })
   .then(function(){
     document.getElementById("loading").style.display = "none";
-    document.getElementById("alert").style.display = "block";
+    document.getElementById("success").style.display = "block";
 
     document.getElementById("nama").value = "";
     document.getElementById("pesan").value = "";
   })
   .catch(function(error){
     document.getElementById("loading").style.display = "none";
-    alert("❌ Gagal mengirim!");
-    console.log("ERROR:", error);
+    alert("❌ Error: " + JSON.stringify(error));
+    console.log(error);
   });
 }
 </script>
