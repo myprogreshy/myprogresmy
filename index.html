@@ -54,7 +54,8 @@ footer{border-top:1px solid #e5e7eb;padding:12px;text-align:center;font-size:12p
       <span>Privacy Police & Donasi</span>
     </div>
     <div class="card" onclick="openMasukan()">
-      <h3>Saran & Masukan</span>
+      <h3>Saran & Masukan</h3>
+      <span>Berikan Masukan Kepada Kami</span>
     </div>
   </div>
 </section>
@@ -96,29 +97,20 @@ function buildSub(title,key){
 function go(url){ window.location.href=url; }
 </script>
 
-<!-- SUPABASE FIX -->
+<!-- SUPABASE (TRACKING DIAM-DIAM) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
 window.addEventListener("load", async () => {
+  const supabase = window.supabase.createClient(
+    "https://mdjydhodzarckjveyiwz.supabase.co",
+    "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
+  );
 
-  const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
-
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  const { error } = await supabase.from("visitors").insert([{
+  await supabase.from("visitors").insert([{
     time: new Date(),
     user_agent: navigator.userAgent,
     page: window.location.pathname
   }]);
-
-  if(error){
-    alert("❌ ERROR: " + error.message);
-  } else {
-    alert("✅ DATA MASUK!");
-  }
-
 });
 </script>
 
