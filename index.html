@@ -83,7 +83,7 @@ const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// TRACKING PENGUNJUNG LENGKAP
+// TRACKING PENGUNJUNG LENGKAP DENGAN LOKASI
 async function trackVisitor(){
   try {
     const res = await fetch("https://ipapi.co/json/");
@@ -95,9 +95,11 @@ async function trackVisitor(){
       page: window.location.pathname,
       ip: info.ip,
       country: info.country_name,
-      city: info.city
+      city: info.city,
+      latitude: info.latitude,
+      longitude: info.longitude
     }]);
-    console.log("Pengunjung tercatat!");
+    console.log("Pengunjung tercatat dengan lokasi!");
   } catch(e){ console.log("Error tracking:", e); }
 }
 trackVisitor();
