@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitor Pengunjung</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<style>
+body { font-family:sans-serif; background:#f6f8fb; padding:20px; }
+h1 { color:#2c7be5; }
+table { border-collapse: collapse; width: 100%; background:#fff; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align:left; }
+th { background:#2c7be5; color:white; }
+</style>
+</head>
+<body>
+
+<h1>Monitor Pengunjung</h1>
+<table id="visitorTable">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Waktu</th>
+      <th>Browser/Device</th>
+      <th>Halaman</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Load data pengunjung dari Supabase
+async function loadVisitors(){
+  const { data, error } = await supabase
+    .from("visitors")
+    .select("*")
+    .order('time', { ascending: false });
+    
+  if(error) return console.log("Error:", error);
+
+  const tbody = document.querySelector("#visitorTable tbody");
+  tbody.innerHTML = "";
+  data.forEach(v => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${v.id}</td>
+      <td>${new Date(v.time).toLocaleString()}</td>
+      <td>${v.user_agent}</td>
+      <td>${v.page}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// Load saat halaman dibuka
+loadVisitors();
+
+// Refresh otomatis tiap 10 detik
+setInterval(loadVisitors, 10000);
+</script>
+
+</body>
+</html>
