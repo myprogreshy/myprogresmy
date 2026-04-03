@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Menu Quiz Jepang</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
 :root{--primary:#2c7be5;--bg:#f6f8fb;--card:#ffffff;--text:#1f2937;--muted:#6b7280}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,-apple-system,sans-serif}
@@ -28,9 +30,10 @@ footer{border-top:1px solid #e5e7eb;padding:12px;text-align:center;font-size:12p
 .hidden{display:none}
 </style>
 </head>
-<body>
 
+<body>
 <div class="container">
+
 <header>
   <h1>Quiz Bahasa Jepang</h1>
   <p>Menu Utama</p>
@@ -40,20 +43,12 @@ footer{border-top:1px solid #e5e7eb;padding:12px;text-align:center;font-size:12p
 <section id="menu">
   <h2>Kategori</h2>
   <div class="grid">
-    <div class="card" onclick="openHiragana()">
-      <h3>Mulai Sekarang</h3>
-      <span>Kumpulan Latihan Soal</span>
-    </div>
-    <div class="card" onclick="openPengaturan()">
-      <h3>Pengaturan</h3>
-      <span>Privacy Police & Donasi</span>
-    </div>
-    <div class="card" onclick="openMasukan()">
-      <h3>Saran & Masukan</h3>
-      <span>Berikan Masukan Kepada Kami</span>
-    </div>
+    <div class="card" onclick="openHiragana()"><h3>Mulai Sekarang</h3><span>Kumpulan Latihan Soal</span></div>
+    <div class="card" onclick="openPengaturan()"><h3>Pengaturan</h3><span>Privacy Police & Donasi</span></div>
+    <div class="card" onclick="openMasukan()"><h3>Saran & Masukan</h3><span>Berikan Masukan Kepada Kami</span></div>
   </div>
 </section>
+
 <section id="submenu" class="hidden"></section>
 </main>
 
@@ -67,79 +62,44 @@ const quizLinks={
   masukan:{"Kirim Masukan":"masukan.html","Laporkan Bug":"laporkan.html"}
 };
 
-function show(id){
-  document.getElementById("menu").classList.add("hidden");
-  document.getElementById("submenu").classList.add("hidden");
-  document.getElementById(id).classList.remove("hidden");
-}
-
+function show(id){ document.getElementById("menu").classList.add("hidden"); document.getElementById("submenu").classList.add("hidden"); document.getElementById(id).classList.remove("hidden"); }
 function openHiragana(){ buildSub("Hiragana","hiragana"); }
 function openPengaturan(){ buildSub("Pengaturan","pengaturan"); }
 function openMasukan(){ buildSub("Saran & Masukan","masukan"); }
 
 function buildSub(title,key){
   const box=document.getElementById("submenu");
-  box.innerHTML=`
-    <h2>${title}</h2>
-    <div class="list">
-      ${Object.keys(quizLinks[key]).map(k=>`<div class="item" onclick="go('${quizLinks[key][k]}')">${k}<span>→</span></div>`).join('')}
-      <button class="back" onclick="show('menu')">Kembali</button>
-    </div>`;
+  box.innerHTML=`<h2>${title}</h2><div class="list">${Object.keys(quizLinks[key]).map(k=>`<div class="item" onclick="go('${quizLinks[key][k]}')">${k}<span>→</span></div>`).join('')}<button class="back" onclick="show('menu')">Kembali</button></div>`;
   show("submenu");
 }
 
 function go(url){ window.location.href=url; }
 </script>
 
-<!-- SUPABASE + TRACKING DETAIL -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
-const supabase = window.supabase.createClient(
-  "https://mdjydhodzarckjveyiwz.supabase.co",
-  "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
-);
+const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// TRACKING PENGUNJUNG LENGKAP
 async function trackVisitor(){
-  const userAgent = navigator.userAgent;
-  const deviceType = /Mobi/i.test(userAgent) ? "Mobile" : "Desktop";
-
-  let locationData = {
-    ip: "Unknown",
-    country: "Unknown",
-    city: "Unknown",
-    region: "Unknown",
-    continent: "Unknown",
-    latitude: null,
-    longitude: null,
-    timezone: "Unknown",
-    isp: "Unknown"
-  };
-
-  try{
+  try {
     const res = await fetch("https://ipapi.co/json/");
-    const data = await res.json();
-    locationData = {
-      ip: data.ip,
-      country: data.country_name,
-      city: data.city,
-      region: data.region,
-      continent: data.continent_name,
-      latitude: data.latitude,
-      longitude: data.longitude,
-      timezone: data.timezone,
-      isp: data.org
-    };
-  }catch(e){ console.log("Gagal ambil lokasi:", e); }
+    const info = await res.json();
 
-  await supabase.from("visitors").insert([{
-    time: new Date(),
-    user_agent: userAgent,
-    page: window.location.pathname,
-    device_type: deviceType,
-    ...locationData
-  }]);
+    await supabase.from("visitors").insert([{
+      time: new Date(),
+      user_agent: navigator.userAgent,
+      page: window.location.pathname,
+      ip: info.ip,
+      country: info.country_name,
+      city: info.city
+    }]);
+    console.log("Pengunjung tercatat!");
+  } catch(e){ console.log("Error tracking:", e); }
 }
-
 trackVisitor();
 </script>
 </body>
