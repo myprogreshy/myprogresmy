@@ -8,91 +8,31 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body{
-  font-family:sans-serif;
-  background:#f6f8fb;
-  margin:0;
-  padding:20px;
-}
-
-h1{margin-bottom:10px}
-
-.dashboard{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
-  margin-bottom:20px;
-}
-
-.card{
-  background:#fff;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,.05);
-}
-
-.card h2{
-  margin:0;
-  font-size:14px;
-  color:#6b7280;
-}
-
-.card p{
-  font-size:28px;
-  margin-top:5px;
-  font-weight:bold;
-  color:#2c7be5;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  background:#fff;
-}
-
-th,td{
-  padding:10px;
-  border-bottom:1px solid #eee;
-  text-align:left;
-}
-
-th{
-  background:#2c7be5;
-  color:white;
-}
+body{font-family:sans-serif;background:#f6f8fb;padding:20px}
+.card{background:#fff;padding:15px;margin-bottom:10px;border-radius:8px}
+table{width:100%;background:#fff;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid #eee}
+th{background:#2c7be5;color:#fff}
 </style>
 </head>
 
 <body>
 
-<h1>📊 Dashboard Pengunjung</h1>
+<h2>Dashboard</h2>
 
-<div class="dashboard">
-  <div class="card">
-    <h2>🟢 Online Sekarang</h2>
-    <p id="online">0</p>
-  </div>
-
-  <div class="card">
-    <h2>👥 Total Hari Ini</h2>
-    <p id="today">0</p>
-  </div>
-
-  <div class="card">
-    <h2>📄 Total Data</h2>
-    <p id="total">0</p>
-  </div>
-</div>
+<div class="card">🟢 Online: <b id="online">0</b></div>
+<div class="card">👥 Hari ini: <b id="today">0</b></div>
+<div class="card">📄 Total: <b id="total">0</b></div>
 
 <table>
-  <thead>
-    <tr>
-      <th>Waktu</th>
-      <th>Device</th>
-      <th>Halaman</th>
-    </tr>
-  </thead>
-  <tbody id="data"></tbody>
+<thead>
+<tr>
+<th>Waktu</th>
+<th>Device</th>
+<th>Halaman</th>
+</tr>
+</thead>
+<tbody id="data"></tbody>
 </table>
 
 <script>
@@ -109,22 +49,24 @@ async function loadData(){
     .order("time", { ascending: false });
 
   if(error){
-    alert(error.message);
+    alert("ERROR: " + error.message);
     return;
   }
 
-  const now = new Date();
+  console.log("DATA:", data); // DEBUG
+
   let online = 0;
   let today = 0;
+  const now = new Date();
 
   const tbody = document.getElementById("data");
   tbody.innerHTML = "";
 
-  data.forEach(v => {
+  data.forEach(v=>{
     const t = new Date(v.time);
 
-    // ONLINE = 5 menit terakhir
-    if(now - t < 5 * 60 * 1000){
+    // ONLINE (15 MENIT biar pasti kelihatan)
+    if(now - t < 15 * 60 * 1000){
       online++;
     }
 
@@ -147,10 +89,7 @@ async function loadData(){
   document.getElementById("total").innerText = data.length;
 }
 
-// load pertama
 loadData();
-
-// refresh tiap 5 detik
 setInterval(loadData, 5000);
 </script>
 
