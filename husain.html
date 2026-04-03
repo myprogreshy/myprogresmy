@@ -3,72 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
+<title>Admin Panel - Quiz Jepang</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
-body{font-family:'Inter',sans-serif;background:#f6f8fb;color:#1f2937;margin:0;padding:0}
-.container{max-width:1100px;margin:auto;padding:20px}
-h1{font-size:24px;margin-bottom:10px}
-h2{font-size:18px;margin-top:20px}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:8px;border:1px solid #e5e7eb;text-align:left}
-th{background:#e5e7eb}
+body{font-family:'Inter',sans-serif;background:#f6f8fb;margin:0;padding:0;color:#1f2937}
+.container{max-width:1000px;margin:30px auto;padding:20px;background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+h1{font-size:22px;margin-bottom:10px}
+h2{font-size:18px;margin-top:20px;margin-bottom:10px}
+#online-count{font-weight:600;color:#2c7be5;margin-bottom:15px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border:1px solid #e5e7eb;text-align:left;font-size:14px}
+th{background:#f3f4f6}
+tr:hover{background:#f0f6ff}
+.hidden{display:none}
 </style>
 </head>
 <body>
+
 <div class="container">
-<h1>Admin Dashboard</h1>
-<h2>Jumlah Pengunjung Online Sekarang: <span id="online-count">0</span></h2>
+<h1>Admin Panel - Quiz Jepang</h1>
+<div id="online-count">Pengunjung Online: 0</div>
+
 <h2>Daftar Pengunjung Terbaru</h2>
 <table>
   <thead>
     <tr>
-      <th>Time</th><th>IP</th><th>Country</th><th>City</th><th>Device</th><th>Browser</th>
+      <th>Waktu</th>
+      <th>Halaman</th>
+      <th>IP</th>
+      <th>Negara</th>
+      <th>Kota</th>
+      <th>Device</th>
     </tr>
   </thead>
-  <tbody id="visitor-table"></tbody>
+  <tbody id="visitor-table">
+    <!-- Data akan muncul di sini -->
+  </tbody>
 </table>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
-const supabase = window.supabase.createClient(
-  "https://mdjydhodzarckjveyiwz.supabase.co",
-  "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
-);
+const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-async function loadVisitors(){
-  const { data, error } = await supabase.from("visitors")
-    .select("*")
-    .order("time",{ascending:false})
-    .limit(50);
+// Fungsi ambil data pengunjung terbaru
+async function loadVisitors() {
+  try{
+    const { data, error } = await supabase
+      .from('visitors')
+      .select('*')
+      .order('time', { ascending: false })
+      .limit(50);
+    if(error) throw error;
 
-  if(error){ console.log(error); return; }
+    const tbody = document.getElementById('visitor-table');
+    tbody.innerHTML = data.map(v => `
+      <tr>
+        <td>${new Date(v.time).toLocaleString()}</td>
+        <td>${v.page || '-'}</td>
+        <td>${v.ip || '-'}</td>
+        <td>${v.country || '-'}</td>
+        <td>${v.city || '-'}</td>
+        <td>${v.device_type || '-'}</td>
+      </tr>
+    `).join('');
 
-  const table = document.getElementById("visitor-table");
-  table.innerHTML = "";
-  data.forEach(v=>{
-    table.innerHTML += `<tr>
-      <td>${new Date(v.time).toLocaleString()}</td>
-      <td>${v.ip}</td>
-      <td>${v.country}</td>
-      <td>${v.city}</td>
-      <td>${v.device_type}</td>
-      <td>${v.user_agent}</td>
-    </tr>`;
-  });
+    // Hitung pengunjung online (5 menit terakhir)
+    const now = new Date();
+    const online = data.filter(v => (now - new Date(v.time)) < 5*60*1000).length;
+    document.getElementById('online-count').innerText = `Pengunjung Online: ${online}`;
 
-  // hitung pengunjung online (last 5 menit)
-  const now = new Date();
-  const online = data.filter(d => new Date(d.time) > new Date(now - 5*60*1000)).length;
-  document.getElementById("online-count").innerText = online;
+  } catch(e){
+    console.log("Error loadVisitors:", e);
+  }
 }
 
-// load awal
+// Jalankan pertama kali
 loadVisitors();
 
-// refresh setiap 30 detik
-setInterval(loadVisitors, 30000);
+// Update tiap 10 detik
+setInterval(loadVisitors, 10000);
 </script>
+
 </body>
 </html>
