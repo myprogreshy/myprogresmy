@@ -232,17 +232,34 @@ function go(url){
 }
 </script>
 
-<!-- SUPABASE (TANPA MENGUBAH TAMPILAN) -->
+<!-- SUPABASE (TRACKING PENGUNJUNG) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
 <script>
 const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
-
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// TEST KONEKSI
-console.log("Supabase terhubung:", supabase);
+// TRACKING PENGUNJUNG OTOMATIS
+async function trackVisitor(){
+  try {
+    const page = window.location.pathname;
+    const userAgent = navigator.userAgent;
+    const { data, error } = await supabase
+      .from("visitors")
+      .insert([{ 
+        time: new Date(),
+        user_agent: userAgent,
+        page: page
+      }]);
+    if(error) console.log("Tracking error:", error);
+    else console.log("Pengunjung tercatat:", data);
+  } catch(err){
+    console.log("Error tracking:", err);
+  }
+}
+
+// Jalankan otomatis saat halaman dibuka
+trackVisitor();
 </script>
 
 </body>
