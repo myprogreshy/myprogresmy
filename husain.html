@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Monitor Pengunjung</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 body { font-family:sans-serif; background:#f6f8fb; padding:20px; }
 h1 { color:#2c7be5; }
@@ -16,44 +18,60 @@ th { background:#2c7be5; color:white; }
 <body>
 
 <h1>Monitor Pengunjung</h1>
-<table id="visitorTable">
+
+<table>
   <thead>
     <tr>
       <th>ID</th>
       <th>Waktu</th>
-      <th>Browser/Device</th>
+      <th>Device</th>
       <th>Halaman</th>
     </tr>
   </thead>
-  <tbody></tbody>
+  <tbody id="data"></tbody>
 </table>
 
 <script>
-const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
-const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+window.addEventListener("load", async () => {
 
-async function loadVisitors(){
-  const { data, error } = await supabase.from("visitors").select("*").order('time',{ascending:false});
-  if(error) return console.log("Error:", error);
+  const supabase = window.supabase.createClient(
+    "https://mdjydhodzarckjveyiwz.supabase.co",
+    "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
+  );
 
-  const tbody = document.querySelector("#visitorTable tbody");
-  tbody.innerHTML = "";
-  data.forEach(v=>{
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${v.id}</td>
-                    <td>${new Date(v.time).toLocaleString()}</td>
-                    <td>${v.user_agent}</td>
-                    <td>${v.page}</td>`;
-    tbody.appendChild(tr);
-  });
-}
+  async function loadData(){
+    const { data, error } = await supabase
+      .from("visitors")
+      .select("*")
+      .order("time", { ascending: false });
 
-// Load pertama kali
-loadVisitors();
+    if(error){
+      alert("ERROR: " + error.message);
+      return;
+    }
 
-// Refresh tiap 10 detik
-setInterval(loadVisitors,10000);
+    const tbody = document.getElementById("data");
+    tbody.innerHTML = "";
+
+    data.forEach(v => {
+      const row = `
+        <tr>
+          <td>${v.id}</td>
+          <td>${new Date(v.time).toLocaleString()}</td>
+          <td>${v.user_agent}</td>
+          <td>${v.page}</td>
+        </tr>
+      `;
+      tbody.innerHTML += row;
+    });
+  }
+
+  loadData();
+
+  // auto refresh tiap 5 detik
+  setInterval(loadData, 5000);
+
+});
 </script>
 
 </body>
