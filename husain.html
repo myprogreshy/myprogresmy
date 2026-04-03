@@ -51,39 +51,50 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 async function loadVisitors() {
     const table = document.getElementById("visitorTable");
     table.innerHTML = '<tr><td colspan="7">Memuat data...</td></tr>';
+
     try {
         const { data, error } = await supabase
             .from("visitors")
-            .select("time,page,user_agent,ip,country,city")
+            .select("*")  // ambil semua kolom, supaya fallback aman
             .order("time",{ascending:false})
             .limit(50);
 
-        if(error) { console.log("Supabase Error:", error); table.innerHTML='<tr><td colspan="7">Error memuat data</td></tr>'; return; }
-        if(!data || data.length===0){ table.innerHTML='<tr><td colspan="7">Tidak ada data</td></tr>'; return; }
+        if(error) {
+            console.log("Supabase Error:", error);
+            table.innerHTML='<tr><td colspan="7">Error memuat data</td></tr>';
+            return;
+        }
+
+        if(!data || data.length===0){
+            table.innerHTML='<tr><td colspan="7">Tidak ada data</td></tr>';
+            document.getElementById("onlineCount").textContent = 0;
+            return;
+        }
 
         table.innerHTML = data.map((v,i)=>`
             <tr>
                 <td>${i+1}</td>
-                <td>${new Date(v.time).toLocaleString()}</td>
-                <td>${v.page||'-'}</td>
-                <td>${v.user_agent||'-'}</td>
-                <td>${v.ip||'-'}</td>
-                <td>${v.country||'-'}</td>
-                <td>${v.city||'-'}</td>
+                <td>${v.time ? new Date(v.time).toLocaleString() : '-'}</td>
+                <td>${v.page || '-'}</td>
+                <td>${v.user_agent || '-'}</td>
+                <td>${v.ip || '-'}</td>
+                <td>${v.country || '-'}</td>
+                <td>${v.city || '-'}</td>
             </tr>
         `).join('');
 
         // Hitung pengguna online (dalam 5 menit terakhir)
         const now = new Date();
         const online = data.filter(v=>{
-            const t = new Date(v.time);
-            return (now - t) <= (5*60*1000);
+            const t = v.time ? new Date(v.time) : null;
+            return t && (now - t) <= (5*60*1000);
         }).length;
         document.getElementById("onlineCount").textContent = online;
 
     } catch(e){
         console.log("Error:", e);
         table.innerHTML='<tr><td colspan="7">Error memuat data</td></tr>';
+        document.getElementById("onlineCount").textContent = 0;
     }
 }
 
