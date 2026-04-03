@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <meta name="monetag" content="994fbc10d457e4e688b9d918ffa97353">
+<meta name="monetag" content="994fbc10d457e4e688b9d918ffa97353">
 <title>Menu Quiz Jepang</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -37,7 +37,6 @@ body{
   flex-direction:column;
 }
 
-/* HEADER */
 header{
   background:#fff;
   border-bottom:1px solid #e5e7eb;
@@ -55,7 +54,6 @@ header p{
   margin-top:4px;
 }
 
-/* MAIN */
 main{
   flex:1;
   padding:25px;
@@ -67,14 +65,12 @@ h2{
   margin-bottom:15px;
 }
 
-/* GRID MENU */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
   gap:15px;
 }
 
-/* CARD */
 .card{
   background:var(--card);
   border:1px solid #e5e7eb;
@@ -99,7 +95,6 @@ h2{
   color:var(--muted);
 }
 
-/* LIST */
 .list{
   display:grid;
   gap:10px;
@@ -131,7 +126,6 @@ h2{
   cursor:pointer;
 }
 
-/* FOOTER */
 footer{
   border-top:1px solid #e5e7eb;
   padding:12px;
@@ -140,7 +134,6 @@ footer{
   color:var(--muted);
 }
 
-/* HIDDEN */
 .hidden{display:none}
 </style>
 </head>
@@ -156,7 +149,6 @@ footer{
 
 <main>
 
-<!-- MENU -->
 <section id="menu">
   <h2>Kategori</h2>
   <div class="grid">
@@ -175,7 +167,6 @@ footer{
   </div>
 </section>
 
-<!-- SUBMENU -->
 <section id="submenu" class="hidden"></section>
 
 </main>
@@ -193,12 +184,12 @@ const quizLinks={
   },
   pengaturan:{
     "Privacy Policy":"privacypolicy.html",
-   "Donasi":"donasi.html",
-  "Tentang Kami":"tentang.html"
+    "Donasi":"donasi.html",
+    "Tentang Kami":"tentang.html"
   },
   masukan:{
     "Kirim Masukan":"masukan.html",
-  "Laporkan Bug":"laporkan.html"
+    "Laporkan Bug":"laporkan.html"
   }
 };
 
@@ -239,6 +230,19 @@ function buildSub(title,key){
 function go(url){
   window.location.href=url;
 }
+</script>
+
+<!-- SUPABASE (TANPA MENGUBAH TAMPILAN) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// TEST KONEKSI
+console.log("Supabase terhubung:", supabase);
 </script>
 
 </body>
