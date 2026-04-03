@@ -33,34 +33,27 @@ const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Load data pengunjung dari Supabase
 async function loadVisitors(){
-  const { data, error } = await supabase
-    .from("visitors")
-    .select("*")
-    .order('time', { ascending: false });
-    
+  const { data, error } = await supabase.from("visitors").select("*").order('time',{ascending:false});
   if(error) return console.log("Error:", error);
 
   const tbody = document.querySelector("#visitorTable tbody");
   tbody.innerHTML = "";
-  data.forEach(v => {
+  data.forEach(v=>{
     const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${v.id}</td>
-      <td>${new Date(v.time).toLocaleString()}</td>
-      <td>${v.user_agent}</td>
-      <td>${v.page}</td>
-    `;
+    tr.innerHTML = `<td>${v.id}</td>
+                    <td>${new Date(v.time).toLocaleString()}</td>
+                    <td>${v.user_agent}</td>
+                    <td>${v.page}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-// Load saat halaman dibuka
+// Load pertama kali
 loadVisitors();
 
-// Refresh otomatis tiap 10 detik
-setInterval(loadVisitors, 10000);
+// Refresh tiap 10 detik
+setInterval(loadVisitors,10000);
 </script>
 
 </body>
