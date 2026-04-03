@@ -104,19 +104,21 @@ const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// TRACKING PENGUNJUNG
+// TRACKING + TEST
 async function trackVisitor(){
-  try{
-    await supabase.from("visitors").insert([{
-      time: new Date(),
-      user_agent: navigator.userAgent,
-      page: window.location.pathname
-    }]);
-    console.log("Pengunjung tercatat!");
-  } catch(e){ console.log("Error tracking:", e); }
+  const { error } = await supabase.from("visitors").insert([{
+    time: new Date(),
+    user_agent: navigator.userAgent,
+    page: window.location.pathname
+  }]);
+
+  if(error){
+    alert("❌ ERROR: " + error.message);
+  } else {
+    alert("✅ DATA MASUK!");
+  }
 }
 
-// Jalankan otomatis
 trackVisitor();
 </script>
 
