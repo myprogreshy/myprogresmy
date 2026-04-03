@@ -3,104 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Monitor</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<title>Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-body{font-family:sans-serif;background:#f6f8fb;padding:20px}
-.card{background:#fff;padding:15px;margin-bottom:10px;border-radius:8px}
-table{width:100%;background:#fff;border-collapse:collapse}
-th,td{padding:10px;border-bottom:1px solid #eee}
-th{background:#2c7be5;color:#fff}
+body{font-family:'Inter',sans-serif;background:#f6f8fb;color:#1f2937;margin:0;padding:0}
+.container{max-width:1100px;margin:auto;padding:20px}
+h1{font-size:24px;margin-bottom:10px}
+h2{font-size:18px;margin-top:20px}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{padding:8px;border:1px solid #e5e7eb;text-align:left}
+th{background:#e5e7eb}
 </style>
 </head>
-
 <body>
-
-<h2>Dashboard</h2>
-
-<div class="card">🟢 Online: <b id="online">-</b></div>
-<div class="card">👥 Hari ini: <b id="today">-</b></div>
-<div class="card">📄 Total: <b id="total">-</b></div>
-
+<div class="container">
+<h1>Admin Dashboard</h1>
+<h2>Jumlah Pengunjung Online Sekarang: <span id="online-count">0</span></h2>
+<h2>Daftar Pengunjung Terbaru</h2>
 <table>
-<thead>
-<tr>
-<th>Waktu</th>
-<th>Device</th>
-<th>Halaman</th>
-</tr>
-</thead>
-<tbody id="data"></tbody>
+  <thead>
+    <tr>
+      <th>Time</th><th>IP</th><th>Country</th><th>City</th><th>Device</th><th>Browser</th>
+    </tr>
+  </thead>
+  <tbody id="visitor-table"></tbody>
 </table>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-window.addEventListener("load", async () => {
+const supabase = window.supabase.createClient(
+  "https://mdjydhodzarckjveyiwz.supabase.co",
+  "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
+);
 
-  if(!window.supabase){
-    alert("Supabase gagal load!");
-    return;
-  }
+async function loadVisitors(){
+  const { data, error } = await supabase.from("visitors")
+    .select("*")
+    .order("time",{ascending:false})
+    .limit(50);
 
-  const supabase = window.supabase.createClient(
-    "https://mdjydhodzarckjveyiwz.supabase.co",
-    "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
-  );
+  if(error){ console.log(error); return; }
 
-  async function loadData(){
-    const { data, error } = await supabase
-      .from("visitors")
-      .select("*")
-      .order("time", { ascending: false });
+  const table = document.getElementById("visitor-table");
+  table.innerHTML = "";
+  data.forEach(v=>{
+    table.innerHTML += `<tr>
+      <td>${new Date(v.time).toLocaleString()}</td>
+      <td>${v.ip}</td>
+      <td>${v.country}</td>
+      <td>${v.city}</td>
+      <td>${v.device_type}</td>
+      <td>${v.user_agent}</td>
+    </tr>`;
+  });
 
-    if(error){
-      alert("ERROR: " + error.message);
-      return;
-    }
+  // hitung pengunjung online (last 5 menit)
+  const now = new Date();
+  const online = data.filter(d => new Date(d.time) > new Date(now - 5*60*1000)).length;
+  document.getElementById("online-count").innerText = online;
+}
 
-    if(!data){
-      alert("Data kosong / tidak terbaca");
-      return;
-    }
+// load awal
+loadVisitors();
 
-    let online = 0;
-    let today = 0;
-    const now = new Date();
-
-    const tbody = document.getElementById("data");
-    tbody.innerHTML = "";
-
-    data.forEach(v=>{
-      const t = new Date(v.time);
-
-      if(now - t < 15 * 60 * 1000){
-        online++;
-      }
-
-      if(t.toDateString() === now.toDateString()){
-        today++;
-      }
-
-      tbody.innerHTML += `
-        <tr>
-          <td>${t.toLocaleString()}</td>
-          <td>${v.user_agent}</td>
-          <td>${v.page}</td>
-        </tr>
-      `;
-    });
-
-    document.getElementById("online").innerText = online;
-    document.getElementById("today").innerText = today;
-    document.getElementById("total").innerText = data.length;
-  }
-
-  loadData();
-  setInterval(loadData, 5000);
-
-});
+// refresh setiap 30 detik
+setInterval(loadVisitors, 30000);
 </script>
-
 </body>
 </html>
