@@ -3,42 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - Quiz Jepang</title>
+<title>Admin Test - Quiz Jepang</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-body{font-family:'Inter',sans-serif;background:#f6f8fb;margin:0;padding:0;color:#1f2937}
-.container{max-width:1000px;margin:30px auto;padding:20px;background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-h1{font-size:22px;margin-bottom:10px}
-h2{font-size:18px;margin-top:20px;margin-bottom:10px}
-#online-count{font-weight:600;color:#2c7be5;margin-bottom:15px}
-table{width:100%;border-collapse:collapse}
+body{font-family:'Inter',sans-serif;background:#f6f8fb;margin:0;padding:20px;color:#1f2937}
+.container{max-width:800px;margin:auto;padding:20px;background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+h1{font-size:22px;margin-bottom:15px}
+table{width:100%;border-collapse:collapse;margin-top:10px}
 th,td{padding:10px;border:1px solid #e5e7eb;text-align:left;font-size:14px}
 th{background:#f3f4f6}
 tr:hover{background:#f0f6ff}
-.hidden{display:none}
 </style>
 </head>
 <body>
 
 <div class="container">
-<h1>Admin Panel - Quiz Jepang</h1>
-<div id="online-count">Pengunjung Online: 0</div>
-
-<h2>Daftar Pengunjung Terbaru</h2>
+<h1>Admin Test - Pengunjung</h1>
 <table>
   <thead>
     <tr>
       <th>Waktu</th>
       <th>Halaman</th>
-      <th>IP</th>
-      <th>Negara</th>
-      <th>Kota</th>
-      <th>Device</th>
     </tr>
   </thead>
   <tbody id="visitor-table">
-    <!-- Data akan muncul di sini -->
+    <tr><td colspan="2">Memuat data...</td></tr>
   </tbody>
 </table>
 </div>
@@ -50,43 +40,38 @@ const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Fungsi ambil data pengunjung terbaru
 async function loadVisitors() {
-  try{
+  try {
     const { data, error } = await supabase
       .from('visitors')
-      .select('*')
+      .select('time,page')
       .order('time', { ascending: false })
-      .limit(50);
+      .limit(10);
+
     if(error) throw error;
 
     const tbody = document.getElementById('visitor-table');
+    if(data.length === 0){
+      tbody.innerHTML = `<tr><td colspan="2">Belum ada data</td></tr>`;
+      return;
+    }
+
     tbody.innerHTML = data.map(v => `
       <tr>
         <td>${new Date(v.time).toLocaleString()}</td>
         <td>${v.page || '-'}</td>
-        <td>${v.ip || '-'}</td>
-        <td>${v.country || '-'}</td>
-        <td>${v.city || '-'}</td>
-        <td>${v.device_type || '-'}</td>
       </tr>
     `).join('');
 
-    // Hitung pengunjung online (5 menit terakhir)
-    const now = new Date();
-    const online = data.filter(v => (now - new Date(v.time)) < 5*60*1000).length;
-    document.getElementById('online-count').innerText = `Pengunjung Online: ${online}`;
-
+    console.log("Data pengunjung:", data);
   } catch(e){
     console.log("Error loadVisitors:", e);
+    document.getElementById('visitor-table').innerHTML = `<tr><td colspan="2">Error: ${e.message}</td></tr>`;
   }
 }
 
-// Jalankan pertama kali
+// Jalankan otomatis
 loadVisitors();
-
-// Update tiap 10 detik
-setInterval(loadVisitors, 10000);
 </script>
 
 </body>
