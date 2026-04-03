@@ -128,6 +128,8 @@ h2{
   border-radius:8px;
   padding:12px;
   cursor:pointer;
+  width: 100%;
+  font-weight: 600;
 }
 
 /* FOOTER */
@@ -155,13 +157,12 @@ footer{
 
 <main>
 
-<!-- MENU -->
 <section id="menu">
   <h2>Kategori</h2>
   <div class="grid">
     <div class="card" onclick="openPemula()">
       <h3>Pola Kalimat</h3>
-      <span>Latihan Pola Kalimat </span>
+      <span>Latihan Pola Kalimat</span>
     </div>
     <div class="card" onclick="openMinna()">
       <h3>Partikel</h3>
@@ -178,7 +179,6 @@ footer{
 </div>
 </section>
 
-<!-- SUBMENU -->
 <section id="submenu" class="hidden"></section>
 
 </main>
@@ -188,6 +188,9 @@ footer{
 </div>
 
 <script>
+// MASUKKAN LINK ADOPERATOR KAMU DI SINI
+const AD_LINK = "https://wwpb.ailooe.com/redirect-zone/da308a21";
+
 const quizLinks={
   pemula:{
     "Pola Kalimat 1":"pemulasapaan.html",
@@ -230,8 +233,16 @@ function buildSub(title,key){
   show("submenu");
 }
 
+/**
+ * Fungsi Navigasi Utama:
+ * Membuka iklan di tab baru & mengalihkan tab sekarang ke kuis.
+ */
 function go(url){
-  window.location.href=url;
+  // 1. Membuka Iklan Smartlink di tab baru
+  window.open(AD_LINK, '_blank');
+
+  // 2. Mengarahkan tab saat ini ke halaman kuis
+  window.location.href = url;
 }
 </script>
 
