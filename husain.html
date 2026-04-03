@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Admin</title>
+<title>Admin Monitor</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -20,9 +20,9 @@ th{background:#2c7be5;color:#fff}
 
 <h2>Dashboard</h2>
 
-<div class="card">🟢 Online: <b id="online">0</b></div>
-<div class="card">👥 Hari ini: <b id="today">0</b></div>
-<div class="card">📄 Total: <b id="total">0</b></div>
+<div class="card">🟢 Online: <b id="online">-</b></div>
+<div class="card">👥 Hari ini: <b id="today">-</b></div>
+<div class="card">📄 Total: <b id="total">-</b></div>
 
 <table>
 <thead>
@@ -36,61 +36,70 @@ th{background:#2c7be5;color:#fff}
 </table>
 
 <script>
-const supabase = window.supabase.createClient(
-  "https://mdjydhodzarckjveyiwz.supabase.co",
-  "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
-);
+window.addEventListener("load", async () => {
 
-async function loadData(){
-
-  const { data, error } = await supabase
-    .from("visitors")
-    .select("*")
-    .order("time", { ascending: false });
-
-  if(error){
-    alert("ERROR: " + error.message);
+  if(!window.supabase){
+    alert("Supabase gagal load!");
     return;
   }
 
-  console.log("DATA:", data); // DEBUG
+  const supabase = window.supabase.createClient(
+    "https://mdjydhodzarckjveyiwz.supabase.co",
+    "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
+  );
 
-  let online = 0;
-  let today = 0;
-  const now = new Date();
+  async function loadData(){
+    const { data, error } = await supabase
+      .from("visitors")
+      .select("*")
+      .order("time", { ascending: false });
 
-  const tbody = document.getElementById("data");
-  tbody.innerHTML = "";
-
-  data.forEach(v=>{
-    const t = new Date(v.time);
-
-    // ONLINE (15 MENIT biar pasti kelihatan)
-    if(now - t < 15 * 60 * 1000){
-      online++;
+    if(error){
+      alert("ERROR: " + error.message);
+      return;
     }
 
-    // HARI INI
-    if(t.toDateString() === now.toDateString()){
-      today++;
+    if(!data){
+      alert("Data kosong / tidak terbaca");
+      return;
     }
 
-    tbody.innerHTML += `
-      <tr>
-        <td>${t.toLocaleString()}</td>
-        <td>${v.user_agent}</td>
-        <td>${v.page}</td>
-      </tr>
-    `;
-  });
+    let online = 0;
+    let today = 0;
+    const now = new Date();
 
-  document.getElementById("online").innerText = online;
-  document.getElementById("today").innerText = today;
-  document.getElementById("total").innerText = data.length;
-}
+    const tbody = document.getElementById("data");
+    tbody.innerHTML = "";
 
-loadData();
-setInterval(loadData, 5000);
+    data.forEach(v=>{
+      const t = new Date(v.time);
+
+      if(now - t < 15 * 60 * 1000){
+        online++;
+      }
+
+      if(t.toDateString() === now.toDateString()){
+        today++;
+      }
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${t.toLocaleString()}</td>
+          <td>${v.user_agent}</td>
+          <td>${v.page}</td>
+        </tr>
+      `;
+    });
+
+    document.getElementById("online").innerText = online;
+    document.getElementById("today").innerText = today;
+    document.getElementById("total").innerText = data.length;
+  }
+
+  loadData();
+  setInterval(loadData, 5000);
+
+});
 </script>
 
 </body>
