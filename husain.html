@@ -11,10 +11,11 @@ body{font-family:'Inter',sans-serif;margin:0;padding:0;background:#f6f8fb;color:
 h1{font-size:22px;font-weight:600;margin-bottom:15px}
 h2{font-size:18px;font-weight:600;margin-top:25px;margin-bottom:10px}
 table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #e5e7eb;font-size:14px;word-break:break-word}
+th,td{padding:12px;text-align:left;border-bottom:1px solid #e5e7eb;font-size:14px}
 th{background:#f3f4f6;color:#1f2937}
 tr:hover{background:#f0f6ff}
 .count-box{margin-bottom:20px;padding:15px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;font-size:16px;font-weight:600}
+.error-box{margin-top:15px;padding:12px;background:#ffe0e0;color:#b30000;border:1px solid #ff8c8c;border-radius:8px;font-weight:600;}
 </style>
 </head>
 <body>
@@ -22,6 +23,7 @@ tr:hover{background:#f0f6ff}
 <h1>Admin Panel - Quiz Jepang</h1>
 
 <div class="count-box" id="onlineCount">Pengunjung Online Sekarang: ...</div>
+<div class="error-box" id="errorBox" style="display:none;"></div>
 
 <h2>Data Pengunjung</h2>
 <table id="visitorTable">
@@ -32,12 +34,12 @@ tr:hover{background:#f0f6ff}
       <th>IP</th>
       <th>Negara</th>
       <th>Kota</th>
-      <th>Latitude</th>
-      <th>Longitude</th>
       <th>User Agent</th>
     </tr>
   </thead>
-  <tbody></tbody>
+  <tbody>
+    <tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr>
+  </tbody>
 </table>
 </div>
 
@@ -48,43 +50,56 @@ const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function loadVisitors(){
+  const tbody = document.querySelector("#visitorTable tbody");
+  const errorBox = document.getElementById("errorBox");
+  errorBox.style.display = "none";
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr>';
+
   try{
-    // Ambil data pengunjung terbaru (100 terakhir)
     const { data, error } = await supabase
       .from("visitors")
       .select("*")
       .order('time',{ascending:false})
       .limit(100);
+
     if(error) throw error;
 
-    const tbody = document.querySelector("#visitorTable tbody");
+    if(!data || data.length===0){
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Belum ada data pengunjung</td></tr>';
+      document.getElementById("onlineCount").innerText = 'Pengunjung Online Sekarang: 0';
+      return;
+    }
+
     tbody.innerHTML = data.map(v=>`
       <tr>
-        <td>${new Date(v.time).toLocaleString()}</td>
-        <td>${v.page}</td>
+        <td>${v.time ? new Date(v.time).toLocaleString() : '-'}</td>
+        <td>${v.page || '-'}</td>
         <td>${v.ip || '-'}</td>
         <td>${v.country || '-'}</td>
         <td>${v.city || '-'}</td>
-        <td>${v.latitude ?? '-'}</td>
-        <td>${v.longitude ?? '-'}</td>
-        <td>${v.user_agent}</td>
+        <td>${v.user_agent || '-'}</td>
       </tr>
     `).join('');
 
-    // Hitung online (aktif dalam 5 menit terakhir)
+    // Hitung online (aktif 5 menit terakhir)
     const now = new Date();
     const onlineCount = data.filter(v=>{
-      return new Date(v.time) > new Date(now - 5*60*1000);
+      return v.time && new Date(v.time) > new Date(now - 5*60*1000);
     }).length;
     document.getElementById("onlineCount").innerText = `Pengunjung Online Sekarang: ${onlineCount}`;
 
-  } catch(e){ console.log("Error loading visitors:", e); }
+  } catch(e){
+    console.log("Error loading visitors:", e);
+    errorBox.style.display = "block";
+    errorBox.innerText = "Terjadi error saat memuat data. Cek koneksi dan tabel Supabase.\n"+e.message;
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Gagal memuat data</td></tr>';
+  }
 }
 
 // Load awal
 loadVisitors();
 
-// Refresh otomatis tiap 10 detik
+// Refresh tiap 10 detik
 setInterval(loadVisitors,10000);
 </script>
 </body>
