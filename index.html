@@ -54,8 +54,7 @@ footer{border-top:1px solid #e5e7eb;padding:12px;text-align:center;font-size:12p
       <span>Privacy Police & Donasi</span>
     </div>
     <div class="card" onclick="openMasukan()">
-      <h3>Saran & Masukan</h3>
-      <span>Berikan Masukan Kepada Kami</span>
+      <h3>Saran & Masukan</span>
     </div>
   </div>
 </section>
@@ -97,15 +96,17 @@ function buildSub(title,key){
 function go(url){ window.location.href=url; }
 </script>
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script>
-const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
-const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+<!-- SUPABASE FIX -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-// TRACKING + TEST
-async function trackVisitor(){
+<script>
+window.addEventListener("load", async () => {
+
+  const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
+
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
   const { error } = await supabase.from("visitors").insert([{
     time: new Date(),
     user_agent: navigator.userAgent,
@@ -117,9 +118,8 @@ async function trackVisitor(){
   } else {
     alert("✅ DATA MASUK!");
   }
-}
 
-trackVisitor();
+});
 </script>
 
 </body>
