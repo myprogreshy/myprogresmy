@@ -3,105 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Quiz Jepang</title>
+<title>Admin Dashboard - Quiz Jepang</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
-body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f6f8fb;color:#1f2937;margin:0;padding:0;}
-.container{max-width:1200px;margin:auto;padding:20px;}
-h1{font-size:24px;margin-bottom:20px;}
-.online-count{font-weight:600;margin-bottom:15px;}
-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #e5e7eb;}
-th{background:#f3f4f6;font-weight:600;}
-tr:hover{background:#f0f6ff;}
-.hidden{display:none;}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#f6f8fb;color:#1f2937;margin:0;padding:0}
+.container{max-width:1200px;margin:auto;padding:20px}
+h1{font-size:22px;margin-bottom:10px}
+h2{font-size:18px;margin:20px 0 10px}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
+th,td{padding:12px;text-align:left;border-bottom:1px solid #e5e7eb;font-size:14px}
+th{background:#f3f4f6}
+tr:hover{background:#f0f6ff}
+.online{margin-bottom:15px;font-weight:600;color:#2c7be5}
 </style>
 </head>
-<body>
 
+<body>
 <div class="container">
-<h1>Admin Panel - Quiz Jepang</h1>
-<div class="online-count">Pengguna online sekarang: <span id="onlineCount">0</span></div>
-<table>
-<thead>
-<tr>
-<th>No</th>
-<th>Waktu</th>
-<th>Halaman</th>
-<th>User Agent</th>
-<th>IP</th>
-<th>Negara</th>
-<th>Kota</th>
-</tr>
-</thead>
-<tbody id="visitorTable">
-<tr><td colspan="7">Memuat data...</td></tr>
-</tbody>
-</table>
+  <h1>Admin Dashboard - Quiz Jepang</h1>
+  <div class="online">Pengguna Online Sekarang: <span id="online-count">0</span></div>
+  <h2>Daftar Pengunjung</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Waktu</th>
+        <th>Halaman</th>
+        <th>User Agent</th>
+        <th>IP</th>
+        <th>Negara</th>
+        <th>Kota</th>
+      </tr>
+    </thead>
+    <tbody id="visitor-table">
+      <tr><td colspan="6">Memuat data...</td></tr>
+    </tbody>
+  </table>
 </div>
 
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
-// --- SUPABASE CONFIG ---
 const SUPABASE_URL = "https://mdjydhodzarckjveyiwz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// --- AMBIL DATA PENGUNJUNG ---
-async function loadVisitors() {
-    const table = document.getElementById("visitorTable");
-    table.innerHTML = '<tr><td colspan="7">Memuat data...</td></tr>';
+// Load pengunjung dan update tabel
+async function loadVisitors(){
+  try{
+    const { data, error } = await supabase
+      .from("visitors")
+      .select("*")
+      .order('time', { ascending: false })
+      .limit(100); // tampilkan 100 terakhir
+    if(error){ throw error; }
 
-    try {
-        const { data, error } = await supabase
-            .from("visitors")
-            .select("*")  // ambil semua kolom, supaya fallback aman
-            .order("time",{ascending:false})
-            .limit(50);
-
-        if(error) {
-            console.log("Supabase Error:", error);
-            table.innerHTML='<tr><td colspan="7">Error memuat data</td></tr>';
-            return;
-        }
-
-        if(!data || data.length===0){
-            table.innerHTML='<tr><td colspan="7">Tidak ada data</td></tr>';
-            document.getElementById("onlineCount").textContent = 0;
-            return;
-        }
-
-        table.innerHTML = data.map((v,i)=>`
-            <tr>
-                <td>${i+1}</td>
-                <td>${v.time ? new Date(v.time).toLocaleString() : '-'}</td>
-                <td>${v.page || '-'}</td>
-                <td>${v.user_agent || '-'}</td>
-                <td>${v.ip || '-'}</td>
-                <td>${v.country || '-'}</td>
-                <td>${v.city || '-'}</td>
-            </tr>
-        `).join('');
-
-        // Hitung pengguna online (dalam 5 menit terakhir)
-        const now = new Date();
-        const online = data.filter(v=>{
-            const t = v.time ? new Date(v.time) : null;
-            return t && (now - t) <= (5*60*1000);
-        }).length;
-        document.getElementById("onlineCount").textContent = online;
-
-    } catch(e){
-        console.log("Error:", e);
-        table.innerHTML='<tr><td colspan="7">Error memuat data</td></tr>';
-        document.getElementById("onlineCount").textContent = 0;
+    const tbody = document.getElementById("visitor-table");
+    if(data.length === 0){
+      tbody.innerHTML = "<tr><td colspan='6'>Tidak ada data</td></tr>";
+      document.getElementById("online-count").textContent = 0;
+      return;
     }
+
+    tbody.innerHTML = data.map(v=>`
+      <tr>
+        <td>${new Date(v.time).toLocaleString()}</td>
+        <td>${v.page ?? '-'}</td>
+        <td>${v.user_agent ?? '-'}</td>
+        <td>${v.ip ?? '-'}</td>
+        <td>${v.country ?? '-'}</td>
+        <td>${v.city ?? '-'}</td>
+      </tr>
+    `).join('');
+
+    // Hitung pengguna online 5 menit terakhir
+    const now = new Date();
+    const onlineCount = data.filter(v=>{
+      return (now - new Date(v.time)) < 5*60*1000; // 5 menit
+    }).length;
+    document.getElementById("online-count").textContent = onlineCount;
+
+  } catch(e){
+    console.log("Error loading visitors:", e);
+    document.getElementById("visitor-table").innerHTML = "<tr><td colspan='6'>Gagal memuat data</td></tr>";
+  }
 }
 
-// --- AUTO REFRESH SETIAP 1 MENIT ---
+// Jalankan pertama kali
 loadVisitors();
-setInterval(loadVisitors,60000);
-</script>
 
+// Refresh setiap 1 menit
+setInterval(loadVisitors, 60*1000);
+</script>
 </body>
 </html>
