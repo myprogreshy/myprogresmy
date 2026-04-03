@@ -3,11 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="monetag" content="994fbc10d457e4e688b9d918ffa97353">
 <title>Menu Quiz Jepang</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
 <style>
 :root{--primary:#2c7be5;--bg:#f6f8fb;--card:#ffffff;--text:#1f2937;--muted:#6b7280}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,-apple-system,sans-serif}
@@ -31,11 +28,9 @@ footer{border-top:1px solid #e5e7eb;padding:12px;text-align:center;font-size:12p
 .hidden{display:none}
 </style>
 </head>
-
 <body>
 
 <div class="container">
-
 <header>
   <h1>Quiz Bahasa Jepang</h1>
   <p>Menu Utama</p>
@@ -59,7 +54,6 @@ footer{border-top:1px solid #e5e7eb;padding:12px;text-align:center;font-size:12p
     </div>
   </div>
 </section>
-
 <section id="submenu" class="hidden"></section>
 </main>
 
@@ -97,22 +91,56 @@ function buildSub(title,key){
 function go(url){ window.location.href=url; }
 </script>
 
-<!-- SUPABASE (TRACKING DIAM-DIAM) -->
+<!-- SUPABASE + TRACKING DETAIL -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-window.addEventListener("load", async () => {
-  const supabase = window.supabase.createClient(
-    "https://mdjydhodzarckjveyiwz.supabase.co",
-    "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
-  );
+const supabase = window.supabase.createClient(
+  "https://mdjydhodzarckjveyiwz.supabase.co",
+  "sb_publishable_AnEKgrM-INkddvbOXP1Utw_fHhv-BO3"
+);
+
+async function trackVisitor(){
+  const userAgent = navigator.userAgent;
+  const deviceType = /Mobi/i.test(userAgent) ? "Mobile" : "Desktop";
+
+  let locationData = {
+    ip: "Unknown",
+    country: "Unknown",
+    city: "Unknown",
+    region: "Unknown",
+    continent: "Unknown",
+    latitude: null,
+    longitude: null,
+    timezone: "Unknown",
+    isp: "Unknown"
+  };
+
+  try{
+    const res = await fetch("https://ipapi.co/json/");
+    const data = await res.json();
+    locationData = {
+      ip: data.ip,
+      country: data.country_name,
+      city: data.city,
+      region: data.region,
+      continent: data.continent_name,
+      latitude: data.latitude,
+      longitude: data.longitude,
+      timezone: data.timezone,
+      isp: data.org
+    };
+  }catch(e){ console.log("Gagal ambil lokasi:", e); }
 
   await supabase.from("visitors").insert([{
     time: new Date(),
-    user_agent: navigator.userAgent,
-    page: window.location.pathname
+    user_agent: userAgent,
+    page: window.location.pathname,
+    device_type: deviceType,
+    ...locationData
   }]);
-});
-</script>
+}
 
+trackVisitor();
+</script>
 </body>
 </html>
