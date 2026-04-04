@@ -1,497 +1,202 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis Kanji 2</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuis Perubahan Kata Sifat</title>
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-      color: white;
-    }
+<style>
+/* CSS tetap sama dengan gaya ULTRA kamu sebelumnya */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;background:#e6f9e6;}
+body{display:flex;justify-content:center;align-items:center;}
+.app{width:100%;max-width:420px;height:100%;background:#ffffff;display:flex;flex-direction:column;padding:14px;}
+.top-bar{display:flex;align-items:center;gap:10px;}
+.level{background:#58cc02;color:white;padding:6px 12px;border-radius:14px;font-weight:800;}
+.xp-bar{flex:1;height:12px;background:#dff5d8;border-radius:20px;overflow:hidden;}
+#progressBar{height:100%;width:0%;background:linear-gradient(90deg,#58cc02,#89e219);transition:.4s;}
+.score,.streak{padding:6px 10px;border-radius:14px;background:#f1fdf0;border:2px solid #58cc02;font-weight:700;}
+.info-table{width:100%;margin-top:6px;border-collapse:collapse;background:#f1fdf0;border:2px solid #58cc02;border-radius:12px;overflow:hidden;font-weight:800;font-size:0.9rem;}
+.info-table td{padding:6px 10px;}
+.quiz-name{color:#58cc02;text-align:left;}
+.q-number{text-align:right;color:#333;}
+.card{flex:1;background:#f8fff6;border-radius:26px;margin:20px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 10px 25px rgba(0,0,0,.08);overflow:hidden;padding:20px;}
 
-    .header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
+/* Penyesuaian teks soal agar ada instruksi */
+#question{font-size:2.4rem;font-weight:900;color:#000;text-align:center;}
+#instruction{font-size:1.1rem;color:#58cc02;font-weight:700;margin-top:10px;background:#eefbe7;padding:5px 15px;border-radius:10px;}
 
-    .header p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
-
-    .quiz-container {
-      background: white;
-      padding: 2.5rem;
-      border-radius: 20px;
-      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-      text-align: center;
-      width: 100%;
-      max-width: 500px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .quiz-container::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 8px;
-      background: linear-gradient(to right, #ff6b6b, #667eea);
-    }
-
-    .quiz-header {
-      margin-bottom: 1.5rem;
-    }
-
-    .quiz-title {
-      font-size: 1.8rem;
-      color: #333;
-      margin-bottom: 0.5rem;
-    }
-
-    .quiz-subtitle {
-      color: #666;
-      font-size: 1rem;
-    }
-
-    .question-container {
-      background: #f8f9fa;
-      border-radius: 15px;
-      padding: 2rem 1rem;
-      margin-bottom: 1.5rem;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-      border: 2px solid #e9ecef;
-    }
-
-    #question {
-      font-size: 2.5rem;
-      margin-bottom: 0;
-      font-weight: bold;
-      color: #333;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1.2;
-    }
-
-    .question-label {
-      font-size: 1rem;
-      color: #666;
-      margin-bottom: 0.5rem;
-    }
-
-    #options {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-bottom: 1.5rem;
-    }
-
-    #options button {
-      padding: 1.2rem 1rem;
-      font-size: 1.1rem;
-      cursor: pointer;
-      border: none;
-      border-radius: 12px;
-      background: #667eea;
-      color: white;
-      transition: all 0.3s ease;
-      font-weight: 600;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      min-height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      word-wrap: break-word;
-    }
-
-    #options button:hover {
-      background: #5a6fd8;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-    }
-
-    #result {
-      margin-top: 1rem;
-      font-weight: bold;
-      font-size: 1.2rem;
-      min-height: 1.8rem;
-      padding: 0.8rem;
-      border-radius: 8px;
-    }
-
-    .progress-container {
-      background: #e9ecef;
-      border-radius: 10px;
-      height: 12px;
-      margin: 1.5rem 0;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(to right, #ff6b6b, #667eea);
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-
-    .score-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 12px;
-    }
-
-    #score {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .counter {
-      font-size: 1rem;
-      color: #666;
-    }
-
-    #finalScore {
-      font-size: 1.4rem;
-      margin-top: 1.5rem;
-      font-weight: bold;
-      color: #333;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 12px;
-    }
-
-    #restartBtn {
-      margin-top: 1.5rem;
-      padding: 0.8rem 2rem;
-      font-size: 1.1rem;
-      display: none;
-      background: #ff6b6b;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    #restartBtn:hover {
-      background: #ff5252;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-    }
-
-    .footer {
-      margin-top: 30px;
-      color: white;
-      text-align: center;
-      opacity: 0.8;
-    }
-
-    .decoration {
-      position: absolute;
-      font-size: 1.5rem;
-      opacity: 0.1;
-      z-index: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .dec-1 { top: 20px; left: 20px; }
-    .dec-2 { top: 20px; right: 20px; }
-    .dec-3 { bottom: 20px; left: 20px; }
-    .dec-4 { bottom: 20px; right: 20px; }
-
-    .type-indicator {
-      display: inline-block;
-      padding: 0.3rem 0.8rem;
-      background: #667eea;
-      color: white;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .kanji-badge {
-      display: inline-block;
-      padding: 0.3rem 0.8rem;
-      background: #ff6b6b;
-      color: white;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      margin-top: 0.5rem;
-      font-weight: bold;
-    }
-
-    @media (max-width: 600px) {
-      .header h1 {
-        font-size: 2rem;
-      }
-      
-      .quiz-container {
-        padding: 1.5rem;
-      }
-      
-      #question {
-        font-size: 2rem;
-        min-height: 60px;
-      }
-      
-      #options button {
-        font-size: 1rem;
-        min-height: 55px;
-        padding: 1rem 0.8rem;
-      }
-    }
-  </style>
+.result-box{width:100%;height:100%;overflow-y:auto;padding:20px;}
+.result-header{text-align:center;margin-bottom:16px;}
+.result-header h2{font-size:1.6rem;font-weight:900;color:#58cc02;margin-bottom:6px;}
+.review-table{width:100%;border-collapse:collapse;font-size:.9rem;border-radius:10px;overflow:hidden;}
+.review-table th{background:#58cc02;color:white;padding:8px;text-align:left;}
+.review-table td{padding:8px;border-bottom:1px solid #eee;}
+.correct{color:#2e7d32;font-weight:700;}
+.wrong{color:#c62828;font-weight:700;}
+#options{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+#options button{padding:16px;font-size:1.1rem;border:none;border-radius:18px;background:#58cc02;color:white;font-weight:800;cursor:pointer;transition:.15s;}
+#options button:hover{transform:scale(1.05);background:#46b400;}
+#result{text-align:center;margin-top:8px;font-weight:800;min-height:28px;}
+.badge{text-align:center;margin-top:4px;font-weight:900;color:#ff9600;}
+.restart{padding:14px;border:none;border-radius:16px;font-weight:800;font-size:1rem;cursor:pointer;background:#ff9600;color:white;}
+</style>
 </head>
+
 <body>
-  <div class="header">
-    <h1>Kuis Kanji 2</h1>
-    <p>Tingkatkan kemampuan membaca kanji tingkat menengah</p>
-  </div>
 
-  <div class="quiz-container">
-    <div class="decoration dec-1">学</div>
-    <div class="decoration dec-2">校</div>
-    <div class="decoration dec-3">会</div>
-    <div class="decoration dec-4">社</div>
-    
-    <div class="quiz-header">
-      <h2 class="quiz-title">Tebak Cara Baca Kanji</h2>
-      <p class="quiz-subtitle">Pilih cara membaca yang tepat untuk kata kanji di bawah</p>
+<div class="app">
+    <div class="top-bar">
+        <div class="level">XP</div>
+        <div class="xp-bar"><div id="progressBar"></div></div>
+        <div class="score" id="score">0 XP</div>
+        <div class="streak" id="streak">x 0</div>
     </div>
-    
-    <div class="progress-container">
-      <div class="progress-bar" id="progressBar"></div>
+
+    <table class="info-table">
+        <tr>
+            <td class="quiz-name">Kata Sifat (い)</td>
+            <td class="q-number" id="qNumber">1 / 10</td>
+        </tr>
+    </table>
+
+    <div class="card">
+        <div id="question">?</div>
+        <div id="instruction">Bentuk...</div>
     </div>
-    
-    <div class="question-container">
-      <div class="type-indicator">Kata Kanji</div>
-      <div class="question-label">Bagaimana cara membaca:</div>
-      <div id="question">...</div>
-    </div>
-    
+
     <div id="options"></div>
-    
     <div id="result"></div>
-    
-    <div class="score-container">
-      <div id="score">Skor: 0</div>
-      <div class="counter" id="counter">Pertanyaan: 1/65</div>
-    </div>
-    
-    <div id="finalScore"></div>
-    <button id="restartBtn">Mulai Ulang Kuis</button>
-  </div>
+    <div class="badge" id="badge"></div>
+    <button class="restart" id="restartBtn" onclick="start()" style="display:none;">Mulai Ulang</button>
+</div>
 
-  <div class="footer">
-    <p>Quiz Bahasa Jepang by @husain.y.m</p>
-  </div>
+<script>
+// Data soal: [Kata Dasar, Instruksi, Jawaban Benar]
+const vocab = [
+    ["たかい", "Negatif ", "たかくない"],
+    ["たかい", "Lampau ", "たかかった"],
+    ["たかい", "L. Negatif ", "たかくなかった"],
+    ["やすい", "Negatif ", "やすくない"],
+    ["やすい", "Lampau ", "やすかった"],
+    ["おいしい", "Negatif ", "おいしくない"],
+    ["おいしい", "Lampau ", "おいしかった"],
+    ["あつい", "L. Negatif ", "あつくなかった"],
+    ["さむい", "Negatif ", "さむくない"],
+    ["いい", "Negatif ", "よくない"],
+    ["いい", "Lampau ", "よかった"]
+];
 
-  <script>
-    const data = [
-      ["学生", "がくせい"],
-      ["学校", "がっこう"],
-      ["先生", "せんせい"],
-      ["会社", "かいしゃ"],
-      ["社員", "しゃいん"],
-      ["銀行", "ぎんこう"],
-      ["銀行員", "ぎんこういん"],
-      ["医者", "いしゃ"],
-      ["研究者", "けんきゅうしゃ"],
-      ["大学", "だいがく"],
-      ["病院", "びょういん"],
-      ["電気", "でんき"],
-      ["日本", "にほん"],
-      ["中国", "ちゅうごく"],
-      ["英語", "えいご"],
-      ["日本語", "にほんご"],
-      ["勉強", "べんきょう"],
-      ["教室", "きょうしつ"],
-      ["食堂", "しょくどう"],
-      ["図書館", "としょかん"],
-      ["美術館", "びじゅつかん"],
-      ["午前", "ごぜん"],
-      ["午後", "ごご"],
-      ["月曜日", "げつようび"],
-      ["火曜日", "かようび"],
-      ["水曜日", "すいようび"],
-      ["木曜日", "もくようび"],
-      ["金曜日", "きんようび"],
-      ["土曜日", "どようび"],
-      ["日曜日", "にちようび"],
-      ["大変", "たいへん"],
-      ["大使館", "たいしかん"],
-      ["自動車", "じどうしゃ"],
-      ["電話", "でんわ"],
-      ["公園", "こうえん"],
-      ["動物園", "どうぶつえん"],
-      ["駅員", "えきいん"],
-      ["看護師", "かんごし"],
-      ["弁護士", "べんごし"],
-      ["教師", "きょうし"],
-      ["政治", "せいじ"],
-      ["首相", "しゅしょう"],
-      ["大統領", "だいとうりょう"],
-      ["経済", "けいざい"],
-      ["電車", "でんしゃ"],
-      ["新幹線", "しんかんせん"],
-      ["郵便局", "ゆうびんきょく"],
-      ["時計", "とけい"],
-      ["住所", "じゅうしょ"],
-      ["問題", "もんだい"],
-      ["答え", "こたえ"],
-      ["会社員", "かいしゃいん"],
-      ["大学院", "だいがくいん"],
-      ["専門学校", "せんもんがっこう"],
-      ["中学校", "ちゅうがっこう"],
-      ["小学校", "しょうがっこう"],
-      ["高等学校", "こうとうがっこう"],
-      ["警察署", "けいさつしょ"],
-      ["消防署", "しょうぼうしょ"],
-      ["改札口", "かいさつぐち"],
-      ["時刻表", "じこくひょう"],
-      ["定期券", "ていきけん"],
-      ["回数券", "かいすうけん"],
-      ["保険証", "ほけんしょう"],
-      ["健康", "けんこう"],
-      ["結婚", "けっこん"],
-      ["離婚", "りこん"],
-      ["再婚", "さいこん"],
-      ["転勤", "てんきん"],
-      ["準備", "じゅんび"],
-      ["説明", "せつめい"],
-      ["案内", "あんない"],
-      ["予約", "よやく"],
-      ["運転", "うんてん"],
-      ["練習", "れんしゅう"],
-      ["試合", "しあい"],
-      ["意見", "いけん"],
-      ["新聞", "しんぶん"],
-      ["辞書", "じしょ"],
-      ["雑誌", "ざっし"]
-    ];
+// Kumpulan jawaban salah acak untuk mengisi opsi
+const allDistractors = [
+    "たかかった", "たかくない", "やすかった", "やすくなった", 
+    "おいしいでした", "さむいかった", "よくない", "いくない", 
+    "たかいかった", "あつくない", "あつかった", "おいしくなった"
+];
 
-    let questions = [];
-    let current = 0;
-    let score = 0;
+let q=[],cur=0,xp=0,streak=0;
+let correct=0, wrong=0, perfectCorrect=0;
+let wrongList=[];
+let firstWrong=null;
 
-    function shuffle(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
+function shuffle(a){
+    for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
     }
+}
 
-    function updateProgress() {
-      const progress = ((current) / data.length) * 100;
-      document.getElementById('progressBar').style.width = `${progress}%`;
-      document.getElementById('counter').textContent = `Pertanyaan: ${current+1}/${data.length}`;
-    }
+function updateUI(){
+    document.getElementById("score").textContent=xp+" XP";
+    document.getElementById("streak").textContent="x "+streak;
+    const progress=(perfectCorrect/q.length)*100;
+    document.getElementById("progressBar").style.width=progress+"%";
+    document.getElementById("qNumber").textContent=(cur+1)+" / "+q.length;
+}
 
-    function loadQuestion() {
-      if (current >= questions.length) {
-        showFinalScore();
+function loadQuestion(){
+    if(cur>=q.length){
+        finish();
         return;
-      }
+    }
+    firstWrong=null;
+    const [word, type, ans] = q[cur];
 
-      const [kanji, correct] = questions[current];
-      document.getElementById("question").textContent = kanji;
-      document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = "";
+    document.getElementById("question").textContent = word;
+    document.getElementById("instruction").textContent = "Bentuk " + type;
+    document.getElementById("result").textContent = "";
+    document.getElementById("badge").textContent = "";
 
-      const options = new Set([correct]);
-      while (options.size < 4) {
-        const rand = data[Math.floor(Math.random() * data.length)][1];
-        options.add(rand);
-      }
-
-      const shuffled = Array.from(options).sort(() => Math.random() - 0.5);
-      const optionsDiv = document.getElementById("options");
-      optionsDiv.innerHTML = "";
-
-      shuffled.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.textContent = opt;
-        btn.onclick = () => checkAnswer(opt, correct);
-        optionsDiv.appendChild(btn);
-      });
-
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
-      updateProgress();
+    const ops = new Set([ans]);
+    while(ops.size < 4){
+        let rand = allDistractors[Math.floor(Math.random()*allDistractors.length)];
+        if(rand !== ans) ops.add(rand);
     }
 
-    function checkAnswer(selected, correct) {
-      const result = document.getElementById("result");
-      if (selected === correct) {
-        result.textContent = "✅ Benar!";
-        result.style.color = "green";
-        result.style.background = "#e8f5e8";
-        score++;
-        current++;
+    document.getElementById("options").innerHTML="";
+    [...ops].sort(()=>Math.random()-0.5).forEach(o=>{
+        const b=document.createElement("button");
+        b.textContent=o;
+        b.onclick=()=>check(o, ans, word + " (" + type + ")");
+        document.getElementById("options").appendChild(b);
+    });
+    updateUI();
+}
+
+function check(sel, ans, fullQ){
+    if(sel===ans){
+        streak++;
+        correct++;
+        let bonus=streak>=5?5:2;
+        xp+=bonus;
+        if(streak==5) document.getElementById("badge").textContent="🏆 COMBO x5";
+        document.getElementById("result").textContent="BENAR +"+bonus+"XP";
+        if(!firstWrong) perfectCorrect++;
+        if(firstWrong){
+            wrongList.push({ q:fullQ, your:firstWrong, correct:ans });
+        }
+        cur++;
+        updateUI();
         setTimeout(loadQuestion, 500);
-      } else {
-        result.textContent = `❌ Salah! Jawaban: ${correct}`;
-        result.style.color = "red";
-        result.style.background = "#ffe8e8";
-      }
-      document.getElementById("score").textContent = `Skor: ${score} / ${data.length}`;
-      updateProgress();
+    }else{
+        streak=0;
+        if(!firstWrong){ firstWrong=sel; wrong++; }
+        document.getElementById("result").textContent="SALAH";
     }
+}
 
-    function showFinalScore() {
-      document.getElementById("question").textContent = "🎉 Selesai!";
-      document.getElementById("options").innerHTML = "";
-      document.getElementById("result").textContent = "";
-      document.getElementById("finalScore").textContent = `Skor Akhir: ${score} dari ${data.length}`;
-      document.getElementById("restartBtn").style.display = "inline-block";
-      document.getElementById('progressBar').style.width = '100%';
+function finish(){
+    document.getElementById("options").innerHTML="";
+    document.getElementById("result").textContent="";
+    document.getElementById("badge").textContent="";
+    let html=`<div class="result-box"><div class="result-header"><h2>Quiz Selesai 🎉</h2><p>Hasil Belajar Kamu</p></div>`;
+    if(wrongList.length>0){
+        html+=`<table class="review-table"><tr><th>Soal</th><th>Kamu</th><th>Benar</th></tr>`;
+        wrongList.forEach(i=>{
+            html+=`<tr><td>${i.q}</td><td class="wrong">${i.your}</td><td class="correct">${i.correct}</td></tr>`;
+        });
+        html+=`</table>`;
+    }else{
+        html+=`<p style="text-align:center;font-weight:700;color:#2e7d32;">Luar biasa! Tidak ada kesalahan. 🔥</p>`;
     }
+    html+=`</div>`;
+    document.querySelector(".card").innerHTML=html;
+    document.getElementById("progressBar").style.width="100%";
+    document.getElementById("restartBtn").style.display="block";
+}
 
-    function startQuiz() {
-      score = 0;
-      current = 0;
-      questions = [...data];
-      shuffle(questions);
-      document.getElementById("restartBtn").style.display = "none";
-      loadQuestion();
-    }
+function start(){
+    q=[...vocab];
+    shuffle(q);
+    cur=0; xp=0; streak=0; correct=0; wrong=0; perfectCorrect=0;
+    wrongList=[];
+    document.querySelector(".card").innerHTML='<div id="question">?</div><div id="instruction"></div>';
+    document.getElementById("restartBtn").style.display="none";
+    loadQuestion();
+}
 
-    document.getElementById("restartBtn").onclick = startQuiz;
-    startQuiz();
-  </script>
+start();
+</script>
+
 </body>
 </html>
