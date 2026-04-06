@@ -128,6 +128,8 @@ h2{
   border-radius:8px;
   padding:12px;
   cursor:pointer;
+  width: 100%;
+  font-weight: 500;
 }
 
 /* FOOTER */
@@ -141,6 +143,15 @@ footer{
 
 /* HIDDEN */
 .hidden{display:none}
+
+/* INFO TAMBAHAN STYLE */
+#info-klik {
+  background:#fff3cd;
+  color:#856404;
+  padding:10px 15px;
+  font-size:13px;
+  border-bottom:1px solid #e5e7eb;
+}
 </style>
 </head>
 
@@ -153,14 +164,12 @@ footer{
   <p>Menu Materi</p>
 </header>
 
-<!-- 🔥 INFO TAMBAHAN -->
-<div style="background:#fff3cd;color:#856404;padding:10px 15px;font-size:13px;border-bottom:1px solid #e5e7eb;">
+<div id="info-klik" class="hidden">
   ⚠️ Klik link 2 kali untuk membuka materi
 </div>
 
 <main>
 
-<!-- MENU -->
 <section id="menu">
   <h2>Kategori</h2>
   <div class="grid">
@@ -195,7 +204,6 @@ footer{
   </div>
 </section>
 
-<!-- SUBMENU -->
 <section id="submenu" class="hidden"></section>
 
 </main>
@@ -270,18 +278,32 @@ const quizLinks={
 };
 
 function show(id){
-  document.getElementById("menu").classList.add("hidden");
-  document.getElementById("submenu").classList.add("hidden");
+  const menu = document.getElementById("menu");
+  const submenu = document.getElementById("submenu");
+  const infoKlik = document.getElementById("info-klik");
+
+  menu.classList.add("hidden");
+  submenu.classList.add("hidden");
+  
+  // Tampilkan section yang dipilih
   document.getElementById(id).classList.remove("hidden");
+
+  // LOGIKA TAMPILKAN INFO:
+  // Hanya tampilkan info jika yang sedang dibuka adalah 'submenu'
+  if(id === "submenu") {
+    infoKlik.classList.remove("hidden");
+  } else {
+    infoKlik.classList.add("hidden");
+  }
 }
 
-function openHirakana(){ buildSub("Materi","hirakana"); }
-function openKanji(){ buildSub("Pertanian","kanji"); }
-function openKaigo(){ buildSub("Kaigo","kaigo"); }
-function openPm(){ buildSub("Pengolahan Makanan","pm"); }
-function openBc(){ buildSub("Building Cleaning","bc"); }
-function openPeternakan(){ buildSub("Peternakan","peternakan"); }
-function openHotel(){ buildSub("Perhotelan","hotel"); }
+function openHirakana(){ buildSub("Rangkuman Buku Minna","hirakana"); }
+function openKanji(){ buildSub("Materi Pertanian","kanji"); }
+function openKaigo(){ buildSub("Materi Kaigo","kaigo"); }
+function openPm(){ buildSub("Materi Pengolahan Makanan","pm"); }
+function openBc(){ buildSub("Materi Building Cleaning","bc"); }
+function openPeternakan(){ buildSub("Materi Peternakan","peternakan"); }
+function openHotel(){ buildSub("Materi Perhotelan","hotel"); }
 
 function buildSub(title,key){
   const box=document.getElementById("submenu");
