@@ -153,6 +153,11 @@ footer{
   <p>Menu Materi</p>
 </header>
 
+<!-- 🔥 INFO TAMBAHAN -->
+<div style="background:#fff3cd;color:#856404;padding:10px 15px;font-size:13px;border-bottom:1px solid #e5e7eb;">
+  ⚠️ Klik link 2 kali untuk membuka materi
+</div>
+
 <main>
 
 <!-- MENU -->
@@ -200,6 +205,10 @@ footer{
 </div>
 
 <script>
+
+const iklan = "https://omg10.com/4/10830781";
+let clickedLinks = {};
+
 const quizLinks={
   hirakana:{
     "Materi Bab 1":"https://drive.google.com/file/d/1s-2cEr104yadt5pkXIcxKRaGOUe35Wyp/view",
@@ -257,7 +266,7 @@ const quizLinks={
     "Modul Perhotelan":"https://drive.google.com/drive/mobile/folders/1VatxIeUpvPG1fRysj-TUo06UY0GE6BFM",
     "Kisi-Kisi Perhotelan":"https://drive.google.com/drive/mobile/folders/1VOUa-YoCU45nlWReVFNXliTSmMi0LR7N",
     "Kosakata Perhotelan":"https://drive.google.com/drive/mobile/folders/1VP7ogP9-LuIxc2_4VVEHLFZySjfaSBWb",
-}
+  }
 };
 
 function show(id){
@@ -290,10 +299,16 @@ function buildSub(title,key){
   show("submenu");
 }
 
-/* 🔥 buka URL di tab baru */
+// 🔥 MONETAG KLIK 2X
 function go(url){
-  window.open(url, "_blank");
+  if(!clickedLinks[url]){
+    clickedLinks[url] = true;
+    window.open(iklan, "_blank");
+  } else {
+    window.open(url, "_blank");
+  }
 }
+
 </script>
 
 </body>
