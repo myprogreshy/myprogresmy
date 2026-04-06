@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="fe64a2efeaa31c3b539996add846d693f18503f8" content="fe64a2efeaa31c3b539996add846d693f18503f8" />
 <title>Menu Quiz Jepang</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -129,6 +128,8 @@ h2{
   border-radius:8px;
   padding:12px;
   cursor:pointer;
+  width: 100%;
+  font-weight: 500;
 }
 
 /* FOOTER */
@@ -156,7 +157,6 @@ footer{
 
 <main>
 
-<!-- MENU -->
 <section id="menu">
   <h2>Kategori</h2>
   <div class="grid">
@@ -170,7 +170,7 @@ footer{
     </div>
     <div class="card" onclick="openPengaturan()">
       <h3>Pengaturan</h3>
-      <span>Privacy Police & Donasi</span>
+      <span>Privacy Policy & Donasi</span>
     </div>
     <div class="card" onclick="openMasukan()">
       <h3>Saran & Masukan</h3>
@@ -179,7 +179,6 @@ footer{
   </div>
 </section>
 
-<!-- SUBMENU -->
 <section id="submenu" class="hidden"></section>
 
 </main>
@@ -200,12 +199,12 @@ const quizLinks={
   },
   pengaturan:{
     "Privacy Policy":"privacypolicy.html",
-   "Donasi":"donasi.html",
-  "Tentang Kami":"tentang.html"
+    "Donasi":"donasi.html",
+    "Tentang Kami":"tentang.html"
   },
   masukan:{
     "Kirim Masukan":"masukan.html",
-  "Laporkan Bug":"laporkan.html"
+    "Laporkan Bug":"laporkan.html"
   }
 };
 
@@ -252,7 +251,5 @@ function go(url){
 }
 </script>
 
- <script>(function(d){let s=d.createElement('script');s.async=true;s.src='https://peacyx.com/code/pops.js?h=waWQiOjEyMjM2ODcsInNpZCI6MTc1ODMwNywid2lkIjo3Mzg0NDIsInNyYyI6Mn0=eyJ';d.head.appendChild(s);})(document);</script>
- 
 </body>
 </html>
