@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Quiz Jepang</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#2c7be5;
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  padding:20px 25px;
+}
+
+header h1{
+  font-size:20px;
+  font-weight:600;
+}
+
+header p{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+main{
+  flex:1;
+  padding:25px;
+}
+
+h2{
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:15px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:15px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:16px 18px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.card:hover{
+  border-color:var(--primary);
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
+
+.card h3{
+  font-size:15px;
+  font-weight:600;
+}
+
+.card span{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.list{
+  display:grid;
+  gap:10px;
+}
+
+.item{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  padding:14px 16px;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+  transition:.15s;
+}
+
+.item:hover{
+  border-color:var(--primary);
+  background:#f0f6ff;
+}
+
+.back{
+  margin-top:15px;
+  background:#f3f4f6;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  padding:12px;
+  cursor:pointer;
+  width: 100%;
+  font-weight: 500;
+}
+
+footer{
+  border-top:1px solid #e5e7eb;
+  padding:12px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.hidden{display:none}
+
+#info-klik {
+  background:#fff3cd;
+  color:#856404;
+  padding:10px 15px;
+  font-size:13px;
+  border-bottom:1px solid #e5e7eb;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+  <h1>Quiz Bahasa Jepang</h1>
+  <p>Menu Materi Lengkap</p>
+</header>
+
+<div id="info-klik" class="hidden">
+  ⚠️ Klik link 2 kali untuk membuka materi
+</div>
+
+<main>
+
+<section id="menu">
+  <h2>Kategori</h2>
+  <div class="grid">
+    <div class="card" onclick="openKana()">
+      <h3>Hiragana Katakana</h3>
+      <span>Dasar & Soal</span>
+    </div>
+    <div class="card" onclick="openDongeng()">
+      <h3>Dongeng Jepang</h3>
+      <span>Cerita Rakyat</span>
+    </div>
+    <div class="card" onclick="openIrodoriA1()">
+      <h3>Irodori A1</h3>
+      <span>Starter</span>
+    </div>
+    <div class="card" onclick="openIrodoriA21()">
+      <h3>Irodori A2(1)</h3>
+      <span>Elementary 1</span>
+    </div>
+    <div class="card" onclick="openIrodoriA22()">
+      <h3>Irodori A2(2)</h3>
+      <span>Elementary 2</span>
+    </div>
+    <div class="card" onclick="openKotobaIrodori()">
+      <h3>Kotoba Irodori</h3>
+      <span>Kumpulan Kosakata</span>
+    </div>
+    <div class="card" onclick="openJFT()">
+      <h3>JFT Basic</h3>
+      <span>Kumpulan Soal JFT</span>
+    </div>
+  </div>
+</section>
+
+<section id="submenu" class="hidden"></section>
+
+</main>
+
+<footer>© 2026 Quiz Jepang</footer>
+
+</div>
+
+<script>
+
+const iklan = "https://omg10.com/4/10830781";
+let clickedLinks = {};
+
+const quizLinks={
+  kana:{ "Hiragana Katakana 1":"#", "Hiragana Katakana 2":"#", "Hiragana Soal":"#" },
+  dongeng:{
+    "Issunboushi":"#", "Urashimatarou":"#", "Omusubikororin":"#", "Kaguyahime":"#",
+    "Kasazizou":"#", "Sarukanigassen":"#", "Shitakirisuzume":"#", "Tsurunoongaeshi":"#",
+    "Nezuminoyomeiri":"#", "Momotarou":"#", "Kasakojizou 1":"#", "Kasakojizou 2":"#",
+    "Kachikachiyama":"#", "Kamotorigonbee":"#", "Kintarou":"#", "Chikaratarou":"#",
+    "Nezuminosumou":"#", "Hanasakajijii":"#"
+  },
+  irodoriA1: {
+    "TP(A1) Bab 1":"#", "TP(A1) Bab 2":"#", "TP(A1) Bab 3":"#", "TP(A1) Bab 4":"#",
+    "TP(A1) Bab 5":"#", "TP(A1) Bab 6":"#", "TP(A1) Bab 7":"#", "TP(A1) Bab 8":"#",
+    "TP(A1) Bab 9":"#", "TP(A1) Bab 10":"#", "TP(A1) Bab 11":"#", "TP(A1) Bab 12":"#",
+    "TP(A1) Bab 13":"#", "TP(A1) Bab 14":"#", "TP(A1) Bab 15":"#", "TP(A1) Bab 16":"#",
+    "TP(A1) Bab 17":"#", "TP(A1) Bab 18":"#", "Kata Ruang Kelas":"#", "Kunci Jawaban A1":"#"
+  },
+  irodoriA21: {
+    "TP(A2-1) Bab 1":"#", "TP(A2-1) Bab 2":"#", "TP(A2-1) Bab 3":"#", "TP(A2-1) Bab 4":"#",
+    "TP(A2-1) Bab 5":"#", "TP(A2-1) Bab 6":"#", "TP(A2-1) Bab 7":"#", "TP(A2-1) Bab 8":"#",
+    "TP(A2-1) Bab 9":"#", "TP(A2-1) Bab 10":"#", "TP(A2-1) Bab 11":"#", "TP(A2-1) Bab 12":"#",
+    "TP(A2-1) Bab 13":"#", "TP(A2-1) Bab 14":"#", "TP(A2-1) Bab 15":"#", "TP(A2-1) Bab 16":"#",
+    "TP(A2-1) Bab 17":"#", "TP(A2-1) Bab 18":"#", "Kunci Jawaban A2-1":"#"
+  },
+  irodoriA22: {
+    "TP(A2-2) Bab 1":"#", "TP(A2-2) Bab 2":"#", "TP(A2-2) Bab 3":"#", "TP(A2-2) Bab 4":"#",
+    "TP(A2-2) Bab 5":"#", "TP(A2-2) Bab 6":"#", "TP(A2-2) Bab 7":"#", "TP(A2-2) Bab 8":"#",
+    "TP(A2-2) Bab 9":"#", "TP(A2-2) Bab 10":"#", "TP(A2-2) Bab 11":"#", "TP(A2-2) Bab 12":"#",
+    "TP(A2-2) Bab 13":"#", "TP(A2-2) Bab 14":"#", "TP(A2-2) Bab 15":"#", "TP(A2-2) Bab 16":"#",
+    "TP(A2-2) Bab 17":"#", "TP(A2-2) Bab 18":"#", "Kunci Jawaban A2-2":"#"
+  },
+  kotoba: {
+    "Kanji Irodori":"#", "Kata Keterangan":"#", "Kotoba Irodori A1":"#",
+    "Kotoba Irodori A2(1)":"#", "Kotoba Irodori A2(2)":"#"
+  },
+  jft: {
+    "Latihan Soal JFT (Himawari)":"#",
+    "Persiapan JFT Basic Vol 1":"#", "Persiapan JFT Basic Vol 2":"#", "Persiapan JFT Basic Vol 3":"#",
+    "Persiapan JFT Basic Vol 4":"#", "Persiapan JFT Basic Vol 5":"#", "Persiapan JFT Basic Vol 6":"#",
+    "Persiapan JFT Basic Vol 7":"#", "Persiapan JFT Basic Vol 8":"#", "Persiapan JFT Basic Vol 9":"#",
+    "Persiapan JFT Basic Vol 10":"#", "Persiapan JFT Basic Vol 11":"#", "Persiapan JFT Basic Vol 12":"#",
+    "Persiapan JFT Basic Vol 13":"#", "Persiapan JFT Basic Vol 14":"#", "Persiapan JFT Basic Vol 15":"#",
+    "Persiapan JFT Basic Vol 16":"#", "Persiapan JFT Basic Vol 17":"#", "Persiapan JFT Basic Vol 18":"#",
+    "Simulasi JFT Basic 1":"#", "Simulasi JFT Basic 2":"#", "Simulasi JFT Basic 3":"#", "Simulasi JFT Basic 4":"#",
+    "Soal JFT Dasar 1(1)":"#", "Soal JFT Dasar 1":"#", "Soal JFT Dasar 2(1)":"#", "Soal JFT Dasar 2":"#",
+    "Soal JFT Dasar 3(1)":"#", "Soal JFT Dasar 3":"#", "Soal JFT Dasar 4(1)":"#", "Soal JFT Dasar 4":"#",
+    "Soal JFT Dasar 5":"#", "Soal JFT Dasar 6":"#", "Soal JFT Dasar 7":"#", "Soal JFT Dasar 8":"#",
+    "Soal JFT Dasar 9":"#", "Soal JFT Dasar 10":"#",
+    "Soal JFT Intermediate 1":"#", "Soal JFT Intermediate 2":"#", "Soal JFT Intermediate 3":"#",
+    "Soal JFT Intermediate 4":"#", "Soal JFT Intermediate 5":"#", "Soal JFT Intermediate 6":"#",
+    "Soal JFT Intermediate 7":"#", "Soal JFT Intermediate 8":"#", "Soal JFT Intermediate 9":"#", "Soal JFT Intermediate 10":"#"
+  }
+};
+
+function show(id){
+  const menu = document.getElementById("menu");
+  const submenu = document.getElementById("submenu");
+  const infoKlik = document.getElementById("info-klik");
+  menu.classList.add("hidden");
+  submenu.classList.add("hidden");
+  document.getElementById(id).classList.remove("hidden");
+  if(id === "submenu") infoKlik.classList.remove("hidden");
+  else infoKlik.classList.add("hidden");
+}
+
+function openKana(){ buildSub("Hiragana Katakana","kana"); }
+function openDongeng(){ buildSub("Dongeng Jepang","dongeng"); }
+function openIrodoriA1(){ buildSub("Irodori A1","irodoriA1"); }
+function openIrodoriA21(){ buildSub("Irodori A2(1)","irodoriA21"); }
+function openIrodoriA22(){ buildSub("Irodori A2(2)","irodoriA22"); }
+function openKotobaIrodori(){ buildSub("Kotoba Irodori","kotoba"); }
+function openJFT(){ buildSub("JFT Basic","jft"); }
+
+function buildSub(title,key){
+  const box=document.getElementById("submenu");
+  box.innerHTML=`
+    <h2>${title}</h2>
+    <div class="list">
+      ${Object.keys(quizLinks[key]).map(k=>
+        `<div class="item" onclick="go('${quizLinks[key][k]}')">
+          ${k}<span>→</span>
+        </div>`
+      ).join('')}
+      <button class="back" onclick="show('menu')">Kembali</button>
+    </div>
+  `;
+  show("submenu");
+}
+
+function go(url){
+  if(url === "#") { alert("Link belum tersedia."); return; }
+  if(!clickedLinks[url]){
+    clickedLinks[url] = true;
+    window.open(iklan, "_blank");
+  } else { window.open(url, "_blank"); }
+}
+</script>
+</body>
+</html>
