@@ -159,6 +159,10 @@ footer{
 <section id="menu">
   <h2>Kategori</h2>
   <div class="grid">
+    <div class="card" onclick="openGanbaro()">
+      <h3>Ganbaro Gakkou</h3>
+      <span>Ganbaro Gakkou Ponorogo</span>
+    </div>
     <div class="card" onclick="openPemula()">
       <h3>Kosakata Pemula</h3>
       <span>Kosakata Untuk Pemula</span>
@@ -289,7 +293,7 @@ function show(id){
   document.getElementById(id).classList.remove("hidden");
 }
 
-function openGanbaro(){ buildSub("Ganbaro","ganbaro"); }
+function openGanbaro(){ buildSub("Ganbaro Gakkou","ganbaro"); }
   function openPemula(){ buildSub("Kosakata Pemula","pemula"); }
 function openKata(){ buildSub("Kata Kerja & Sifat","kata"); }
 function openMinna(){ buildSub("Minna no Nihongo","minna"); }
