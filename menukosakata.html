@@ -193,6 +193,14 @@ footer{
 
 <script>
 const quizLinks={
+    ganbaro:{
+    "Kata Benda 1-100":"ganbaro1.html",
+    "Kata Benda 100-200":"ganbaro2.html",
+    "Kata Benda 200-244":"ganbaro3.html",
+    "Kata Kerja 1-100":"ganbaro4.html",
+    "Kata Kerja 100-136":"ganbaro5.html",
+    "Kata Sifat 1-71":"ganbaro6.html",
+},
   pemula:{
     "Kata Sapaan":"pemulasapaan.html",
     "Kata Ganti":"pemulaganti.html",
@@ -206,12 +214,6 @@ const quizLinks={
     "Peralatan Dapur":"pemuladapur.html",
     "Buah dan Sayur":"pemulasayur.html",
     "Ungkapan Pemula":"ganbaro.html",
-    "Ganbaro Kata Benda 1-100":"ganbaro1.html",
-    "Ganbaro Kata Benda 100-200":"ganbaro2.html",
-    "Ganbaro Kata Benda 200-244":"ganbaro3.html",
-    "Ganbaro Kata Kerja 1-100":"ganbaro4.html",
-    "Ganbaro Kata Kerja 100-136":"ganbaro5.html",
-    "Ganbaro Kata Sifat 1-71":"ganbaro6.html",
   },
   kata:{
     "Kata Kerja":"katakerja.html",
@@ -287,7 +289,8 @@ function show(id){
   document.getElementById(id).classList.remove("hidden");
 }
 
-function openPemula(){ buildSub("Kosakata Pemula","pemula"); }
+function openGanbaro(){ buildSub("Ganbaro","ganbaro"); }
+  function openPemula(){ buildSub("Kosakata Pemula","pemula"); }
 function openKata(){ buildSub("Kata Kerja & Sifat","kata"); }
 function openMinna(){ buildSub("Minna no Nihongo","minna"); }
 function openRandom(){ buildSub("Kosakata Ramdom","random"); }
