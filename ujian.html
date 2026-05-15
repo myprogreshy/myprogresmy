@@ -556,7 +556,7 @@ if(streak===5) badge.textContent="🏆 COMBO x5";
 result.innerHTML=`<b style="color:green;">BENAR +${bonus}XP</b>`;
 perfectCorrect++;
 cur++;
-setTimeout(loadQuestion,700);
+setTimeout(loadQuestion,1000);
 }
 
 function wrong(ans,romaji){
@@ -570,7 +570,7 @@ correct:ans
 
 result.innerHTML=`<b style="color:red;">SALAH → ${ans}</b>`;
 cur++;
-setTimeout(loadQuestion,1000);
+setTimeout(loadQuestion,3000);
 }
 
 function finish(){
