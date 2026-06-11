@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japanese Vocab Game ULTRA</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{
+height:100%;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
+background:#e6f9e6;
+}
+
+body{
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.app{
+width:100%;
+max-width:420px;
+height:100%;
+background:#ffffff;
+display:flex;
+flex-direction:column;
+padding:14px;
+}
+
+.top-bar{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.level{
+background:#58cc02;
+color:white;
+padding:6px 12px;
+border-radius:14px;
+font-weight:800;
+}
+
+.xp-bar{
+flex:1;
+height:12px;
+background:#dff5d8;
+border-radius:20px;
+overflow:hidden;
+}
+
+#progressBar{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#58cc02,#89e219);
+transition:.4s;
+}
+
+.score,.streak{
+padding:6px 10px;
+border-radius:14px;
+background:#f1fdf0;
+border:2px solid #58cc02;
+font-weight:700;
+}
+
+.info-table{
+width:100%;
+margin-top:6px;
+border-collapse:collapse;
+background:#f1fdf0;
+border:2px solid #58cc02;
+border-radius:12px;
+overflow:hidden;
+font-weight:800;
+font-size:0.9rem;
+}
+
+.info-table td{
+padding:6px 10px;
+}
+
+.quiz-name{color:#58cc02;}
+.q-number{text-align:right;color:#333;}
+
+.card{
+flex:1;
+background:#f8fff6;
+border-radius:26px;
+margin:20px 0;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+#question{
+font-size:3rem;
+font-weight:900;
+}
+
+#meaning{
+font-size:1rem;
+color:#666;
+margin-top:8px;
+}
+
+#options{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+#options button{
+padding:16px;
+font-size:1.3rem;
+border:none;
+border-radius:18px;
+background:#58cc02;
+color:white;
+font-weight:800;
+cursor:pointer;
+}
+
+.correct{
+background:#58cc02 !important;
+}
+
+#result{
+text-align:center;
+margin-top:8px;
+font-weight:800;
+min-height:28px;
+color:#000;
+}
+
+.badge{
+text-align:center;
+margin-top:4px;
+font-weight:900;
+color:#ff9600;
+}
+
+.restart{
+padding:14px;
+border:none;
+border-radius:16px;
+font-weight:800;
+background:#ff9600;
+color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="top-bar">
+<div class="level">XP</div>
+<div class="xp-bar"><div id="progressBar"></div></div>
+<div class="score" id="score">0 XP</div>
+<div class="streak" id="streak">x 0</div>
+</div>
+
+<table class="info-table">
+<tr>
+<td class="quiz-name">Kanji Reading</td>
+<td class="q-number" id="qNumber"></td>
+</tr>
+</table>
+
+<div class="card">
+<div id="question">?</div>
+<div id="meaning"></div>
+</div>
+
+<div id="options"></div>
+
+<div id="result"></div>
+<div class="badge" id="badge"></div>
+
+<button class="restart" id="restartBtn" onclick="start()" style="display:none;">
+Mulai Ulang
+</button>
+
+</div>
+
+<script>
+
+const vocab=[
+  ["人", "orang", "ひと"],
+  ["大", "besar", "おお"],
+  ["分", "bagian", "わ"],
+  ["一", "satu", "いち"],
+  ["見", "lihat", "み"],
+  ["出", "keluar", "で"],
+  ["日", "hari", "ひ"],
+  ["行", "pergi", "い"],
+  ["前", "di depan", "まえ"],
+  ["時", "waktu", "とき"],
+  ["生", "kehidupan", "なま"],
+  ["本", "buku", "ほん"],
+  ["中", "di dalam", "なか"],
+  ["今", "sekarang", "いま"],
+  ["間", "interval", "あいだ"],
+  ["年", "tahun", "とし"],
+  ["子", "anak", "こ"],
+  ["長", "panjang", "なが"],
+
+  // Gambar 2
+  ["上", "di atas", "うえ"],
+  ["入", "masuk", "はい"],
+  ["後", "di belakang", "うしろ"],
+  ["気", "semangat", "き"],
+  ["来", "datang", "く"],
+  ["話", "dongeng/bicara", "はなし"],
+  ["女", "wanita", "おんな"],
+  ["国", "negara", "くに"],
+  ["金", "emas", "かね"],
+  ["高", "tinggi", "たか"],
+  ["下", "di bawah", "した"],
+  ["学", "belajar", "まな"],
+  ["先", "sebelum", "さき"],
+  ["外", "di luar", "そと"],
+  ["何", "apa", "なに"],
+  ["男", "laki-laki", "おとこ"],
+  ["名", "nama", "なまえ"],
+  ["月", "bulan", "つき"],
+
+  // Gambar 3
+  ["小", "kecil", "ちい"],
+  ["聞", "dengar", "き"],
+  ["食", "makan", "た"],
+  ["書", "tulis", "か"],
+  ["山", "gunung", "やま"],
+  ["電", "listrik", "でん"],
+  ["二", "dua", "に"],
+  ["車", "mobil", "くるま"],
+  ["水", "air", "みず"],
+  ["木", "pohon", "き"],
+  ["母", "ibu", "はは"],
+  ["校", "ujian/sekolah", "こう"],
+
+  // Gambar 4
+  ["父", "ayah", "ちち"],
+  ["白", "putih", "しろ"],
+  ["語", "kata/bahasa", "ご"],
+  ["十", "sepuluh", "じゅう"],
+  ["万", "sepuluh ribu", "まん"],
+  ["友", "teman", "とも"],
+  ["川", "sungai", "かわ"],
+  ["三", "tiga", "さん"],
+  ["天", "surga/langit", "てん"],
+  ["東", "timur", "ひがし"],
+  ["半", "setengah", "はん"],
+  ["北", "utara", "きた"],
+  ["火", "api", "ひ"],
+  ["土", "tanah", "つち"],
+  ["南", "selatan", "みなみ"],
+  ["千", "seribu", "せん"],
+  ["西", "barat", "にし"],
+  ["毎", "setiap", "まい"],
+
+  // Gambar 5
+  ["休", "istirahat", "やす"],
+  ["八", "delapan", "はち"],
+  ["読", "baca", "よ"],
+  ["五", "lima", "ご"],
+  ["四", "empat", "よん"],
+  ["百", "seratus", "ひゃく"],
+  ["円", "lingkaran/yen", "えん"],
+  ["午", "siang", "ご"],
+  ["七", "tujuh", "なな"],
+  ["左", "kiri", "ひだり"],
+  ["右", "kanan", "みぎ"],
+  ["雨", "hujan", "あめ"],
+  ["六", "enam", "ろく"],
+  ["九", "sembilan", "きゅう"]
+];
+
+let q=[],cur=0,xp=0,streak=0;
+let perfectCorrect=0;
+let wrongList=[];
+let firstWrong=null;
+
+/* TAMBAHAN */
+let currentOptions=[];
+
+function shuffle(a){
+for(let i=a.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[a[i],a[j]]=[a[j],a[i]];
+}
+}
+
+function updateUI(){
+document.getElementById("score").textContent=xp+" XP";
+document.getElementById("streak").textContent="x "+streak;
+document.getElementById("qNumber").textContent=(cur+1)+" / "+q.length;
+
+const progress=(perfectCorrect/q.length)*100;
+document.getElementById("progressBar").style.width=progress+"%";
+}
+
+function loadQuestion(){
+
+if(cur>=q.length){finish();return;}
+
+firstWrong=null;
+
+const [kanji,arti,baca]=q[cur];
+
+document.getElementById("question").textContent=kanji;
+document.getElementById("meaning").textContent=arti;
+document.getElementById("result").textContent="";
+document.getElementById("badge").textContent="";
+
+const ops=new Set([baca]);
+
+while(ops.size<4){
+ops.add(vocab[Math.floor(Math.random()*vocab.length)][2]);
+}
+
+/* HANYA ACAK SEKALI */
+if(currentOptions.length===0){
+currentOptions=[...ops].sort(()=>Math.random()-0.5);
+}
+
+document.getElementById("options").innerHTML="";
+
+currentOptions.forEach(o=>{
+const b=document.createElement("button");
+b.textContent=o;
+b.onclick=()=>check(o,baca,kanji);
+document.getElementById("options").appendChild(b);
+});
+
+updateUI();
+}
+
+function check(sel,ans,kanji){
+
+const buttons=document.querySelectorAll("#options button");
+
+buttons.forEach(btn=>{
+btn.disabled=true;
+
+if(btn.textContent===ans){
+btn.classList.add("correct");
+}
+});
+
+if(sel===ans){
+
+let bonus=streak>=5?5:2;
+xp+=bonus;
+streak++;
+
+document.getElementById("result").textContent="BENAR +"+bonus+" XP";
+
+if(streak==5){
+document.getElementById("badge").textContent="🏆 COMBO x5";
+}
+
+if(!firstWrong){
+perfectCorrect++;
+}
+
+/* RESET OPSI UNTUK SOAL BARU */
+currentOptions=[];
+
+setTimeout(()=>{
+cur++;
+loadQuestion();
+},700);
+
+}else{
+
+streak=0;
+
+document.getElementById("result").textContent="SALAH";
+
+if(!firstWrong){
+firstWrong=sel;
+}
+
+setTimeout(()=>{
+loadQuestion();
+},700);
+}
+
+updateUI();
+}
+
+function finish(){
+
+document.getElementById("options").innerHTML="";
+document.querySelector(".card").innerHTML="<h2>Quiz Selesai 🎉</h2>";
+
+document.getElementById("progressBar").style.width="100%";
+document.getElementById("restartBtn").style.display="block";
+}
+
+function start(){
+
+q=[...vocab];
+shuffle(q);
+
+cur=0;
+xp=0;
+streak=0;
+perfectCorrect=0;
+wrongList=[];
+currentOptions=[];
+
+document.querySelector(".card").innerHTML=`
+<div id="question">?</div>
+<div id="meaning"></div>
+`;
+
+document.getElementById("restartBtn").style.display="none";
+
+loadQuestion();
+}
+
+start();
+
+</script>
+
+</body>
+</html>
