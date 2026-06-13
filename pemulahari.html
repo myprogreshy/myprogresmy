@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Japanese Vocab Game ULTRA</title>
+<title>Japanese Sentence Flashcard ULTRA</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -31,205 +31,182 @@ padding:14px;
 }
 
 /* TOP BAR */
-
 .top-bar{
 display:flex;
 align-items:center;
+justify-content: space-between;
 gap:10px;
+margin-bottom: 6px;
 }
 
-.level{
+.title-badge{
 background:#58cc02;
 color:white;
-padding:6px 12px;
+padding:6px 14px;
 border-radius:14px;
-font-weight:800;
-}
-
-.xp-bar{
-flex:1;
-height:12px;
-background:#dff5d8;
-border-radius:20px;
-overflow:hidden;
-}
-
-#progressBar{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#58cc02,#89e219);
-transition:.4s;
-}
-
-.score,.streak{
-padding:6px 10px;
-border-radius:14px;
-background:#f1fdf0;
-border:2px solid #58cc02;
-font-weight:700;
-}
-
-/* INFO TABLE */
-
-.info-table{
-width:100%;
-margin-top:6px;
-border-collapse:collapse;
-background:#f1fdf0;
-border:2px solid #58cc02;
-border-radius:12px;
-overflow:hidden;
 font-weight:800;
 font-size:0.9rem;
 }
 
-.info-table td{
-padding:6px 10px;
-}
-
-.quiz-name{
-color:#58cc02;
-text-align:left;
-}
-
-.q-number{
-text-align:right;
-color:#333;
-}
-
-/* CARD */
-
-.card{
-flex:1;
-background:#f8fff6;
-border-radius:26px;
-margin:20px 0;
-display:flex;
-align-items:center;
-justify-content:center;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-overflow:hidden;
-}
-
-#question{
-font-size:2.6rem;
-font-weight:900;
-color:#000;
-text-align:center;
-}
-
-/* RESULT AREA */
-
-.result-box{
-width:100%;
-height:100%;
-overflow-y:auto;
-padding:20px;
-}
-
-.result-header{
-text-align:center;
-margin-bottom:16px;
-}
-
-.result-header h2{
-font-size:1.6rem;
-font-weight:900;
-color:#58cc02;
-margin-bottom:6px;
-}
-
-.result-header p{
-font-size:.9rem;
-color:#666;
-}
-
-.review-table{
-width:100%;
-border-collapse:collapse;
-font-size:.9rem;
-border-radius:10px;
-overflow:hidden;
-}
-
-.review-table th{
-background:#58cc02;
-color:white;
-padding:8px;
-text-align:left;
-}
-
-.review-table td{
-padding:8px;
-border-bottom:1px solid #eee;
-}
-
-.review-table tr:nth-child(even){
-background:#f9fff7;
-}
-
-.correct{
-color:#2e7d32;
-font-weight:700;
-}
-
-.wrong{
-color:#c62828;
-font-weight:700;
-}
-
-/* OPTIONS */
-
-#options{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-}
-
-#options button{
-padding:16px;
-font-size:1.3rem;
-border:none;
-border-radius:18px;
-background:#58cc02;
-color:white;
+.card-counter{
+padding:6px 12px;
+border-radius:14px;
+background:#f1fdf0;
+border:2px solid #58cc02;
 font-weight:800;
-cursor:pointer;
-transition:.15s;
+font-size:0.9rem;
+color: #333;
 }
 
-#options button:hover{
-transform:scale(1.05);
-background:#46b400;
+/* FLASHCARD 3D EFFECT */
+.card-container {
+flex: 1;
+perspective: 1000px;
+margin: 15px 0;
+cursor: pointer;
 }
 
-/* RESULT TEXT */
-
-#result{
-text-align:center;
-margin-top:8px;
-font-weight:800;
-min-height:28px;
+.flashcard {
+width: 100%;
+height: 100%;
+position: relative;
+transform-style: preserve-3d;
+transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+box-shadow: 0 10px 25px rgba(0,0,0,.08);
+border-radius: 26px;
 }
 
-.badge{
-text-align:center;
-margin-top:4px;
-font-weight:900;
-color:#ff9600;
+/* Ketika kartu di-flip */
+.flashcard.flipped {
+transform: rotateY(180deg);
 }
 
-/* BUTTON */
+.card-face {
+position: absolute;
+width: 100%;
+height: 100%;
+backface-visibility: hidden;
+border-radius: 26px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 24px;
+border: 2px solid #e2e8f0;
+}
 
-.restart{
-padding:14px;
-border:none;
-border-radius:16px;
-font-weight:800;
-font-size:1rem;
-cursor:pointer;
-background:#ff9600;
-color:white;
+/* Sisi Depan (Bahasa Jepang) */
+.card-front {
+background: #f8fff6;
+border-color: #c2f0c2;
+}
+
+/* Sisi Belakang (Arti Indonesia) */
+.card-back {
+background: #ffffff;
+border-color: #58cc02;
+transform: rotateY(180deg);
+}
+
+.hint-text {
+font-size: 0.8rem;
+color: #888;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 1px;
+margin-bottom: 20px;
+position: absolute;
+top: 20px;
+}
+
+/* BADGE BAB DI DALAM KARTU DEPAN */
+.bab-badge-card {
+background: #dff5d8;
+color: #3b8701;
+padding: 4px 12px;
+border-radius: 10px;
+font-size: 0.85rem;
+font-weight: 800;
+margin-bottom: 16px;
+border: 1px solid #bce6b3;
+}
+
+.card-content {
+font-size: 1.6rem;
+font-weight: 900;
+color: #000;
+text-align: center;
+line-height: 1.8;
+word-break: break-word;
+}
+
+.card-back .card-content {
+font-size: 1.25rem;
+color: #2e7d32;
+line-height: 1.5;
+}
+
+/* KETERANGAN TAMBAHAN DI KARTU BELAKANG */
+.extra-info {
+margin-top: 16px;
+background: #f1fdf0;
+border-left: 4px solid #58cc02;
+padding: 8px 12px;
+border-radius: 4px;
+font-size: 0.85rem;
+color: #555;
+font-weight: 600;
+max-width: 90%;
+text-align: left;
+line-height: 1.4;
+}
+
+/* NAVIGASI TOMBOL */
+.nav-controls {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 14px;
+margin-top: 10px;
+}
+
+.nav-controls button {
+padding: 16px;
+font-size: 1.1rem;
+border: none;
+border-radius: 18px;
+color: white;
+font-weight: 800;
+cursor: pointer;
+transition: .15s;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+}
+
+#prevBtn {
+background: #888888;
+}
+
+#prevBtn:hover:not([disabled]) {
+background: #666666;
+transform: scale(1.02);
+}
+
+#nextBtn {
+background: #58cc02;
+}
+
+#nextBtn:hover:not([disabled]) {
+background: #46b400;
+transform: scale(1.02);
+}
+
+/* Style ketika tombol dinonaktifkan (di ujung data) */
+button:disabled {
+opacity: 0.4;
+cursor: not-allowed;
+transform: none !important;
 }
 
 </style>
@@ -240,227 +217,317 @@ color:white;
 <div class="app">
 
 <div class="top-bar">
-<div class="level">XP</div>
-<div class="xp-bar"><div id="progressBar"></div></div>
-<div class="score" id="score">0 XP</div>
-<div class="streak" id="streak">x 0</div>
+<div class="title-badge">Flashcard Contoh Kalimat</div>
+<div class="card-counter" id="cardCounter">1 / 10</div>
 </div>
 
-<table class="info-table">
-<tr>
-<td class="quiz-name">Nama Hari</td>
-<td class="q-number" id="qNumber">1 / 12</td>
-</tr>
-</table>
-
-<div class="card">
-<div id="question">?</div>
+<div class="card-container" onclick="flipCard()">
+<div class="flashcard" id="flashcard">
+<div class="card-face card-front">
+<div class="hint-text">🇯🇵 Bahasa Jepang (Klik untuk arti)</div>
+<div class="bab-badge-card" id="babText">Bab --</div>
+<div class="card-content" id="qText">?</div>
+</div>
+<div class="card-face card-back">
+<div class="hint-text">🇮🇩 Arti Indonesia</div>
+<div class="card-content" id="aText">?</div>
+<div class="extra-info" id="extraText">?</div>
+</div>
+</div>
 </div>
 
-<div id="options"></div>
-
-<div id="result"></div>
-<div class="badge" id="badge"></div>
-
-<button class="restart" id="restartBtn" onclick="start()" style="display:none;">
-Mulai Ulang
-</button>
+<div class="nav-controls">
+<button id="prevBtn" onclick="prevCard()">Kembali</button>
+<button id="nextBtn" onclick="nextCard()">Lanjut</button>
+</div>
 
 </div>
 
 <script>
 
-const vocab=[
-["かようび", "selasa"],["すいようび", "rabu"],["もくようび", "kamis"],["きんようび", "jumat"],
-["どようび", "sabtu"],["にちようび", "minggu"],["げつようび", "senin"]
+// DATA KALIMAT FLASHCARD
+// Format baru: ["Kalimat Jepang", "Arti Indonesia", "Keterangan Bab", "Keterangan Tambahan / Kosongkan jika tidak ada"]
+const sentenceData = [
+[
+    "X : ミラーさんは <ruby>学生<rt>がくせい</rt></ruby>ですか。<br>Y : ……いいえ、わたしは <ruby>学生<rt>がくせい</rt></ruby>じゃ ありません。",
+    "Apakah Sdr. Miller seorang mahasiswa?<br>……Tidak, saya bukan mahasiswa.",
+    "Bab 1",
+    "Pola: KB 1 は KB 2 じゃ ありません (Bentuk negatif informal untuk menyatakan identitas/profesi)."
+  ],
+  [
+    "X : ワンさんは <ruby>銀行員<rt>ぎんこういん</rt></ruby>ですか。<br>Y : ……いいえ、ワンさんは <ruby>銀行員<rt>ぎんこういん</rt></ruby>じゃ ありません。<br>Y : <ruby>医者<rt>いしゃ</rt></ruby>です。",
+    "Apakah Sdr. Wang seorang karyawan bank?<br>……Tidak, Sdr. Wang bukan karyawan bank. Dia adalah seorang dokter.",
+    "Bab 1",
+    "Menyatakan sanggahan profesi diikuti dengan penyebutan profesi yang benar menggunakan '~です'."
+  ],
+  [
+    "X : あの<ruby>方<rt>かた</rt></ruby>は どなたですか。<br>Y : ……ワットさんです。さくら<ruby>大学<rt>だいがく</rt></ruby>の <ruby>先生<rt>せんせい</rt></ruby>です。",
+    "Orang itu siapakah?<br>……Sdr. Watt. Dia adalah dosen Universitas Sakura.",
+    "Bab 1",
+    "Pola: あの方 (Bentuk sopan dari あの人) + どなた (Bentuk sopan dari だれ). Partikel の menunjukkan afiliasi/tempat bekerja."
+  ],
+  [
+    "X : グプタさんは <ruby>会社員<rt>かいしゃいん</rt></ruby>ですか。<br>Y : ……はい、<ruby>会社員<rt>かいしゃいん</rt></ruby>です。",
+    "Apakah Sdr. Gupta seorang karyawan perusahaan?<br>……Ya, dia seorang karyawan perusahaan.",
+    "Bab 1",
+    "Pola kalimat tanya positif dengan jawaban konfirmasi 'はい' (Ya)."
+  ],
+  [
+    "X : カリナさんも <ruby>会社員<rt>かいしゃいん</rt></ruby>ですか。<br>Y : ……いいえ、カリナさんは <ruby>学生<rt>がくせい</rt></ruby>です。",
+    "Apakah Sdr. Karina juga seorang karyawan perusahaan?<br>……Tidak, Sdr. Karina adalah seorang mahasiswa.",
+    "Bab 1",
+    "Partikel も (juga) digunakan jika predikat kalimat bernilai sama dengan kalimat sebelumnya."
+  ],
+  [
+    "X : テレーザちゃんは <ruby>何歳<rt>なんさい</rt></ruby>ですか。<br>Y : ……9<ruby>歳<rt>さい</rt></ruby>です。",
+    "Berapakah umur Th. Teresa?<br>……Umur 9 tahun.",
+    "Bab 1",
+    "Akhiran ちゃん digunakan untuk anak-anak. Kata tanya umur menggunakan 何歳 (Nansai) atau おいくつ (lebih sopan)."
+  ],
+
+  // === BAB 2 ===
+  [
+    "X : これは ボールペンですか。<br>Y : ……はい、そうです。",
+    "Apakah ini pulpen?<br>……Ya, benar.",
+    "Bab 2",
+    "Kata tunjuk magnetism これ (ini) digunakan untuk benda yang berada di dekat pembicara. Frasa そうです berarti 'Begitulah/Benar'."
+  ],
+  [
+    "X : それは ノートですか。<br>Y : ……いいえ、これは <ruby>手帳<rt>てちょう</rt></ruby>です。",
+    "Apakah itu buku catatan?<br>……Tidak, ini adalah buku agenda/catatan saku.",
+    "Bab 2",
+    "Kata tunjuk それ (itu) digunakan untuk benda yang berada di dekat lawan bicara. Saat menjawab, posisinya berubah menjadi これ."
+  ],
+  [
+    "X : それは <ruby>何<rt>なん</rt></ruby>ですか。<br>Y : ……<ruby>名刺<rt>めいし</rt></ruby>です。",
+    "Apakah itu?<br>……Ini adalah kartu nama.",
+    "Bab 2",
+    "Kata tanya 何 (Nan/Nani) digunakan untuk menanyakan suatu benda."
+  ],
+  [
+    "X : これは 「9」ですか、「7」ですか。<br>Y : ……「9」です。",
+    "Apakah ini angka '9' atau angka '7'?<br>……Angka '9'.",
+    "Bab 2",
+    "Pola kalimat tanya pilihan: Kalimat 1 か、Kalimat 2 か. Lawan bicara harus memilih salah satu jawaban."
+  ],
+  [
+    "X : それは <ruby>何<rt>なん</rt></ruby>の <ruby>雑誌<rt>ざっし</rt></ruby>ですか。<br>Y : ……コンピューターの <ruby>雑誌<rt>ざっし</rt></ruby>です。",
+    "Itu majalah apa?<br>……Majalah komputer.",
+    "Bab 2",
+    "Pola: 何の + KB digunakan untuk menanyakan isi atau topik spesifik dari suatu barang/buku/majalah."
+  ],
+  [
+    "X : あれは だれの かばんですか。<br>Y : ……<ruby>佐藤<rt>さとう</rt></ruby>さんの かばんです。",
+    "Itu tas milik siapa?<br>……Tas milik Sdr. Sato.",
+    "Bab 2",
+    "Kata tunjuk あれ (itu) untuk benda yang jauh dari pembicara maupun lawan bicara. だれの menanyakan kepemilikan."
+  ],
+  [
+    "X : これは ミラーさんのですか。<br>Y : ……いいえ、わたしのじゃ ありません。",
+    "Apakah ini milik Sdr. Miller?<br>……Tidak, ini bukan milik saya.",
+    "Bab 2",
+    "Pola: KB + の dapat berfungsi sebagai pengganti kata benda yang sudah dipahami sebelumnya (artinya: 'milik ...')."
+  ],
+  [
+    "X : この かぎは だれのですか。<br>Y : ……わたしのです。",
+    "Kunci ini milik siapa?<br>……Milik saya.",
+    "Bab 2",
+    "Pola Kata Tunjuk Spesifik: この / その / あの harus langsung menempel di depan Kata Benda (tidak bisa berdiri sendiri)."
+  ],
+
+  // === BAB 3 ===
+  [
+    "X : ここは <ruby>新大阪<rt>しんおおさか</rt></ruby>ですか。<br>Y : ……はい、そうです。",
+    "Apakah di sini Shin-Osaka?<br>……Ya, benar.",
+    "Bab 3",
+    "Kata tunjuk tempat: ここ (di sini) menunjukkan tempat pembicara berada."
+  ],
+  [
+    "X : トイレは どこですか。<br>Y : ……あそこです。",
+    "Toilet ada di mana?<br>……Di sebelah sana.",
+    "Bab 3",
+    "Pola: KB は Tempat です. Kata tanya どこ digunakan untuk menanyakan keberadaan lokasi suatu tempat/ruangan."
+  ],
+  [
+    "X : 山田さんは どこですか。<br>Y : ……<ruby>会議室<rt>かいぎしつ</rt></ruby>です。",
+    "Sdr. Yamada ada di mana?<br>……Ada di ruang rapat.",
+    "Bab 3",
+    "Pola ini juga digunakan untuk menanyakan posisi keberadaan seseorang saat ini."
+  ],
+  [
+    "X : <ruby>事務所<rt>じむしょ</rt></ruby>は どちらですか。<br>Y : ……あちらです。",
+    "Kantornya di sebelah mana?<br>……Di sebelah sana.",
+    "Bab 3",
+    "どちら dan あちら adalah bentuk lebih sopan (polite) dari kata tunjuk arah/tempat どこ dan あそこ."
+  ],
+  [
+    "X : お<ruby>国<rt>くに</rt></ruby>は どちらですか。<br>Y : ……アメリカです。",
+    "Negara Anda di mana?<br>……Amerika.",
+    "Bab 3",
+    "Awalan お (O-) pada お国 ditambahkan untuk menghormati aset/negara asal milik lawan bicara saat bertanya."
+  ],
+  [
+    "X : それは どこ の <ruby>靴<rt>くつ</rt></ruby>ですか。<br>Y : ……イタリアの <ruby>靴<rt>くつ</rt></ruby>です。",
+    "Itu sepatu buatan mana?<br>……Sepatu buatan Italia.",
+    "Bab 3",
+    "Pola: どこ の + KB digunakan untuk menanyakan negara produsen atau perusahaan yang memproduksi barang tersebut."
+  ],
+  [
+    "X : この <ruby>時計<rt>とけい</rt></ruby>は いくらですか。<br>Y : ……18,600<ruby>円<rt>えん</rt></ruby>です。",
+    "Berapa harga jam tangan ini?<br>……Harganya 18.600 Yen.",
+    "Bab 3",
+    "Kata tanya いくら digunakan untuk menanyakan harga suatu barang."
+  ],
+
+  // === BAB 4 ===
+  [
+    "X : 今 <ruby>何時<rt>なんじ</rt></ruby>ですか。<br>Y : ……2<ruby>時<rt>じ</rt></ruby>10<ruby>分<rt>ぷん</rt></ruby>です。",
+    "Sekarang jam berapa?<br>……Jam 2 lewat 10 menit.",
+    "Bab 4",
+    "Pola: 今 何時ですか (Menanyakan waktu saat ini). Perhatikan perubahan bunyi menit (分) seperti 10分 (pun)."
+  ],
+  [
+    "X : ニューヨークは 今 <ruby>何時<rt>なんじ</rt></ruby>ですか。<br>Y : ……<ruby>午前<rt>ごぜん</rt></ruby> 0<ruby>時<rt>じ</rt></ruby>10<ruby>分<rt>ぶん</rt></ruby>です。",
+    "Di New York sekarang jam berapa?<br>……Jam 12.10 malam (Dini hari).",
+    "Bab 4",
+    "Keterangan 午前 (AM / dini hari sampai siang) diletakkan di depan angka jam."
+  ],
+  [
+    "X : <ruby>休み<rt>やすみ</rt></ruby>は <ruby>何曜日<rt>なんようび</rt></ruby>ですか。<br>Y : ……<ruby>土曜日<rt>どようび</rt></ruby>と <ruby>日曜日<rt>にちようび</rt></ruby>です。",
+    "Hari liburnya hari apa?<br>……Hari Sabtu dan hari Minggu.",
+    "Bab 4",
+    "Kata tanya 何曜日 (Nanyoubi) untuk hari. Partikel と berfungsi sebagai kata hubung 'dan' untuk kata benda."
+  ],
+  [
+    "X : アップル<ruby>銀行<rt>ぎんこう</rt></ruby>は <ruby>何時<rt>なんじ</rt></ruby>から <ruby>何時<rt>なんじ</rt></ruby>までですか。<br>Y : ……9<ruby>時<rt>じ</rt></ruby>から 3<ruby>時<rt>じ</rt></ruby>までです。",
+    "Bank Apple buka dari jam berapa sampai jam berapa?<br>……Dari jam 9 sampai jam 3.",
+    "Bab 4",
+    "Pola: から (dari) ... まで (sampai). Digunakan untuk menerangkan batasan waktu operasional atau aktivitas."
+  ],
+  [
+    "X : <ruby>毎晩<rt>まいばん</rt></ruby> <ruby>何時<rt>なんじ</rt></ruby>に <ruby>寝<rt>ね</rt></ruby>ますか。<br>Y : ……11<ruby>時<rt>じ</rt></ruby>に <ruby>寝<rt>ね</rt></ruby>ます。",
+    "Setiap malam tidur jam berapa?<br>……Tidur jam 11.",
+    "Bab 4",
+    "Partikel に ditempelkan tepat setelah keterangan waktu yang bermutu angka konkret/pasti."
+  ],
+  [
+    "X : <ruby>毎日<rt>まいにち</rt></ruby> <ruby>何時<rt>なんじ</rt></ruby>から <ruby>何時<rt>なんじ</rt></ruby>まで <ruby>勉強<rt>べんきょう</rt></ruby>しますか。<br>Y : ……<ruby>朝<rt>あさ</rt></ruby> 9<ruby>時<rt>じ</rt></ruby>から <ruby>午後<rt>ごご</rt></ruby> 3<ruby>時<rt>じ</rt></ruby>まで <ruby>勉強<rt>べんきょう</rt></ruby>します。",
+    "Setiap hari belajar dari jam berapa sampai jam berapa?<br>……Belajar dari jam 9 pagi sampai jam 3 sore.",
+    "Bab 4",
+    "Kombinasi pola kerja ~から ~まで ditandai dengan kata kerja aktif di bagian penutup kalimat."
+  ],
+  [
+    "X : <ruby>土曜日<rt>どようび</rt></ruby> <ruby>働き<rt>はたら</rt></ruby>ますか。<br>Y : ……いいえ、<ruby>働き<rt>はたら</rt></ruby>ません。",
+    "Apakah hari Sabtu bekerja?<br>……Tidak, tidak bekerja.",
+    "Bab 4",
+    "Bentuk kerja negatif non-lampau: KK ~ます menjadi KK ~ません."
+  ],
+  [
+    "X : きのう <ruby>勉強<rt>べんきょう</rt></ruby>しましたか。<br>Y : ……いいえ、<ruby>勉強<rt>べんきょう</rt></ruby>しませんでした。",
+    "Apakah kemarin sudah belajar?<br>……Tidak, kemarin tidak belajar.",
+    "Bab 4",
+    "Bentuk negatif lampau (Past-Negative): KK ~しませんでした karena ada keterangan waktu 'きのう' (kemarin)."
+  ],
+
+  // === BAB 5 ===
+  [
+    "X : あした どこへ <ruby>行<rt>い</rt></ruby>きますか。<br>Y : ……<ruby>奈良<rt>なら</rt></ruby>へ <ruby>行<rt>い</rt></ruby>きます。",
+    "Besok pergi ke mana?<br>……Pergi ke Nara.",
+    "Bab 5",
+    "Partikel へ (dibaca E) menerangkan arah perpindahan/perjalanan ke suatu tempat."
+  ],
+  [
+    "X : <ruby>日曜日<rt>にちようび</rt></ruby> どこへ <ruby>行<rt>い</rt></ruby>きましたか。<br>Y : ……どこ[へ]も <ruby>行<rt>い</rt></ruby>きませんでした。",
+    "Hari Minggu kemarin sudah pergi ke mana?<br>……Tidak pergi ke mana-mana.",
+    "Bab 5",
+    "Pola Penyanggan Total: Kata Tanya + [Partikel] + も + Bentuk Negatif (~ません/~ませんでした)."
+  ],
+  [
+    "X : <ruby>何<rt>なん</rt></ruby>で <ruby>東京<rt>とうきょう</rt></ruby>へ <ruby>行<rt>い</rt></ruby>きますか。<br>Y : ……<ruby>新幹線<rt>しんかんせん</rt></ruby>で <ruby>行<rt>い</rt></ruby>きます。",
+    "Pergi ke Tokyo naik apa?<br>……Pergi naik Shinkansen.",
+    "Bab 5",
+    "Partikel で (dengan/menggunakan) setelah kata benda sarana transportasi."
+  ],
+  [
+    "X : だれと <ruby>東京<rt>とうきょう</rt></ruby>へ <ruby>行<rt>い</rt></ruby>きますか。<br>Y : ……<ruby>山田<rt>やまだ</rt></ruby>さんと <ruby>行<rt>い</rt></ruby>きます。",
+    "Pergi ke Tokyo bersama siapa?<br>……Pergi bersama Sdr. Yamada.",
+    "Bab 5",
+    "Partikel と (bersama) ditempelkan setelah orang/makhluk hidup yang mendampingi beraktivitas."
+  ],
+  [
+    "X : いつ <ruby>日本<rt>にほん</rt></ruby>へ <ruby>来<rt>き</rt></ruby>ましたか。<br>Y : ……3<ruby>月<rt>がつ</rt></ruby>25<ruby>日<rt>にち</rt></ruby>に <ruby>来<rt>き</rt></ruby>ました。",
+    "Kapan datang ke Jepang?<br>……Sudah datang pada tanggal 25 Maret.",
+    "Bab 5",
+    "Kata tanya いつ (kapan) digunakan tanpa perlu partikel に dibelakangnya. Perhatikan penulisan nama bulan dan tanggal."
+  ],
+  [
+    "X : <ruby>誕生日<rt>たんじょうび</rt></ruby>は いつですか。<br>Y : ……6<ruby>月<rt>がつ</rt></ruby>13<ruby>日<rt>にち</rt></ruby>です。",
+    "Hari ulang tahunmu kapan?<br>……Tanggal 13 Juni.",
+    "Bab 5",
+    "Menanyakan tanggal spesifik suatu acara/momen menggunakan pola 'KB は いつですか'."
+  ]
 ];
 
-let q=[],cur=0,xp=0,streak=0;
-let correct=0;
-let wrong=0;
-let wrongList=[];
-let firstWrong=null;
-let perfectCorrect=0;
+let index = 0;
 
-function shuffle(a){
-for(let i=a.length-1;i>0;i--){
-const j=Math.floor(Math.random()*(i+1));
-[a[i],a[j]]=[a[j],a[i]];
-}
-}
+function updateCard() {
+  const cardElement = document.getElementById("flashcard");
+  
+  // Kembalikan posisi kartu ke sisi depan setiap berganti soal
+  cardElement.classList.remove("flipped");
 
-function updateUI(){
+  // Beri jeda sedikit agar perubahan teks terjadi saat kartu menghadap ke depan
+  setTimeout(() => {
+    const currentData = sentenceData[index];
 
-document.getElementById("score").textContent=xp+" XP";
-document.getElementById("streak").textContent="x "+streak;
+    // Isi Konten Sisi Depan
+    document.getElementById("babText").textContent = currentData[2];
+    document.getElementById("qText").innerHTML = currentData[0];
 
-const progress=(perfectCorrect/q.length)*100;
-document.getElementById("progressBar").style.width=progress+"%";
+    // Isi Konten Sisi Belakang
+    document.getElementById("aText").innerHTML = currentData[1];
+    
+    // Validasi Keterangan Tambahan
+    const extraElement = document.getElementById("extraText");
+    if (currentData[3] && currentData[3].trim() !== "") {
+      extraElement.style.display = "block";
+      extraElement.innerHTML = currentData[3];
+    } else {
+      extraElement.style.display = "none";
+    }
 
-document.getElementById("qNumber").textContent=(cur+1)+" / "+q.length;
+    // Nomor urut kartu
+    document.getElementById("cardCounter").textContent = (index + 1) + " / " + sentenceData.length;
 
-}
-
-function loadQuestion(){
-
-if(cur>=q.length){
-finish();
-return;
-}
-
-firstWrong=null;
-
-const [indo,jp]=q[cur];
-
-document.getElementById("question").textContent=indo;
-document.getElementById("result").textContent="";
-document.getElementById("badge").textContent="";
-
-const ops=new Set([jp]);
-
-while(ops.size<4){
-ops.add(vocab[Math.floor(Math.random()*vocab.length)][1]);
+    // Atur kondisi tombol aktif/nonaktif di ujung kartu
+    document.getElementById("prevBtn").disabled = (index === 0);
+    document.getElementById("nextBtn").disabled = (index === sentenceData.length - 1);
+  }, 150);
 }
 
-document.getElementById("options").innerHTML="";
-
-[...ops].sort(()=>Math.random()-0.5).forEach(o=>{
-const b=document.createElement("button");
-b.textContent=o;
-b.onclick=()=>check(o,jp,indo);
-document.getElementById("options").appendChild(b);
-});
-
-updateUI();
+// Fungsi membalikkan kartu
+function flipCard() {
+  document.getElementById("flashcard").classList.toggle("flipped");
 }
 
-function check(sel,ans,indo){
-
-if(sel===ans){
-
-streak++;
-correct++;
-
-let bonus=streak>=5?5:2;
-xp+=bonus;
-
-if(streak==5){
-document.getElementById("badge").textContent="🏆 COMBO x5";
+// Fungsi navigasi ke kartu berikutnya
+function nextCard() {
+  if (index < sentenceData.length - 1) {
+    index++;
+    updateCard();
+  }
 }
 
-document.getElementById("result").textContent="BENAR +"+bonus+"XP";
-
-if(!firstWrong){
-perfectCorrect++;
+// Fungsi navigasi ke kartu sebelumnya
+function prevCard() {
+  if (index > 0) {
+    index--;
+    updateCard();
+  }
 }
 
-if(firstWrong){
-wrongList.push({
-q:indo,
-your:firstWrong,
-correct:ans
-});
-}
-
-cur++;
-
-updateUI();
-
-setTimeout(loadQuestion,500);
-
-}else{
-
-streak=0;
-
-if(!firstWrong){
-firstWrong=sel;
-wrong++;
-}
-
-document.getElementById("result").textContent="SALAH";
-
-}
-
-}
-
-function finish(){
-
-document.getElementById("options").innerHTML="";
-document.getElementById("result").textContent="";
-document.getElementById("badge").textContent="";
-
-let html=`
-<div class="result-box">
-
-<div class="result-header">
-<h2>Quiz Selesai 🎉</h2>
-<p>Lihat progres belajarmu</p>
-</div>
-`;
-
-if(wrongList.length>0){
-
-html+=`
-<table class="review-table">
-<tr>
-<th>Soal</th>
-<th>Jawaban Kamu</th>
-<th>Jawaban Benar</th>
-</tr>
-`;
-
-wrongList.forEach(i=>{
-html+=`
-<tr>
-<td>${i.q}</td>
-<td class="wrong">${i.your}</td>
-<td class="correct">${i.correct}</td>
-</tr>
-`;
-});
-
-html+=`</table>`;
-
-}else{
-
-html+=`<p style="text-align:center;font-weight:700;color:#2e7d32;">Semua jawaban benar! 🔥</p>`;
-
-}
-
-html+=`</div>`;
-
-document.querySelector(".card").innerHTML=html;
-
-document.getElementById("progressBar").style.width="100%";
-
-document.getElementById("restartBtn").style.display="block";
-
-}
-
-function start(){
-
-q=[...vocab];
-shuffle(q);
-
-cur=0;
-xp=0;
-streak=0;
-
-correct=0;
-wrong=0;
-perfectCorrect=0;
-
-wrongList=[];
-
-document.querySelector(".card").innerHTML='<div id="question">?</div>';
-
-document.getElementById("restartBtn").style.display="none";
-
-loadQuestion();
-
-}
-
-start();
+// Menjalankan inisialisasi awal saat halaman dimuat
+updateCard();
 
 </script>
 
