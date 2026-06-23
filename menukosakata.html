@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Menu Quiz Jepang</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -14,6 +14,7 @@
   --card:#ffffff;
   --text:#1f2937;
   --muted:#6b7280;
+  --success:#2ec4b6; /* Warna hijau untuk tanda kuis selesai */
 }
 
 *{
@@ -121,6 +122,17 @@ h2{
   background:#f0f6ff;
 }
 
+/* Gaya khusus untuk item kuis yang selesai dikerjakan */
+.item.completed {
+  border-color: var(--success);
+  background: #f0fdfa;
+}
+
+.item.completed .status-icon {
+  color: var(--success);
+  font-weight: bold;
+}
+
 .back{
   margin-top:15px;
   background:#f3f4f6;
@@ -175,15 +187,15 @@ footer{
       <h3>Minna no Nihongo</h3>
       <span>Kosakata Per Bab</span>
     </div>
- <div class="card" onclick="openRandom()">
+    <div class="card" onclick="openRandom()">
       <h3>Kosakata Random</h3>
       <span>Kosakata Acak</span>
-  </div>
+    </div>
     <div class="card" onclick="openBuild()">
       <h3>Buat Kosakata</h3>
       <span>Buat Kosakata Anda</span>
+    </div>
   </div>
-</div>
 </section>
 
 <!-- SUBMENU -->
@@ -281,7 +293,7 @@ random:{
     "Kosakata 2":"kotoba.html",
     "Kosakata 3":"n5kosakata.html",
     "Kosakata 4":"xpresstka.html",
-      "Kosakata 5":"kamussaku.html",
+    "Kosakata 5":"kamussaku.html",
 },
   build:{
     "Buat Kosakata":"developer.html",
@@ -295,22 +307,54 @@ function show(id){
 }
 
 function openGanbaro(){ buildSub("Ganbaro Gakkou","ganbaro"); }
-  function openPemula(){ buildSub("Kosakata Pemula","pemula"); }
+function openPemula(){ buildSub("Kosakata Pemula","pemula"); }
 function openKata(){ buildSub("Kata Kerja & Sifat","kata"); }
 function openMinna(){ buildSub("Minna no Nihongo","minna"); }
-function openRandom(){ buildSub("Kosakata Ramdom","random"); }
-  function openBuild(){ buildSub("Buat Kosakata","build"); }
+function openRandom(){ buildSub("Kosakata Random","random"); }
+function openBuild(){ buildSub("Buat Kosakata","build"); }
+
+// 1. Fungsi penentu Jendela Waktu (Reset otomatis 2x sehari pada jam 12:00 dan 00:00)
+function getCurrentPeriodId() {
+  const d = new Date();
+  const dateStr = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+  const period = d.getHours() < 12 ? "AM" : "PM"; // AM (00:00 - 11:59) & PM (12:00 - 23:59)
+  return `${dateStr}-${period}`;
+}
+
+// 2. Fungsi validasi status reset kuis
+function checkExpiry() {
+  const currentPeriod = getCurrentPeriodId();
+  const savedPeriod = localStorage.getItem("quiz_period_id");
+  
+  // Apabila wilayah waktu berubah (pindah hari atau berganti AM/PM), hapus riwayat lama!
+  if (savedPeriod !== currentPeriod) {
+    localStorage.removeItem("quiz_history");
+    localStorage.setItem("quiz_period_id", currentPeriod);
+    return {};
+  }
+  
+  return JSON.parse(localStorage.getItem("quiz_history")) || {};
+}
 
 function buildSub(title,key){
+  // Validasi kuis hangus dijalankan setiap kali membuka submenu kuis
+  const history = checkExpiry();
   const box=document.getElementById("submenu");
+  
   box.innerHTML=`
     <h2>${title}</h2>
     <div class="list">
-      ${Object.keys(quizLinks[key]).map(k=>
-        `<div class="item" onclick="go('${quizLinks[key][k]}')">
-          ${k}<span>→</span>
-        </div>`
-      ).join('')}
+      ${Object.keys(quizLinks[key]).map(k=> {
+        const url = quizLinks[key][k];
+        const isCompleted = history[url] ? true : false;
+        
+        return `
+          <div class="item ${isCompleted ? 'completed' : ''}" onclick="go('${url}')">
+            ${k}
+            <span class="status-icon">${isCompleted ? '✓' : '→'}</span>
+          </div>
+        `;
+      }).join('')}
       <button class="back" onclick="show('menu')">Kembali</button>
     </div>
   `;
@@ -318,8 +362,19 @@ function buildSub(title,key){
 }
 
 function go(url){
+  // Jalankan cek masa aktif sesaat sebelum menyimpan riwayat baru
+  const history = checkExpiry();
+  
+  // Berikan label lulus/selesai pada kuis aktif
+  history[url] = true;
+  localStorage.setItem("quiz_history", JSON.stringify(history));
+
+  // Menuju halaman kuis
   window.location.href=url;
 }
+
+// Jalankan fungsi pengontrol pertama kali aplikasi dimuat
+checkExpiry();
 </script>
 
 </body>
