@@ -266,9 +266,13 @@ function openBuild(){ buildSub("Buat Kosakata","build"); }
 // 1. Fungsi penentu Jendela Waktu (Reset otomatis 2x sehari pada jam 12:00 dan 00:00)
 function getCurrentPeriodId() {
   const d = new Date();
-  const dateStr = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-  const period = d.getHours() < 12 ? "AM" : "PM"; // AM (00:00 - 11:59) & PM (12:00 - 23:59)
-  return `${dateStr}-${period}`;
+
+  const dateStr =
+    d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
+
+  return dateStr;
 }
 
 // 2. Fungsi validasi status reset kuis
