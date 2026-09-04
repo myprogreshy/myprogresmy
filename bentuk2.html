@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japanese Vocab Game ULTRA</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{
+height:100%;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
+background:#e6f9e6;
+}
+
+body{
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.app{
+width:100%;
+max-width:420px;
+height:100%;
+background:#fff;
+display:flex;
+flex-direction:column;
+padding:14px;
+}
+
+.top-bar{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.level{
+background:#58cc02;
+color:white;
+padding:6px 12px;
+border-radius:14px;
+font-weight:800;
+}
+
+.xp-bar{
+flex:1;
+height:12px;
+background:#dff5d8;
+border-radius:20px;
+overflow:hidden;
+}
+
+#progressBar{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#58cc02,#89e219);
+transition:.4s;
+}
+
+.score,.streak{
+padding:6px 10px;
+border-radius:14px;
+background:#f1fdf0;
+border:2px solid #58cc02;
+font-weight:700;
+}
+
+.info-table{
+width:100%;
+margin-top:6px;
+border-collapse:collapse;
+background:#f1fdf0;
+border:2px solid #58cc02;
+border-radius:12px;
+overflow:hidden;
+font-weight:800;
+font-size:.9rem;
+}
+
+.info-table td{
+padding:6px 10px;
+}
+
+.quiz-name{color:#58cc02;}
+.q-number{text-align:right;}
+
+.card{
+flex:1;
+background:#f8fff6;
+border-radius:26px;
+margin:20px 0;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+overflow:hidden;
+padding:20px;
+}
+
+#question{
+font-size:2.5rem;
+font-weight:900;
+text-align:center;
+}
+
+.answer-wrap{
+position:relative;
+margin-bottom:10px;
+}
+
+.answer-box{
+min-height:55px;
+border:2px dashed #58cc02;
+border-radius:14px;
+padding:10px;
+padding-right:50px;
+font-size:1.4rem;
+font-weight:800;
+text-align:center;
+}
+
+#deleteBtn{
+position:absolute;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+border:none;
+background:transparent;
+font-size:1.5rem;
+cursor:pointer;
+opacity:.45;
+transition:.2s;
+}
+
+#deleteBtn:hover{
+opacity:1;
+transform:translateY(-50%) scale(1.15);
+}
+
+#options{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:10px;
+}
+
+#options button{
+padding:14px;
+font-size:1.2rem;
+border:none;
+border-radius:16px;
+background:#58cc02;
+color:white;
+font-weight:800;
+cursor:pointer;
+transition:.15s;
+}
+
+#options button:hover{
+transform:scale(1.05);
+}
+
+#result{
+text-align:center;
+margin-top:10px;
+font-weight:800;
+min-height:40px;
+}
+
+.badge{
+text-align:center;
+font-weight:900;
+color:#ff9600;
+margin-top:6px;
+}
+
+.restart{
+padding:14px;
+border:none;
+border-radius:16px;
+font-weight:800;
+font-size:1rem;
+cursor:pointer;
+background:#ff9600;
+color:white;
+}
+
+.result-box{
+width:100%;
+height:100%;
+overflow-y:auto;
+padding:20px;
+}
+
+.review-table{
+width:100%;
+border-collapse:collapse;
+font-size:.9rem;
+}
+
+.review-table th{
+background:#58cc02;
+color:white;
+padding:8px;
+}
+
+.review-table td{
+padding:8px;
+border-bottom:1px solid #eee;
+}
+
+.correct{color:#2e7d32;font-weight:700;}
+.wrong{color:#c62828;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<div class="top-bar">
+<div class="level">XP</div>
+<div class="xp-bar"><div id="progressBar"></div></div>
+<div class="score" id="score">0 XP</div>
+<div class="streak" id="streak">x 0</div>
+</div>
+
+<table class="info-table">
+<tr>
+<td class="quiz-name">Perubahan Bentuk ない</td>
+<td class="q-number" id="qNumber">1 / 7</td>
+</tr>
+</table>
+
+<div class="card">
+<div id="question">?</div>
+</div>
+
+<div id="result"></div>
+<div id="options"></div>
+<div class="badge" id="badge"></div>
+
+<button class="restart" id="restartBtn" onclick="start()" style="display:none;">
+Mulai Ulang
+</button>
+
+</div>
+
+<script>
+
+const vocab=[// Bab 6
+  ["たべます", "たべて"],
+  ["のみます", "のんで"],
+  ["すいます", "すって"],
+  ["みます", "みて"],
+  ["ききます", "きいて"],
+  ["よみます", "よんで"],
+  ["かきます", "かいて"],
+  ["かいます", "かって"],
+  ["とります", "とって"],
+  ["します", "して"],
+  ["あいます", "あって"],
+
+  // Bab 7
+  ["きります", "きって"],
+  ["おくります", "おくって"],
+  ["あげます", "あげて"],
+  ["もらいます", "もらって"],
+  ["かします", "かして"],
+  ["かります", "かりて"],
+  ["おしえます", "おしえて"],
+  ["ならいます", "ならって"],
+  ["かけます", "かけて"],
+
+  // Bab 9 & 10
+  ["わかります", "わかって"],
+  ["あります", "あって"],
+  ["います", "いて"],
+
+  // Bab 11
+  ["かかります", "かかって"],
+
+  // Bab 13
+  ["あそびます", "あそんで"],
+  ["およぎます", "およいで"],
+  ["むかえます", "むかえて"],
+  ["つかれます", "つかれて"],
+  ["けっこんします", "けっこんして"],
+  ["かいものします", "かいものして"],
+  ["しょくじします", "しょくじして"],
+  ["さんぽします", "さんぽして"],
+
+  // Bab 14
+  ["つけます", "つけて"],
+  ["けします", "けして"],
+  ["あけます", "あけて"],
+  ["しめます", "しめて"],
+  ["いそぎます", "いそいで"],
+  ["まちます", "まって"],
+  ["もちます", "もって"],
+  ["てつだいます", "てつなって"],
+  ["よびます", "よんで"],
+  ["はなします", "はなして"],
+  ["つかいます", "つかって"],
+  ["とめます", "とめて"],
+  ["みせます", "みせて"],
+  ["すわります", "すわって"],
+  ["たちます", "たって"],
+  ["はいります", "はいって"],
+  ["でます", "でて"],
+  ["ふります", "ふって"],
+  ["コピーします", "コピーして"],
+
+  // Bab 15
+  ["おきます", "おいて"],
+  ["つくります", "つくって"],
+  ["うります", "うって"],
+  ["しります", "しって"],
+  ["すみます", "すんで"],
+  ["けんきゅうします", "けんきゅうして"],
+
+  // Bab 16
+  ["のります", "のって"],
+  ["おります", "おりて"],
+  ["のりかえます", "のりかえて"],
+  ["あびます", "あびて"],
+  ["いれます", "いれて"],
+  ["だします", "だして"],
+  ["おろします", "おろして"],
+  ["おします", "おして"],
+
+  // Bab 17
+  ["おぼえます", "おぼえて"],
+  ["わすれます", "わすれて"],
+  ["なくします", "なくして"],
+  ["はらいます", "はらって"],
+  ["かえします", "かえして"],
+  ["でかけます", "でかけて"],
+  ["ぬぎます", "ぬいで"],
+  ["もっていきます", "もっていって"],
+  ["もってきます", "もってきて"],
+  ["しんぱいします", "しんぱいして"],
+  ["ざんぎょうします", "ざんぎょうして"],
+  ["しゅっちょうします", "しゅっちょうして"],
+
+  // Bab 18
+  ["できます", "できて"],
+  ["あらいます", "あらって"],
+  ["ひきます", "ひいて"],
+  ["うたいます", "うたって"],
+  ["あつめます", "あつめて"],
+  ["すてます", "すてて"],
+  ["かえます", "かえて"],
+  ["うんてんします", "うんてんして"],
+  ["よやくします", "よやくして"],
+
+  // Bab 19
+  ["のぼります", "のぼって"],
+  ["とまります", "とまって"],
+  ["そうじします", "そうじして"],
+  ["せんたくします", "せんたくして"],
+  ["れんしゅうします", "れんしゅうして"],
+  ["なります", "なって"],
+
+  // Bab 20 & 21
+  ["いります", "いって"],
+  ["しらべます", "しらべて"],
+  ["しゅうりします", "しゅうりして"],
+  ["おもいます", "おもって"],
+  ["いいま", "いって"],
+  ["かちます", "かって"],
+  ["まけます", "まけて"],
+  ["やくにたちます", "やくにたって"],
+  ["うごきます", "うごいて"],
+  ["やめます", "やめて"],
+  ["きをつけます", "きをつけて"],
+  ["りゅうがくします", "りゅうがくして"],
+
+  // Bab 22
+  ["きます", "きて"],
+  ["はきます", "はいて"],
+  ["かぶりま", "かぶって"],
+  ["うまれます", "うまれて"],
+
+  // Bab 23
+  ["まわします", "まわして"],
+  ["ひきます", "ひいて"],
+  ["さわりま", "さわって"],
+  ["あるきます", "あるいて"],
+  ["わたります", "わたって"],
+  ["まがります", "まがって"],
+
+  // Bab 24
+  ["くれません", "くれて"],
+  ["なおします", "なおして"],
+  ["つれていきます", "つれていって"],
+  ["つれてきます", "つれてきて"],
+  ["しょうかいします", "しょうかいして"],
+  ["あんないします", "あんないして"],
+  ["せつめいします", "せつめいして"],
+
+  // Bab 25
+  ["かんがえます", "かんがえて"],
+  ["つきます", "ついて"],
+  ["たります", "たりて"]
+];
+
+let q=[],cur=0,xp=0,streak=0;
+let wrongList=[];
+let perfectCorrect=0;
+let selected=[];
+
+function shuffle(a){
+for(let i=a.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[a[i],a[j]]=[a[j],a[i]];
+}
+}
+
+function updateUI(){
+score.textContent=xp+" XP";
+streak.textContent="x "+streak;
+progressBar.style.width=(perfectCorrect/q.length*100)+"%";
+qNumber.textContent=(cur+1)+" / "+q.length;
+}
+
+function loadQuestion(){
+
+if(cur>=q.length){finish();return;}
+
+selected=[];
+
+const [romaji,hira]=q[cur];
+
+document.querySelector(".card").innerHTML=`<div id="question">${romaji}</div>`;
+
+result.innerHTML=`
+<div class="answer-wrap">
+<div class="answer-box" id="answerBox"></div>
+<button id="deleteBtn" onclick="deleteLetter()">⌫</button>
+</div>
+`;
+
+badge.textContent="";
+
+let letters=hira.split("");
+
+while(letters.length<10){
+letters.push("あいうえおかきくけこさしすせそたちつてと"[Math.floor(Math.random()*20)]);
+}
+
+shuffle(letters);
+
+options.innerHTML="";
+
+letters.forEach(l=>{
+const b=document.createElement("button");
+b.textContent=l;
+b.onclick=()=>pickLetter(b,l,hira,romaji);
+options.appendChild(b);
+});
+
+updateUI();
+}
+
+function pickLetter(btn,l,ans,romaji){
+selected.push(l);
+btn.disabled=true;
+btn.style.opacity=".4";
+answerBox.textContent=selected.join("");
+
+if(selected.join("")===ans) correct();
+else if(selected.length>=ans.length) wrong(ans,romaji);
+}
+
+function deleteLetter(){
+if(selected.length===0)return;
+
+selected.pop();
+answerBox.textContent=selected.join("");
+
+const buttons=[...options.querySelectorAll("button")];
+for(let i=buttons.length-1;i>=0;i--){
+if(buttons[i].disabled){
+buttons[i].disabled=false;
+buttons[i].style.opacity="1";
+break;
+}
+}
+}
+
+function correct(){
+streak++;
+let bonus=streak>=5?5:2;
+xp+=bonus;
+
+if(streak===5) badge.textContent="🏆 COMBO x5";
+
+result.innerHTML=`<b style="color:green;">BENAR +${bonus}XP</b>`;
+perfectCorrect++;
+cur++;
+setTimeout(loadQuestion,1000);
+}
+
+function wrong(ans,romaji){
+streak=0;
+
+wrongList.push({
+q:romaji,
+your:selected.join(""),
+correct:ans
+});
+
+result.innerHTML=`<b style="color:red;">SALAH → ${ans}</b>`;
+cur++;
+setTimeout(loadQuestion,3000);
+}
+
+function finish(){
+options.innerHTML="";
+result.textContent="";
+badge.textContent="";
+
+document.querySelector(".card").innerHTML=`
+<div class="result-box">
+<h2 style="text-align:center;">Quiz Selesai 🎉</h2>
+</div>`;
+
+progressBar.style.width="100%";
+restartBtn.style.display="block";
+}
+
+function start(){
+q=[...vocab];
+shuffle(q);
+cur=0;
+xp=0;
+streak=0;
+perfectCorrect=0;
+wrongList=[];
+restartBtn.style.display="none";
+loadQuestion();
+}
+
+start();
+
+</script>
+</body>
+</html>
