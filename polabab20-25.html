@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Japanese Vocab Game ULTRA</title>
+<title>Japanese Vocab Game ULTRA - Pola Kalimat Bab 1-5</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -105,16 +105,27 @@ background:#f8fff6;
 border-radius:26px;
 margin:20px 0;
 display:flex;
+flex-direction:column;
 align-items:center;
 justify-content:center;
 box-shadow:0 10px 25px rgba(0,0,0,.08);
 overflow:hidden;
+padding:20px;
 }
 
 #question{
-font-size:2.6rem;
+font-size:1.8rem;
 font-weight:900;
 color:#000;
+text-align:center;
+line-height:1.4;
+}
+
+.meaning{
+font-size:0.95rem;
+font-weight:600;
+color:#666;
+margin-top:8px;
 text-align:center;
 }
 
@@ -147,7 +158,7 @@ color:#666;
 .review-table{
 width:100%;
 border-collapse:collapse;
-font-size:.9rem;
+font-size:.85rem;
 border-radius:10px;
 overflow:hidden;
 }
@@ -182,24 +193,25 @@ font-weight:700;
 
 #options{
 display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
+grid-template-columns:1fr;
+gap:10px;
 }
 
 #options button{
-padding:16px;
-font-size:1.3rem;
+padding:14px;
+font-size:1rem;
 border:none;
-border-radius:18px;
+border-radius:16px;
 background:#58cc02;
 color:white;
 font-weight:800;
 cursor:pointer;
 transition:.15s;
+text-align:center;
 }
 
 #options button:hover{
-transform:scale(1.05);
+transform:scale(1.02);
 background:#46b400;
 }
 
@@ -248,13 +260,14 @@ color:white;
 
 <table class="info-table">
 <tr>
-<td class="quiz-name">Kotoba Bab 19</td>
+<td class="quiz-name">Pola Kalimat Bab 1-5</td>
 <td class="q-number" id="qNumber">1 / 12</td>
 </tr>
 </table>
 
 <div class="card">
 <div id="question">?</div>
+<div class="meaning" id="meaning"></div>
 </div>
 
 <div id="options"></div>
@@ -270,51 +283,50 @@ Mulai Ulang
 
 <script>
 
+// Format: [Kalimat Jepang, Fungsi Singkat, Arti Kalimat]
 const vocab=[
-"おぼえます": "mengingat",
-    "わすれます": "lupa",
-    "なくします": "kehilangan",
-    "はらいます": "membayar",
-    "かえします": "mengembaikan",
-    "でかけます": "pergi, keluar, berangkat",
-    "ぬぎます": "buka, menanggalkan baju/sepatu",
-    "もっていきます": "membawa pergi",
-    "もtteきます": "membawa datang",
-    "しんぱいします": "khawatir",
-    "ざんぎょうします": "lembur",
-    "しゅっちょうします": "dinas",
-    "のみます": "minum obat",
-    "はいります": "masuk mandi",
-    "たいせつ": "penting",
-    "だいじょうぶ": "tidak apa-apa, tidak masalah",
-    "あぶない": "bahaya",
-    "きんえん": "larangan merokok",
-    "けんこう": "kesehatan",
-    "ほけんしょう": "kartu asuransi",
-    "くすり": "obat",
-    "ふろ": "mandi, kamar mandi, bathup",
-    "うわぎ": "jaket",
-    "したぎ": "pakaian dalam",
-    "２，３にち": "dua atau tiga hari",
-    "～までに": "sampai dengan batas waktu",
-    "ですから": "oleh karena itu",
-    "どうしましたか": "kenapa? Ada masalah apa?",
-    "いたいです": "sakit",
-    "かぜ": "masuk angin",
-    "おだいじに": "semoga lekas sembuh",
-    "びょうき": "penyakit",
-    "あたまがいたい": "sakit kepala",
-    "おなかがいたい": "sakit perut",
-    "はがいたい": "sakit gigi",
-    "ねつがあります": "demam",
-    "せきがでます": "batuk",
-    "はなみずがでます": "pilek",
-    "ちがでます": "berdarah",
-    "はきけがします": "mual, mau muntah",
-    "さむけがします": "kedinginan",
-    "めまいがします": "pusing",
-    "げりがします": "diare",
-    "べんぴをします": "sembelit"
+  // BAB 1
+  ["わたしはがくせいです", "menyatakan identitas", "Saya adalah siswa."],
+  ["わたしはエンジニアじゃありません", "negasi identitas", "Saya bukan insinyur."],
+  ["サントスさんはせんせいですか", "tanya identitas", "Apakah Sdr. Santos seorang guru?"],
+  ["ミラーさんもかいしゃいんです", "menyatakan 'juga'", "Sdr. Miller juga karyawan perusahaan."],
+  ["ミラーさんはアイエムシーのしゃいんです", "kepemilikan / organisasi", "Sdr. Miller adalah karyawan IMC."],
+  ["あのかたはどなたですか", "tanya siapa (sopan)", "Siapakah orang itu?"],
+  ["テレサちゃんはきゅうさいです", "menyatakan umur", "Teresa berumur 9 tahun."],
+
+  // BAB 2
+  ["これはほんです", "menunjuk benda dekat", "Ini adalah buku."],
+  ["それはじしょです", "menunjuk benda dekat lawan", "Itu adalah kamus."],
+  ["あれはかばんです", "menunjuk benda jauh", "Itu (di sana) adalah tas."],
+  ["これはえんぴつですか、ボールペンですか", "kalimat pilihan", "Apakah ini pensil atau pulpen?"],
+  ["このほんはわたしのです", "kepemilikan benda", "Buku ini milik saya."],
+  ["これはなんのほんですか", "tanya isi / topik benda", "Ini buku apa?"],
+  ["これはだれのかぎですか", "tanya pemilik benda", "Ini kunci milik siapa?"],
+
+  // BAB 3
+  ["ここはきょうしつです", "menunjuk tempat", "Di sini adalah ruang kelas."],
+  ["トイレはあそこです", "lokasi keberadaan", "Toilet ada di sana."],
+  ["エレベーターはどちらですか", "tanya arah / tempat (sopan)", "Elevator ada di sebelah mana?"],
+  ["かいしゃはどちらですか", "tanya asal organisasi / negara", "Perusahaan Anda di mana?"],
+  ["これはどこのワインですか", "tanya buatan negara mana", "Ini wine buatan mana?"],
+  ["このとけいはいくらですか", "tanya harga", "Jam tangan ini harganya berapa?"],
+
+  // BAB 4
+  ["いまくじはんです", "menyatakan jam / waktu", "Sekarang jam 9 lewat setengah."],
+  ["わたしはまいあさろくじにおきます", "kegiatan rutinitas", "Saya bangun jam 6 setiap pagi."],
+  ["きのうべんきょうしました", "kegiatan lampau", "Kemarin saya sudah belajar."],
+  ["あしたはたらきません", "negasi kegiatan masa depan", "Besok saya tidak bekerja."],
+  ["ぎんこうはくじからごじまでです", "jangka waktu (dari ... sampai)", "Bank buka dari jam 9 sampai jam 5."],
+  ["やすみはどようびときにちようびです", "menghubungkan kata benda (dan)", "Hari libur adalah hari Sabtu dan Minggu."],
+
+  // BAB 5
+  ["わたしはきょうとへいきます", "tujuan pergerakan", "Saya pergi ke Kyoto."],
+  ["タクシーでうちへかえります", "alat transportasi", "Saya pulang ke rumah dengan taksi."],
+  ["あるいてがっこうへいきます", "berjalan kaki", "Saya pergi ke sekolah dengan berjalan kaki."],
+  ["ともだちとにほんへきました", "melakukan bersama orang lain", "Saya datang ke Jepang bersama teman."],
+  ["ひとりでにほんへきました", "melakukan sendirian", "Saya datang ke Jepang sendirian."],
+  ["いつにほんへきましたか", "tanya waktu kejadian", "Kapan Anda datang ke Jepang?"],
+  ["どこへもいきません", "penangkalan total tujuan", "Saya tidak pergi ke mana pun."]
 ];
 
 let q=[],cur=0,xp=0,streak=0;
@@ -352,13 +364,14 @@ return;
 
 firstWrong=null;
 
-const [indo,jp]=q[cur];
+const [jpSentence, func, meaning]=q[cur];
 
-document.getElementById("question").textContent=indo;
+document.getElementById("question").textContent=jpSentence;
+document.getElementById("meaning").textContent=meaning;
 document.getElementById("result").textContent="";
 document.getElementById("badge").textContent="";
 
-const ops=new Set([jp]);
+const ops=new Set([func]);
 
 while(ops.size<4){
 ops.add(vocab[Math.floor(Math.random()*vocab.length)][1]);
@@ -369,14 +382,14 @@ document.getElementById("options").innerHTML="";
 [...ops].sort(()=>Math.random()-0.5).forEach(o=>{
 const b=document.createElement("button");
 b.textContent=o;
-b.onclick=()=>check(o,jp,indo);
+b.onclick=()=>check(o,func,jpSentence);
 document.getElementById("options").appendChild(b);
 });
 
 updateUI();
 }
 
-function check(sel,ans,indo){
+function check(sel,ans,jpSentence){
 
 if(sel===ans){
 
@@ -398,7 +411,7 @@ perfectCorrect++;
 
 if(firstWrong){
 wrongList.push({
-q:indo,
+q:jpSentence,
 your:firstWrong,
 correct:ans
 });
@@ -494,7 +507,7 @@ perfectCorrect=0;
 
 wrongList=[];
 
-document.querySelector(".card").innerHTML='<div id="question">?</div>';
+document.querySelector(".card").innerHTML='<div id="question">?</div><div class="meaning" id="meaning"></div>';
 
 document.getElementById("restartBtn").style.display="none";
 
