@@ -105,6 +105,14 @@ font-weight:900;
 text-align:center;
 }
 
+.meaning{
+font-size:1.1rem;
+font-weight:700;
+color:#666;
+margin-top:8px;
+text-align:center;
+}
+
 .answer-wrap{
 position:relative;
 margin-bottom:10px;
@@ -233,7 +241,10 @@ border-bottom:1px solid #eee;
 </table>
 
 <div class="card">
+<div>
 <div id="question">?</div>
+<div id="meaning" class="meaning"></div>
+</div>
 </div>
 
 <div id="result"></div>
@@ -248,146 +259,146 @@ Mulai Ulang
 
 <script>
 
-const vocab=[// Bab 6
-// ===== Kata Sifat-な (20 kata) =====
-  ["しずかな", "しずかだった"],
-  ["ひまな", "ひまだった"],
-  ["にぎやかな", "にぎやかだった"],
-  ["べんりな", "べんりだった"],
-  ["ふべんな", "ふべんだった"],
-  ["すきな", "すきだった"],
-  ["きらいな", "きらいだった"],
-  ["じょうずな", "じょうずだった"],
-  ["へたな", "へただった"],
-  ["たいせつな", "たいせつだった"],
-  ["たいへんな", "たいへんだった"],
-  ["らくな", "らくだった"],
-  ["しんせつな", "しんせつだった"],
-  ["まじめな", "まじめだった"],
-  ["ふまじめな", "ふまじめだった"],
-  ["あんぜんな", "あんぜんだった"],
-  ["きけんな", "きけんだった"],
-  ["ゆうめいな", "ゆうめいだった"],
-  ["とくべつな", "とくべつだった"],
-  ["じゆうな", "じゆうだった"],
+const vocab=[
+  // ===== Kata Sifat-な (20 kata) =====
+  ["しずかな", "しずかだった", "Dulu tenang / sunyi"],
+  ["ひまな", "ひまだった", "Dulu senggang / luang"],
+  ["にぎやかな", "にぎやかだった", "Dulu ramai"],
+  ["べんりな", "べんりだった", "Dulu praktis"],
+  ["ふべんな", "ふべんだった", "Dulu tidak praktis"],
+  ["すきな", "すきだった", "Dulu suka"],
+  ["きらいな", "きらいだった", "Dulu benci / tidak suka"],
+  ["じょうずな", "じょうずだった", "Dulu pintar / mahir"],
+  ["へたな", "へただった", "Dulu bodoh / tidak mahir"],
+  ["たいせつな", "たいせつだった", "Dulu penting / berharga"],
+  ["たいへんな", "たいへんだった", "Dulu berat / sulit"],
+  ["らくな", "らくだった", "Dulu mudah / nyaman"],
+  ["しんせつな", "しんせつだった", "Dulu ramah / baik hati"],
+  ["まじめな", "まじめだった", "Dulu rajin / serius"],
+  ["ふまじめな", "ふまじめだった", "Dulu tidak serius"],
+  ["あんぜんな", "あんぜんだった", "Dulu aman"],
+  ["きけんな", "きけんだった", "Dulu berbahaya"],
+  ["ゆうめいな", "ゆうめいだった", "Dulu terkenal"],
+  ["とくべつな", "とくべつだった", "Dulu spesial / khusus"],
+  ["じゆうな", "じゆうだった", "Dulu bebas"],
 
   // ===== Kata Benda (100 kata Baru) =====
   // Bangunan & Tempat Baru
-  ["じぞう", "じぞうだった"],
-  ["じんじゃ", "じんじゃだった"],
-  ["おてら", "おてらだった"],
-  ["しろ", "しろだった"],
-  ["みなと", "みなとだった"],
-  ["こうじょう", "こうじょうだった"],
-  ["たいしかん", "たいしかんだった"],
-  ["すいぞくかん", "すいぞくかんだった"],
-  ["どうぶつえん", "どうぶつえんだった"],
-  ["ゆうえんち", "ゆうえんちだった"],
-  ["えいがかん", "えいがかんだった"],
-  ["じょう", "じょうだった"],
-  ["じしゃく", "じしゃくだった"],
+  ["じぞう", "じぞうだった", "Dulu patung Jizo"],
+  ["じんじゃ", "じんじゃだった", "Dulu kuil Shinto"],
+  ["おてら", "おてらだった", "Dulu kuil Buddha"],
+  ["しろ", "しろだった", "Dulu kastil / istana"],
+  ["みなと", "みなとだった", "Dulu pelabuhan"],
+  ["こうじょう", "こうじょうだった", "Dulu pabrik"],
+  ["たいしかん", "たいしかんだった", "Dulu kedutaan besar"],
+  ["すいぞくかん", "すいぞくかんだった", "Dulu akuarium"],
+  ["どうぶつえん", "どうぶつえんだった", "Dulu kebun binatang"],
+  ["ゆうえんち", "ゆうえんちだった", "Dulu taman hiburan"],
+  ["えいがかん", "えいがかんだった", "Dulu bioskop"],
+  ["じょう", "じょうだった", "Dulu kastil / tempat"],
+  ["じしゃく", "じしゃくだった", "Dulu magnet"],
 
   // Alam, Cuaca & Fenomena
-  ["たいふう", "たいふうだった"],
-  ["じしん", "じしんだった"],
-  ["かざん", "かざんだった"],
-  ["くも", "くもだった"],
-  ["きり", "きりだった"],
-  ["かみなり", "かみなりだった"],
-  ["にじ", "にじだった"],
-  ["みずうみ", "みずうみだった"],
-  ["しま", "しまだった"],
-  ["もり", "もりだった"],
+  ["たいふう", "たいふうだった", "Dulu badai / topan"],
+  ["じしん", "じしんだった", "Dulu gempa bumi"],
+  ["かざん", "かざんだった", "Dulu gunung berapi"],
+  ["くも", "くもだった", "Dulu awan"],
+  ["きり", "きりだった", "Dulu kabut"],
+  ["かみなり", "かみなりだった", "Dulu petir / guntur"],
+  ["にじ", "にじだった", "Dulu pelangi"],
+  ["みずうみ", "みずうみだった", "Dulu danau"],
+  ["しま", "しまだった", "Dulu pulau"],
+  ["もり", "もりだった", "Dulu hutan"],
 
   // Hewan & Tumbuhan Baru
-  ["くま", "くまだった"],
-  ["さる", "さるだった"],
-  ["うさぎ", "うさぎだった"],
-  ["きつね", "きつねだった"],
-  ["しか", "しかだった"],
-  ["かめ", "かめだった"],
-  ["さめ", "さめだった"],
-  ["たこ", "たこだった"],
-  ["いか", "いかだった"],
-  ["さくら", "さくらだった"],
+  ["くま", "くまだった", "Dulu beruang"],
+  ["さる", "さるだった", "Dulu kera / monyet"],
+  ["うさぎ", "うさぎだった", "Dulu kelinci"],
+  ["きつね", "きつねだった", "Dulu rubah"],
+  ["しか", "しかだった", "Dulu rusa"],
+  ["かめ", "かめだった", "Dulu kura-kura"],
+  ["さめ", "さめだった", "Dulu hiu"],
+  ["たこ", "たこだった", "Dulu gurita"],
+  ["いか", "いかだった", "Dulu cumi-cumi"],
+  ["さくら", "さくらだった", "Dulu bunga sakura"],
 
   // Makanan & Masakan Baru
-  ["すし", "すしだった"],
-  ["てんぷら", "てんぷらだった"],
-  ["すきやき", "すきやきだった"],
-  ["たこやき", "たこやきだった"],
-  ["おこのみやき", "おこのみやきだった"],
-  ["みそしる", "みそしるだった"],
-  ["おにぎり", "おにぎりだった"],
-  ["もち", "もちだった"],
-  ["やきとり", "やきとりだった"],
-  ["べんとう", "べんとうだった"],
+  ["すし", "すしだった", "Dulu sushi"],
+  ["てんぷら", "てんぷらだった", "Dulu tempura"],
+  ["すきやき", "すきやきだった", "Dulu sukiyaki"],
+  ["たこやき", "たこやきだった", "Dulu takoyaki"],
+  ["おこのみやき", "おこのみやきだった", "Dulu okonomiyaki"],
+  ["みそしる", "みそしるだった", "Dulu sup miso"],
+  ["おにぎり", "おにぎりだった", "Dulu onigiri"],
+  ["もち", "もちだった", "Dulu mochi"],
+  ["やきとり", "やきとりだった", "Dulu yakitori"],
+  ["べんとう", "べんとうだった", "Dulu bento / bekal"],
 
   // Peralatan, Perlengkapan & Perabot
-  ["はさみ", "はさみだった"],
-  ["ほうちょう", "ほうちょうだった"],
-  ["まないた", "まないただった"],
-  ["フライパン", "フライパンだった"],
-  ["なべ", "なべだった"],
-  ["おさら", "おさらだった"],
-  ["コップ", "コップだった"],
-  ["ちゃわん", "ちゃわんだった"],
-  ["たおる", "たおるだった"],
-  ["せっけん", "せっけんだった"],
+  ["はさみ", "はさみだった", "Dulu gunting"],
+  ["ほうちょう", "ほうちょうだった", "Dulu pisau dapur"],
+  ["まないた", "まないただった", "Dulu talenan"],
+  ["フライパン", "フライパンだった", "Dulu wajan / penggorengan"],
+  ["なべ", "なべだった", "Dulu panci"],
+  ["おさら", "おさらだった", "Dulu piring"],
+  ["コップ", "コップだった", "Dulu gelas"],
+  ["ちゃわん", "ちゃわんだった", "Dulu mangkuk nasi"],
+  ["たおる", "たおるだった", "Dulu handuk"],
+  ["せっけん", "せっけんだった", "Dulu sabun"],
 
   // Pakaian & Kendaraan Baru
-  ["きもの", "きものだった"],
-  ["ゆかた", "ゆかただった"],
-  ["スーツ", "スーツだった"],
-  ["パジャマ", "パジャマだった"],
-  ["くつした", "くつしただった"],
-  ["てぶくろ", "てぶくろだった"],
-  ["マフラー", "マフラーだった"],
-  ["オートバイ", "オートバイだった"],
-  ["トラック", "トラックだった"],
-  ["パトカー", "パトカーだった"],
+  ["きもの", "きものだった", "Dulu kimono"],
+  ["ゆかた", "ゆかただった", "Dulu yukata"],
+  ["スーツ", "スーツだった", "Dulu setelan jas"],
+  ["パジャマ", "パジャマだった", "Dulu piyama"],
+  ["くつした", "くつしただった", "Dulu kaos kaki"],
+  ["てぶくろ", "てぶくろだった", "Dulu sarung tangan"],
+  ["マフラー", "マフラーだった", "Dulu syal"],
+  ["オートバイ", "オートバイだった", "Dulu sepeda motor"],
+  ["トラック", "トラックだった", "Dulu truk"],
+  ["パトカー", "パトカーだった", "Dulu mobil polisi"],
 
   // Hiburan, Olahraga & Hobi
-  ["おんがく", "おんがくだった"],
-  ["えいが", "えいがだった"],
-  ["まんが", "まんがだった"],
-  ["アニメ", "アニメだった"],
-  ["ゲーム", "ゲームだった"],
-  ["しゃしん", "しゃしんだった"],
-  ["どくしょ", "どくしょだった"],
-  ["りょこう", "りょこうだった"],
-  ["ドライブ", "ドライブだった"],
-  ["すいえい", "すいえいだった"],
+  ["おんがく", "おんがくだった", "Dulu musik"],
+  ["えいが", "えいがだった", "Dulu film"],
+  ["まんが", "まんがだった", "Dulu komik / manga"],
+  ["アニメ", "アニメだった", "Dulu anime"],
+  ["ゲーム", "ゲームだった", "Dulu game"],
+  ["しゃしん", "しゃしんだった", "Dulu foto"],
+  ["どくしょ", "どくしょだった", "Dulu membaca buku"],
+  ["りょこう", "りょこうだった", "Dulu liburan / jalan-jalan"],
+  ["ドライブ", "ドライブだった", "Dulu berkendara / nge-drive"],
+  ["すいえい", "すいえいだった", "Dulu berenang"],
 
   // Profesi & Peran Baru
-  ["べんごし", "べんごしだった"],
-  ["かいけいし", "かいけいしだった"],
-  ["さっか", "さっかった"],
-  ["がか", "がかだった"],
-  ["せいじか", "せいじかだった"],
-  ["しゃちょう", "しゃちょうだった"],
-  ["ぶちょう", "ぶちょうだった"],
-  ["かんりにん", "かんりにんだった"],
-  ["せんせい", "せんせいだった"],
+  ["べんごし", "べんごしだった", "Dulu pengacara"],
+  ["かいけいし", "かいけいしだった", "Dulu akuntan"],
+  ["さっか", "さっかった", "Dulu penulis"],
+  ["がか", "がかだった", "Dulu pelukis"],
+  ["せいじか", "せいじかだった", "Dulu politikus"],
+  ["しゃちょう", "しゃちょうだった", "Dulu direktur / direktur utama"],
+  ["ぶちょう", "ぶちょうだった", "Dulu kepala bagian"],
+  ["かんりにん", "かんりにんだった", "Dulu pengelola / manajer gedung"],
+  ["せんせい", "せんせいだった", "Dulu guru / dosen"],
 
   // Abstraksi, Waktu & Konsep Lainnya
-  ["はる", "はるだった"],
-  ["なつ", "なつだった"],
-  ["あき", "あきだった"],
-  ["ふゆ", "ふゆだった"],
-  ["けっこん", "けっこんだった"],
-  ["そつぎょう", "そつぎょうだった"],
-  ["しけん", "しけんだった"],
-  ["じぎょう", "じぎょうだった"],
-  ["しごと", "しごとだった"],
-  ["やくそく", "やくそくだった"],
-  ["かんけい", "かんけいだった"],
-  ["きこう", "きこうだった"],
-  ["しゅうかん", "しゅうかんだった"],
-  ["ぶんか", "ぶんかだった"],
-  ["れきし", "れきしだった"],
-  ["へいわ", "へいわだった"],
-  ["じけん", "じけんだった"]
+  ["はる", "はるだった", "Dulu musim semi"],
+  ["なつ", "なつだった", "Dulu musim panas"],
+  ["あき", "あきだった", "Dulu musim gugur"],
+  ["ふゆ", "ふゆだった", "Dulu musim dingin"],
+  ["けっこん", "けっこんだった", "Dulu pernikahan"],
+  ["そつぎょう", "そつぎょうだった", "Dulu kelulusan"],
+  ["しけん", "しけんだった", "Dulu ujian"],
+  ["じぎょう", "じぎょうだった", "Dulu bisnis / usaha"],
+  ["しごと", "しごとだった", "Dulu pekerjaan"],
+  ["やくそく", "やくそくだった", "Dulu janji"],
+  ["かんけい", "かんけいだった", "Dulu hubungan"],
+  ["きこう", "きこうだった", "Dulu iklim"],
+  ["しゅうかん", "しゅうかんだった", "Dulu kebiasaan"],
+  ["ぶんか", "ぶんかだった", "Dulu kebudayaan"],
+  ["れきし", "れきしだった", "Dulu sejarah"],
+  ["へいわ", "へいわだった", "Dulu perdamaian"],
+  ["じけん", "じけんだった", "Dulu insiden / kejadian"]
 ];
 
 let q=[],cur=0,xp=0,streak=0;
@@ -415,9 +426,10 @@ if(cur>=q.length){finish();return;}
 
 selected=[];
 
-const [romaji,hira]=q[cur];
+const [romaji,hira,arti]=q[cur];
 
-document.querySelector(".card").innerHTML=`<div id="question">${romaji}</div>`;
+document.getElementById("question").textContent=romaji;
+document.getElementById("meaning").textContent=arti ? `(${arti})` : "";
 
 result.innerHTML=`
 <div class="answer-wrap">
