@@ -133,19 +133,6 @@ header p {
   margin-top: 2px;
 }
 
-/* INFO KLIK BANNER */
-#info-klik {
-  background: #FFF9E6;
-  color: #D97706;
-  padding: 10px 16px;
-  font-size: 12px;
-  font-weight: 600;
-  border-bottom: 1px solid rgba(217, 119, 6, 0.15);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 /* MAIN SCROLLABLE CONTENT */
 main {
   flex: 1;
@@ -334,11 +321,6 @@ main {
     <p>Menu Materi Lengkap</p>
   </header>
 
-  <!-- BANNER PETUNJUK -->
-  <div id="info-klik" class="hidden">
-    ⚠️ Klik 2x untuk membuka link google drive
-  </div>
-
   <!-- MAIN CONTENT -->
   <main>
     <!-- MENU UTAMA -->
@@ -476,8 +458,6 @@ main {
 </div>
 
 <script>
-let clickedLinks = {};
-
 const quizLinks = {
   kana: { 
     "Hiragana Katakana 1": "https://drive.google.com/file/d/1RPIIu6b3m-cVP52NMCy27Zkc9gq2jS-c/view?usp=drivesdk", 
@@ -658,18 +638,11 @@ window.addEventListener('pageshow', () => {
 function show(id) {
   const menu = document.getElementById("menu");
   const submenu = document.getElementById("submenu");
-  const infoKlik = document.getElementById("info-klik");
   
   menu.classList.add("hidden");
   submenu.classList.add("hidden");
   
   document.getElementById(id).classList.remove("hidden");
-  
-  if (id === "submenu") {
-    infoKlik.classList.remove("hidden");
-  } else {
-    infoKlik.classList.add("hidden");
-  }
 }
 
 function openKana() { triggerLoading(() => buildSub("Hiragana Katakana", "kana")); }
@@ -716,15 +689,7 @@ function go(url) {
     alert("Link belum tersedia."); 
     return; 
   }
-  
-  if (!clickedLinks[url]) {
-    clickedLinks[url] = true;
-    if (typeof iklan !== 'undefined') {
-      window.open(iklan, "_blank");
-    }
-  } else { 
-    window.open(url, "_blank"); 
-  }
+  window.open(url, "_blank");
 }
 
 function goNav(url) {
