@@ -3,253 +3,814 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menu Quiz Jepang</title>
+<title>Quiz Jepang - Habitz Style</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --primary:#2c7be5;
-  --bg:#f6f8fb;
-  --card:#ffffff;
-  --text:#1f2937;
-  --muted:#6b7280;
+:root {
+  /* Skema Warna Pastel / Habitz Style */
+  --bg-main: #F8F9FD;
+  --card-bg: #FFFFFF;
+  --text-primary: #1C1C1E;
+  --text-muted: #8E8E93;
+  --accent-purple: #6C5CE7;
+  --accent-purple-light: #F0EDFF;
+  
+  /* Aksesori Warna Kategori & Stat */
+  --color-pink: #FF80A6;
+  --color-pink-bg: #FFEBF2;
+  --color-orange: #FF9F43;
+  --color-orange-bg: #FFF0E3;
+  --color-teal: #00CEC9;
+  --color-teal-bg: #E6FAFA;
+  --color-blue: #0984E3;
+  --color-blue-bg: #E8F4FC;
+  --color-red: #FF6B6B;
+  --color-red-bg: #FFEAEA;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body{
-  background:var(--bg);
-  color:var(--text);
+body {
+  background: #E2E4F0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-/* HEADER */
-header{
-  background:#fff;
-  border-bottom:1px solid #e5e7eb;
-  padding:20px 25px;
-}
-
-header h1{
-  font-size:20px;
-  font-weight:600;
-}
-
-header p{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:4px;
-}
-
-/* MAIN */
-main{
-  flex:1;
-  padding:25px;
-}
-
-h2{
-  font-size:18px;
-  font-weight:600;
-  margin-bottom:15px;
-}
-
-/* GRID MENU */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:15px;
-}
-
-/* CARD */
-.card{
-  background:var(--card);
-  border:1px solid #e5e7eb;
-  border-radius:10px;
-  padding:16px 18px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.card:hover{
-  border-color:var(--primary);
-  box-shadow:0 4px 10px rgba(0,0,0,.05);
-}
-
-.card h3{
-  font-size:15px;
-  font-weight:600;
-}
-
-.card span{
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* LIST */
-.list{
-  display:grid;
-  gap:10px;
-}
-
-.item{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  padding:14px 16px;
-  border-radius:8px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
-  transition:.15s;
-}
-
-.item:hover{
-  border-color:var(--primary);
-  background:#f0f6ff;
-}
-
-.back{
-  margin-top:15px;
-  background:#f3f4f6;
-  border:1px solid #e5e7eb;
-  border-radius:8px;
-  padding:12px;
-  cursor:pointer;
+/* APP FRAME (MOCKUP STYLING) */
+.app-screen {
   width: 100%;
+  max-width: 412px;
+  height: 100vh;
+  max-height: 892px;
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 425px) {
+  .app-screen {
+    border-radius: 40px;
+    height: 92vh;
+    border: 8px solid #FFFFFF;
+  }
+}
+
+/* MAIN CONTENT */
+main {
+  flex: 1;
+  padding: 20px 20px 90px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* PAPAN INFORMASI / ANNOUNCEMENT BANNER (HOME) */
+.info-board {
+  background: linear-gradient(135deg, #6C5CE7 0%, #8E7CFF 100%);
+  border-radius: 24px;
+  padding: 20px;
+  color: white;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 20px rgba(108, 92, 231, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.info-board::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.info-badge {
+  display: inline-block;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.info-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.info-desc {
+  font-size: 12px;
+  opacity: 0.9;
+  line-height: 1.5;
   font-weight: 500;
 }
 
-/* FOOTER */
-footer{
-  border-top:1px solid #e5e7eb;
-  padding:12px;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
+/* USER PROFILE CARD (HALAMAN PROFIL) */
+.user-profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 24px;
 }
 
-/* HIDDEN */
-.hidden{display:none}
+.avatar-wrapper {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--color-pink-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  margin-bottom: 12px;
+}
+
+.user-info h1 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.user-info p {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* SECTION TITLES */
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+}
+
+/* MENU GRID (HOME) */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.menu-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 125px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.menu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+.menu-card:active {
+  transform: translateY(0);
+}
+
+.card-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.card-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* LIST CONTAINERS (SUBMENU & SETTINGS) */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list-item {
+  background: white;
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.list-item:hover {
+  background: var(--accent-purple-light);
+}
+
+.list-item-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.item-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--accent-purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-item h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.btn-back {
+  width: 100%;
+  padding: 14px;
+  margin-top: 16px;
+  background: #EFEFF4;
+  color: var(--text-primary);
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-back:hover {
+  background: #E5E5EA;
+}
+
+/* BOTTOM NAVIGATION BAR */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: 0.2s;
+  width: 20%;
+}
+
+.nav-item.active {
+  color: var(--accent-purple);
+}
+
+.nav-item span {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* LOADING OVERLAY */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.loading-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--accent-purple-light);
+  border-top: 4px solid var(--accent-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-purple);
+}
+
+/* POPUP NOTIFIKASI MODAL */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 101;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 24px 20px;
+  text-align: center;
+  max-width: 320px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transform: scale(0.9);
+  transition: transform 0.2s ease;
+}
+
+.modal-overlay.active .modal-box {
+  transform: scale(1);
+}
+
+.modal-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--color-orange-bg);
+  color: var(--color-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.modal-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.btn-modal {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent-purple);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-modal:hover {
+  background: #5b4cc4;
+}
+
+/* UTILITY */
+.hidden { display: none !important; }
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app-screen">
 
-<header>
-  <h1>Quiz Bahasa Jepang</h1>
-  <p>Menu Utama</p>
-</header>
+  <!-- LOADING OVERLAY -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Memuat...</div>
+  </div>
 
-<main>
-
-<section id="menu">
-  <h2>Kategori</h2>
-  <div class="grid">
-    <div class="card" onclick="openHiragana()">
-      <h3>Mulai Sekarang</h3>
-      <span>Kumpulan Latihan Soal</span>
-    </div>
-    <div class="card" onclick="openMateri()">
-      <h3>Materi Belajar</h3>
-      <span>Kumpulan Materi</span>
-    </div>
-    <div class="card" onclick="openPengaturan()">
-      <h3>Pengaturan</h3>
-      <span>Privacy Policy & Donasi</span>
-    </div>
-    <div class="card" onclick="openMasukan()">
-      <h3>Saran & Masukan</h3>
-      <span>Berikan Masukan Kepada Kami</span>
+  <!-- POPUP NOTIFIKASI MODAL -->
+  <div id="noticeModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-icon">
+        <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+      </div>
+      <div class="modal-title">Pengumuman</div>
+      <div class="modal-desc">
+        Mohon maaf server sedang dalam pembangunan saat ini, tetapi jangan khawatir anda tetap dapat mengakses semua materi dan quiz yang ada
+      </div>
+      <button class="btn-modal" onclick="closeNotice()">Siap, Mengerti!</button>
     </div>
   </div>
-</section>
 
-<section id="submenu" class="hidden"></section>
+  <!-- MAIN SCROLLABLE CONTENT -->
+  <main>
 
-</main>
+    <!-- 1. HOME VIEW -->
+    <div id="menuView">
+      
+      <!-- PAPAN INFORMASI UTAMA -->
+      <div class="info-board">
+        <span class="info-badge">📢 Informasi Terbaru</span>
+        <div class="info-title">Pembaruan Materi Dan Bug!</div>
+        <div class="info-desc">Selamat belajar! Materi tata bahasa dan kuis harian baru telah ditambahkan. Selalu pantau perkembanganmu setiap hari.</div>
+      </div>
 
-<footer>© 2026 Quiz Jepang</footer>
+      <!-- KATEGORI UTAMA -->
+      <div class="section-title">
+        <span>Kategori Utama</span>
+      </div>
+
+      <!-- MENU GRID -->
+      <div class="menu-grid">
+        
+        <!-- CARD 1 -->
+        <div class="menu-card" onclick="openCategory('hiragana')">
+          <div class="card-icon" style="background: var(--color-pink-bg);">
+            <svg width="24" height="24" viewBox="0 0 100 100">
+              <path d="M20,50 Q15,20 50,15 Q85,15 80,50 Q85,85 50,85 Q15,85 20,50 Z" fill="#FF80A6"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+              <polygon points="45,55 55,55 50,62" fill="#FFC800"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-title">Mulai Kuis</div>
+            <div class="card-desc">Latihan Soal</div>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="menu-card" onclick="openCategory('materi')">
+          <div class="card-icon" style="background: var(--color-blue-bg);">
+            <svg width="24" height="24" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,15 50,15 Q80,15 80,50 Q80,85 50,85 Q20,85 20,50 Z" fill="#0984E3"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+              <path d="M 45 58 Q 50 64 55 58" stroke="#FFF" stroke-width="3" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-title">Materi</div>
+            <div class="card-desc">Buku & Rangkuman</div>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="menu-card" onclick="openCategory('pengaturan')">
+          <div class="card-icon" style="background: var(--color-orange-bg);">
+            <svg width="24" height="24" viewBox="0 0 100 100">
+              <path d="M20,50 Q10,20 50,20 Q90,20 80,50 Q90,80 50,80 Q10,80 20,50 Z" fill="#FF9F43"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+              <path d="M 45 58 Q 50 64 55 58" stroke="#FFF" stroke-width="3" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-title">Info & Donasi</div>
+            <div class="card-desc">Privasi & Donasi</div>
+          </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="menu-card" onclick="openCategory('masukan')">
+          <div class="card-icon" style="background: var(--color-teal-bg);">
+            <svg width="24" height="24" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,10 50,20 Q80,10 80,50 Q80,90 50,80 Q20,90 20,50 Z" fill="#00CEC9"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+              <path d="M 45 58 Q 50 64 55 58" stroke="#FFF" stroke-width="3" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <div>
+            <div class="card-title">Saran</div>
+            <div class="card-desc">Umpan Balik</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 2. SUBMENU VIEW (DYNAMIC) -->
+    <div id="submenuView" class="hidden">
+      <div class="section-title">
+        <span id="subTitle">Judul Kategori</span>
+      </div>
+      <div id="subList" class="list-container"></div>
+      <button class="btn-back" onclick="showMain()">← Kembali ke Menu Utama</button>
+    </div>
+
+    <!-- 3. PROFILE & SETTINGS VIEW -->
+    <div id="profileView" class="hidden">
+      
+      <!-- USER PROFILE HEADER -->
+      <div class="user-profile-card">
+        <div class="avatar-wrapper">
+          <svg width="48" height="48" viewBox="0 0 100 100">
+            <path d="M20,50 Q15,20 50,15 Q85,15 80,50 Q85,85 50,85 Q15,85 20,50 Z" fill="#FF80A6"/>
+            <circle cx="38" cy="45" r="6" fill="#3C3C3C"/>
+            <circle cx="62" cy="45" r="6" fill="#3C3C3C"/>
+            <path d="M 44 58 Q 50 64 56 58" stroke="#3C3C3C" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="user-info">
+          <h1>Maria Eduarda</h1>
+          <p>mariaeduarda@email.com</p>
+        </div>
+      </div>
+
+      <!-- SETTING-SETTING DASAR -->
+      <div class="section-title">
+        <span>Pengaturan Akun & Aplikasi</span>
+      </div>
+
+      <div class="list-container">
+        
+        <div class="list-item" onclick="triggerServerNotice()">
+          <div class="list-item-left">
+            <div class="item-avatar" style="background: var(--color-blue-bg);">
+              <svg width="20" height="20" fill="#0984E3" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+            <h4>Edit Profil</h4>
+          </div>
+          <svg width="18" height="18" fill="#8E8E93" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
+
+        <div class="list-item" onclick="triggerServerNotice()">
+          <div class="list-item-left">
+            <div class="item-avatar" style="background: var(--color-orange-bg);">
+              <svg width="20" height="20" fill="#FF9F43" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            </div>
+            <h4>Notifikasi</h4>
+          </div>
+          <svg width="18" height="18" fill="#8E8E93" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
+
+        <div class="list-item" onclick="triggerServerNotice()">
+          <div class="list-item-left">
+            <div class="item-avatar" style="background: var(--color-teal-bg);">
+              <svg width="20" height="20" fill="#00CEC9" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.23 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
+            </div>
+            <h4>Bahasa Aplikasi</h4>
+          </div>
+          <svg width="18" height="18" fill="#8E8E93" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
+
+        <div class="list-item" onclick="triggerServerNotice()">
+          <div class="list-item-left">
+            <div class="item-avatar" style="background: var(--accent-purple-light);">
+              <svg width="20" height="20" fill="#6C5CE7" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            </div>
+            <h4>Keamanan & Kata Sandi</h4>
+          </div>
+          <svg width="18" height="18" fill="#8E8E93" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
+
+        <div class="list-item" onclick="triggerServerNotice()">
+          <div class="list-item-left">
+            <div class="item-avatar" style="background: var(--color-red-bg);">
+              <svg width="20" height="20" fill="#FF6B6B" viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            </div>
+            <h4 style="color: var(--color-red);">Keluar Akun</h4>
+          </div>
+          <svg width="18" height="18" fill="#8E8E93" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
+
+      </div>
+
+      <button class="btn-back" onclick="showMain()">← Kembali ke Home</button>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <div class="bottom-nav">
+    <div class="nav-item active" id="navHome" onclick="showMain()">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" id="navKuis" onclick="openCategory('hiragana')">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+      <span>Kuis</span>
+    </div>
+    <div class="nav-item" id="navMateri" onclick="openCategory('materi')">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+      <span>Materi</span>
+    </div>
+    <div class="nav-item" id="navProfil" onclick="showProfile()">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profil</span>
+    </div>
+  </div>
 
 </div>
 
 <script>
-const quizLinks={
-  materi:{
-    "Kumpulan Materi":"materi1.html",
-    "Kumpulan Buku Jepang":"materi2.html",
-    "Kumpulan Materi SSW":"materi3.html",
+const quizLinks = {
+  hiragana: {
+    title: "Mulai Latihan Kuis",
+    items: {
+      "Kuis Huruf": "menuhuruf.html",
+      "Kuis Kosakata": "menukosakata.html",
+      "Kuis Tata Bahasa": "menutatabahasa.html"
+    }
   },
-  hiragana:{
-    "Kuis Huruf":"menuhuruf.html",
-    "Kuis Kosakata":"menukosakata.html",
-    "Kuis Tata Bahasa":"menutatabahasa.html"
+  materi: {
+    title: "Materi Belajar",
+    items: {
+      "Kumpulan Materi": "materi1.html",
+      "Kumpulan Buku Jepang": "materi2.html",
+      "Kumpulan Materi SSW": "materi3.html"
+    }
   },
-  pengaturan:{
-    "Privacy Policy":"privacypolicy.html",
-    "Donasi":"donasi.html",
-    "Tentang Kami":"tentang.html"
+  pengaturan: {
+    title: "Info & Donasi",
+    items: {
+      "Privacy Policy": "privacypolicy.html",
+      "Donasi": "donasi.html",
+      "Tentang Kami": "tentang.html"
+    }
   },
-  masukan:{
-    "Kirim Masukan":"masukan.html",
-    "Laporkan Bug":"laporkan.html"
+  masukan: {
+    title: "Saran & Masukan",
+    items: {
+      "Kirim Masukan": "masukan.html",
+      "Laporkan Bug": "laporkan.html"
+    }
   }
 };
 
-function show(id){
-  document.getElementById("menu").classList.add("hidden");
-  document.getElementById("submenu").classList.add("hidden");
-  document.getElementById(id).classList.remove("hidden");
+const overlay = document.getElementById("loadingOverlay");
+const noticeModal = document.getElementById("noticeModal");
+
+function showLoading(callback) {
+  overlay.classList.add("active");
+  const randomDelay = Math.floor(Math.random() * (700 - 300 + 1)) + 300;
+
+  setTimeout(() => {
+    overlay.classList.remove("active");
+    if (callback) callback();
+  }, randomDelay);
 }
 
-function openMateri(){ 
-  buildSub("Materi Belajar","materi"); 
+function triggerServerNotice() {
+  showLoading(() => {
+    noticeModal.classList.add("active");
+  });
 }
 
-function openHiragana(){ 
-  buildSub("Mulai Sekarang","hiragana"); 
+function closeNotice() {
+  noticeModal.classList.remove("active");
 }
 
-function openPengaturan(){ 
-  buildSub("Pengaturan","pengaturan"); 
+function updateActiveNav(activeId) {
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  if(activeId) {
+    document.getElementById(activeId).classList.add('active');
+  }
 }
 
-function openMasukan(){ 
-  buildSub("Saran & Masukan","masukan"); 
+function hideAllViews() {
+  document.getElementById("menuView").classList.add("hidden");
+  document.getElementById("submenuView").classList.add("hidden");
+  document.getElementById("profileView").classList.add("hidden");
 }
 
-function buildSub(title,key){
-  const box=document.getElementById("submenu");
-  box.innerHTML=`
-    <h2>${title}</h2>
-    <div class="list">
-      ${Object.keys(quizLinks[key]).map(k=>
-        `<div class="item" onclick="go('${quizLinks[key][k]}')">
-          ${k}<span>→</span>
-        </div>`
-      ).join('')}
-      <button class="back" onclick="show('menu')">Kembali</button>
-    </div>
-  `;
-  show("submenu");
+function openCategory(key) {
+  showLoading(() => {
+    const data = quizLinks[key];
+    if(!data) return;
+
+    document.getElementById("subTitle").textContent = data.title;
+    
+    const listContainer = document.getElementById("subList");
+    listContainer.innerHTML = Object.keys(data.items).map(item => `
+      <div class="list-item" onclick="go('${data.items[item]}')">
+        <div class="list-item-left">
+          <div class="item-avatar">
+            <svg width="20" height="20" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,20 50,20 Q80,20 80,50 Q80,80 50,80 Q20,80 20,50 Z" fill="#6C5CE7"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+              <polygon points="45,55 55,55 50,62" fill="#FFC800"/>
+            </svg>
+          </div>
+          <h4>${item}</h4>
+        </div>
+        <svg width="18" height="18" fill="#8E8E93" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </div>
+    `).join('');
+
+    hideAllViews();
+    document.getElementById("submenuView").classList.remove("hidden");
+
+    if(key === 'hiragana') updateActiveNav('navKuis');
+    else if(key === 'materi') updateActiveNav('navMateri');
+    else updateActiveNav(null);
+  });
 }
 
-function go(url){
-  window.location.href=url;
+function showMain() {
+  showLoading(() => {
+    hideAllViews();
+    document.getElementById("menuView").classList.remove("hidden");
+    updateActiveNav('navHome');
+  });
+}
+
+function showProfile() {
+  showLoading(() => {
+    hideAllViews();
+    document.getElementById("profileView").classList.remove("hidden");
+    updateActiveNav('navProfil');
+  });
+}
+
+function go(url) {
+  if (url === '#') return;
+  showLoading(() => {
+    window.location.href = url;
+  });
 }
 </script>
 
