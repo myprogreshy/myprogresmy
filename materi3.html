@@ -2,219 +2,478 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menu Quiz Jepang</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Quiz Bahasa Jepang - Menu Materi</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --primary:#2c7be5;
-  --bg:#f6f8fb;
-  --card:#ffffff;
-  --text:#1f2937;
-  --muted:#6b7280;
+:root {
+  --bg-main: #F8F9FD;
+  --card-bg: #FFFFFF;
+  --text-primary: #1C1C1E;
+  --text-muted: #8E8E93;
+  --accent-purple: #6C5CE7;
+  --accent-purple-light: #F0EDFF;
+  
+  --color-pink: #FF80A6;
+  --color-pink-bg: #FFEBF2;
+  --color-blue: #0984E3;
+  --color-blue-bg: #E8F4FC;
+  --color-green: #00B894;
+  --color-green-bg: #E6F7F4;
+  --color-orange: #E17055;
+  --color-orange-bg: #FDF0ED;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body{
-  background:var(--bg);
-  color:var(--text);
+body {
+  background: #E2E4F0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
+/* APP CONTAINER */
+.app-screen {
+  width: 100%;
+  max-width: 412px;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 892px;
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 425px) {
+  .app-screen {
+    border-radius: 40px;
+    height: 92vh;
+    height: 92dvh;
+    border: 8px solid #FFFFFF;
+  }
+}
+
+/* LOADING SCREEN */
+#loading-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: auto;
+}
+
+#loading-screen.hidden-loader {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--accent-purple-light);
+  border-top: 4px solid var(--accent-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 /* HEADER */
-header{
-  background:#fff;
-  border-bottom:1px solid #e5e7eb;
-  padding:20px 25px;
+header {
+  background: var(--card-bg);
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-header h1{
-  font-size:20px;
-  font-weight:600;
+header h1 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
-header p{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:4px;
+header p {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
 }
 
-/* MAIN */
-main{
-  flex:1;
-  padding:25px;
+/* INFO KLIK BANNER */
+#info-klik {
+  background: #FFF9E6;
+  color: #D97706;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(217, 119, 6, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-h2{
-  font-size:18px;
-  font-weight:600;
-  margin-bottom:15px;
+/* MAIN SCROLLABLE CONTENT */
+main {
+  flex: 1;
+  padding: 20px;
+  padding-bottom: 90px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
 }
 
 /* GRID MENU */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:15px;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 /* CARD */
-.card{
-  background:var(--card);
-  border:1px solid #e5e7eb;
-  border-radius:10px;
-  padding:16px 18px;
-  cursor:pointer;
-  transition:.2s;
+.card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
-.card:hover{
-  border-color:var(--primary);
-  box-shadow:0 4px 10px rgba(0,0,0,.05);
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
 }
 
-.card h3{
-  font-size:15px;
-  font-weight:600;
+.card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
-.card span{
-  font-size:12px;
-  color:var(--muted);
+.card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
 }
 
-/* LIST */
-.list{
-  display:grid;
-  gap:10px;
-}
-
-.item{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  padding:14px 16px;
-  border-radius:8px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
-  transition:.15s;
-}
-
-.item:hover{
-  border-color:var(--primary);
-  background:#f0f6ff;
-}
-
-.back{
-  margin-top:15px;
-  background:#f3f4f6;
-  border:1px solid #e5e7eb;
-  border-radius:8px;
-  padding:12px;
-  cursor:pointer;
-  width: 100%;
+.card span {
+  font-size: 11px;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
-/* FOOTER */
-footer{
-  border-top:1px solid #e5e7eb;
-  padding:12px;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
+/* SUBMENU LIST */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.item:hover {
+  background: var(--accent-purple-light);
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--accent-purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back {
+  width: 100%;
+  padding: 12px;
+  margin-top: 14px;
+  background: #EFEFF4;
+  color: var(--text-primary);
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back:hover {
+  background: #E5E5EA;
+}
+
+/* BOTTOM NAVBAR */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  background: var(--card-bg);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 10;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  color: var(--accent-purple);
+}
+
+.nav-item svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
 }
 
 /* HIDDEN */
-.hidden{display:none}
-
-/* INFO TAMBAHAN STYLE */
-#info-klik {
-  background:#fff3cd;
-  color:#856404;
-  padding:10px 15px;
-  font-size:13px;
-  border-bottom:1px solid #e5e7eb;
-}
+.hidden { display: none !important; }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app-screen">
 
-<header>
-  <h1>Quiz Bahasa Jepang</h1>
-  <p>Menu Materi</p>
-</header>
-
-<div id="info-klik" class="hidden">
-  ⚠️ Klik 2x untuk membuka link google drive
-</div>
-
-<main>
-
-<section id="menu">
-  <h2>Kategori</h2>
-  <div class="grid">
-    <div class="card" onclick="openHirakana()">
-      <h3>Rangkuman Buku Minna</h3>
-      <span>Rangkuman Bab 1-25</span>
-    </div>
-    <div class="card" onclick="openKanji()">
-      <h3>Materi Pertanian</h3>
-      <span>Materi Pertanian</span>
-    </div>
-    <div class="card" onclick="openKaigo()">
-      <h3>Materi Kaigo</h3>
-      <span>Materi Kaigo</span>
-    </div>
-    <div class="card" onclick="openPm()">
-      <h3>Materi Pengolahan Makanan</h3>
-      <span>Materi Pengolahan Makanan</span>
-    </div>
-   <div class="card" onclick="openBc()">
-      <h3>Materi Building Cleaning</h3>
-      <span>Materi Building Cleaning</span>
-    </div>
-   <div class="card" onclick="openPeternakan()">
-      <h3>Materi Peternakan</h3>
-      <span>Materi Peternakan</span>
-    </div>
-   <div class="card" onclick="openHotel()">
-      <h3>Materi Perhotelan</h3>
-      <span>Materi Perhotelan</span>
-    </div>
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <div class="loading-text">Memuat Data...</div>
   </div>
-</section>
 
-<section id="submenu" class="hidden"></section>
+  <!-- HEADER -->
+  <header>
+    <h1>Quiz Bahasa Jepang</h1>
+    <p>Menu Materi</p>
+  </header>
 
-</main>
+  <!-- BANNER PETUNJUK -->
+  <div id="info-klik" class="hidden">
+    ⚠️ Klik 2x untuk membuka link google drive
+  </div>
 
-<footer>© 2026 Quiz Jepang</footer>
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- MENU UTAMA -->
+    <section id="menu">
+      <div class="section-title">Kategori</div>
+      <div class="grid">
+        
+        <div class="card" onclick="openHirakana()">
+          <div class="card-icon" style="background: var(--color-blue-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,15 50,15 Q80,15 80,50 Q80,85 50,85 Q20,85 20,50 Z" fill="#0984E3"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Rangkuman Buku Minna</h3>
+            <span>Rangkuman Bab 1-25</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openKanji()">
+          <div class="card-icon" style="background: var(--color-green-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q15,20 50,15 Q85,15 80,50 Q85,85 50,85 Q15,85 20,50 Z" fill="#00B894"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Materi Pertanian</h3>
+            <span>Materi Pertanian</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openKaigo()">
+          <div class="card-icon" style="background: var(--color-pink-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,20 50,20 Q80,20 80,50 Q80,80 50,80 Q20,80 20,50 Z" fill="#FF80A6"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Materi Kaigo</h3>
+            <span>Materi Kaigo</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openPm()">
+          <div class="card-icon" style="background: var(--color-orange-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q15,15 50,15 Q85,15 80,50 Q85,85 50,85 Q15,85 20,50 Z" fill="#E17055"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Pengolahan Makanan</h3>
+            <span>Materi Pengolahan Makanan</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openBc()">
+          <div class="card-icon" style="background: var(--accent-purple-light);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,15 50,15 Q80,15 80,50 Q80,85 50,85 Q20,85 20,50 Z" fill="#6C5CE7"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Building Cleaning</h3>
+            <span>Materi Building Cleaning</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openPeternakan()">
+          <div class="card-icon" style="background: var(--color-green-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q15,20 50,15 Q85,15 80,50 Q85,85 50,85 Q15,85 20,50 Z" fill="#00B894"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Materi Peternakan</h3>
+            <span>Materi Peternakan</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openHotel()">
+          <div class="card-icon" style="background: var(--color-blue-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,20 50,20 Q80,20 80,50 Q80,80 50,80 Q20,80 20,50 Z" fill="#0984E3"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Materi Perhotelan</h3>
+            <span>Materi Perhotelan</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SUBMENU DINAMIS -->
+    <section id="submenu" class="hidden"></section>
+  </main>
+
+  <!-- BOTTOM NAVIGATION MENU -->
+  <nav class="bottom-nav">
+    <a href="javascript:void(0)" onclick="goNav('index.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('quiz.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      <span>Quiz</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('materi.html')" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+      <span>Materi</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('profil.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profil</span>
+    </a>
+  </nav>
 
 </div>
 
 <script>
-
-
 let clickedLinks = {};
 
 const quizLinks={
@@ -248,7 +507,7 @@ const quizLinks={
   kanji:{
     "Modul Pertanian":"https://drive.google.com/drive/mobile/folders/16s6MKJEHY66Ji132Yp698PUIRTrq_jdv",
     "Kisi-Kisi Pertanian":"https://drive.google.com/drive/mobile/folders/177Gg7fpoTq_o_2qxs4fzniwIToWjtjPI",
-   "Kosakata Pertanian":"https://drive.google.com/drive/mobile/folders/17Phxd9SkeFahWfgVHxKkvsXurebtLU2j",
+    "Kosakata Pertanian":"https://drive.google.com/drive/mobile/folders/17Phxd9SkeFahWfgVHxKkvsXurebtLU2j",
   },
   kaigo:{
     "Modul Kaigo":"https://drive.google.com/drive/mobile/folders/17_MiTvCMx0VJCwS5QwBAasbrlt2EFH5E",
@@ -277,6 +536,35 @@ const quizLinks={
   }
 };
 
+let loadingTimer = null;
+
+function hideLoader() {
+  const loader = document.getElementById('loading-screen');
+  loader.classList.add('hidden-loader');
+}
+
+function triggerLoading(actionCallback) {
+  const loader = document.getElementById('loading-screen');
+  if (loadingTimer) clearTimeout(loadingTimer);
+
+  loader.classList.remove('hidden-loader');
+
+  loadingTimer = setTimeout(() => {
+    if (typeof actionCallback === 'function') {
+      actionCallback();
+    }
+    hideLoader();
+  }, 350);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(hideLoader, 300);
+});
+
+window.addEventListener('pageshow', () => {
+  hideLoader();
+});
+
 function show(id){
   const menu = document.getElementById("menu");
   const submenu = document.getElementById("submenu");
@@ -285,11 +573,8 @@ function show(id){
   menu.classList.add("hidden");
   submenu.classList.add("hidden");
   
-  // Tampilkan section yang dipilih
   document.getElementById(id).classList.remove("hidden");
 
-  // LOGIKA TAMPILKAN INFO:
-  // Hanya tampilkan info jika yang sedang dibuka adalah 'submenu'
   if(id === "submenu") {
     infoKlik.classList.remove("hidden");
   } else {
@@ -297,40 +582,62 @@ function show(id){
   }
 }
 
-function openHirakana(){ buildSub("Rangkuman Buku Minna","hirakana"); }
-function openKanji(){ buildSub("Materi Pertanian","kanji"); }
-function openKaigo(){ buildSub("Materi Kaigo","kaigo"); }
-function openPm(){ buildSub("Materi Pengolahan Makanan","pm"); }
-function openBc(){ buildSub("Materi Building Cleaning","bc"); }
-function openPeternakan(){ buildSub("Materi Peternakan","peternakan"); }
-function openHotel(){ buildSub("Materi Perhotelan","hotel"); }
+function openHirakana(){ triggerLoading(() => buildSub("Rangkuman Buku Minna","hirakana")); }
+function openKanji(){ triggerLoading(() => buildSub("Materi Pertanian","kanji")); }
+function openKaigo(){ triggerLoading(() => buildSub("Materi Kaigo","kaigo")); }
+function openPm(){ triggerLoading(() => buildSub("Materi Pengolahan Makanan","pm")); }
+function openBc(){ triggerLoading(() => buildSub("Materi Building Cleaning","bc")); }
+function openPeternakan(){ triggerLoading(() => buildSub("Materi Peternakan","peternakan")); }
+function openHotel(){ triggerLoading(() => buildSub("Materi Perhotelan","hotel")); }
+
+function backToMenu() {
+  triggerLoading(() => show('menu'));
+}
 
 function buildSub(title,key){
   const box=document.getElementById("submenu");
   box.innerHTML=`
-    <h2>${title}</h2>
+    <div class="section-title">${title}</div>
     <div class="list">
       ${Object.keys(quizLinks[key]).map(k=>
         `<div class="item" onclick="go('${quizLinks[key][k]}')">
-          ${k}<span>→</span>
+          <div class="item-left">
+            <div class="item-icon">
+              <svg width="18" height="18" viewBox="0 0 100 100">
+                <path d="M20,50 Q20,20 50,20 Q80,20 80,50 Q80,80 50,80 Q20,80 20,50 Z" fill="#6C5CE7"/>
+                <circle cx="40" cy="45" r="5" fill="#FFF"/>
+                <circle cx="60" cy="45" r="5" fill="#FFF"/>
+              </svg>
+            </div>
+            <span>${k}</span>
+          </div>
+          <svg width="18" height="18" fill="#8E8E93" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
         </div>`
       ).join('')}
-      <button class="back" onclick="show('menu')">Kembali</button>
+      <button class="back" onclick="backToMenu()">← Kembali ke Menu Utama</button>
     </div>
   `;
   show("submenu");
 }
 
-// 🔥 MONETAG KLIK 2X
 function go(url){
   if(!clickedLinks[url]){
     clickedLinks[url] = true;
-    window.open(iklan, "_blank");
+    if (typeof iklan !== 'undefined') {
+      window.open(iklan, "_blank");
+    }
   } else {
     window.open(url, "_blank");
   }
 }
 
+function goNav(url) {
+  const loader = document.getElementById('loading-screen');
+  loader.classList.remove('hidden-loader');
+  setTimeout(() => {
+    window.location.href = url;
+  }, 200);
+}
 </script>
 
 </body>
