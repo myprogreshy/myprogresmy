@@ -105,6 +105,14 @@ font-weight:900;
 text-align:center;
 }
 
+.meaning{
+font-size:1.1rem;
+font-weight:700;
+color:#666;
+margin-top:8px;
+text-align:center;
+}
+
 .answer-wrap{
 position:relative;
 margin-bottom:10px;
@@ -233,7 +241,10 @@ border-bottom:1px solid #eee;
 </table>
 
 <div class="card">
+<div>
 <div id="question">?</div>
+<div id="meaning" class="meaning"></div>
+</div>
 </div>
 
 <div id="result"></div>
@@ -248,146 +259,146 @@ Mulai Ulang
 
 <script>
 
-const vocab=[// Bab 6
-// ===== Kata Sifat-な (20 kata) =====
-  ["しずかな", "しずかじゃなかった"],
-  ["ひまな", "ひまじゃなかった"],
-  ["にぎやかな", "にぎやかじゃなかった"],
-  ["べんりな", "べんりじゃなかった"],
-  ["ふべんな", "ふべんじゃなかった"],
-  ["すきな", "すきじゃなかった"],
-  ["きらいな", "きらいじゃなかった"],
-  ["じょうずな", "じょうずじゃなかった"],
-  ["へたな", "へたじゃなかった"],
-  ["たいせつな", "たいせつじゃなかった"],
-  ["たいへんな", "たいへんじゃなかった"],
-  ["らくな", "らくじゃなかった"],
-  ["しんせつな", "しんせつじゃなかった"],
-  ["まじめな", "まじめじゃなかった"],
-  ["ふまじめな", "ふまじめじゃなかった"],
-  ["あんぜんな", "あんぜんじゃなかった"],
-  ["きけんな", "きけんじゃなかった"],
-  ["ゆうめいな", "ゆうめいじゃなかった"],
-  ["とくべつな", "とくべつじゃなかった"],
-  ["じゆうな", "じゆうじゃなかった"],
+const vocab=[
+  // ===== Kata Sifat-な (20 kata) =====
+  ["しずかな", "しずかじゃなかった", "Dulu tidak tenang / sunyi"],
+  ["ひまな", "ひまじゃなかった", "Dulu tidak senggang / luang"],
+  ["にぎやかな", "にぎやかじゃなかった", "Dulu tidak ramai"],
+  ["べんりな", "べんりじゃなかった", "Dulu tidak praktis"],
+  ["ふべんな", "ふべんじゃなかった", "Dulu tidak tidak praktis (mudah)"],
+  ["すきな", "すきじゃなかった", "Dulu tidak suka"],
+  ["きらいな", "きらいじゃなかった", "Dulu tidak benci"],
+  ["じょうずな", "じょうずじゃなかった", "Dulu tidak pintar / mahir"],
+  ["へたな", "へたじゃなかった", "Dulu tidak bodoh / payah"],
+  ["たいせつな", "たいせつじゃなかった", "Dulu tidak penting / berharga"],
+  ["たいへんな", "たいへんじゃなかった", "Dulu tidak berat / sulit"],
+  ["らくな", "らくじゃなかった", "Dulu tidak mudah / nyaman"],
+  ["しんせつな", "しんせつじゃなかった", "Dulu tidak ramah / baik hati"],
+  ["まじめな", "まじめじゃなかった", "Dulu tidak rajin / serius"],
+  ["ふまじめな", "ふまじめじゃなかった", "Dulu tidak tidak serius"],
+  ["あんぜんな", "あんぜんじゃなかった", "Dulu tidak aman"],
+  ["きけんな", "きけんじゃなかった", "Dulu tidak berbahaya"],
+  ["ゆうめいな", "ゆうめいじゃなかった", "Dulu tidak terkenal"],
+  ["とくべつな", "とくべつじゃなかった", "Dulu tidak spesial / khusus"],
+  ["じゆうな", "じゆうじゃなかった", "Dulu tidak bebas"],
 
   // ===== Kata Benda (100 kata Baru) =====
   // Bangunan & Tempat
-  ["ほんだな", "ほんだなじゃなかった"],
-  ["おふろ", "おふろじゃなかった"],
-  ["べんじょ", "べんじょじゃなかった"],
-  ["げんかん", "げんかんじゃなかった"],
-  ["ろうか", "ろうかじゃなかった"],
-  ["ベランダ", "ベランダじゃなかった"],
-  ["おじょう", "おじょうじゃなかった"],
-  ["ちかがい", "ちかがいじゃなかった"],
-  ["ばすてい", "ばすていじゃなかった"],
-  ["ちゅうしゃじょう", "ちゅうしゃじょうじゃなかった"],
-  ["ガソリンスタンド", "ガソリンスタンドじゃなかった"],
-  ["パンや", "パンやじゃなかった"],
-  ["やおや", "やおやじゃなかった"],
+  ["ほんだな", "ほんだなじゃなかった", "Dulu bukan rak buku"],
+  ["おふろ", "おふろじゃなかった", "Dulu bukan kamar mandi"],
+  ["べんじょ", "べんじょじゃなかった", "Dulu bukan toilet / WC"],
+  ["げんかん", "げんかんじゃなかった", "Dulu bukan pintu masuk / teras"],
+  ["ろうか", "ろうかじゃなかった", "Dulu bukan koridor / lorong"],
+  ["ベランダ", "ベランダじゃなかった", "Dulu bukan balkon"],
+  ["おじょう", "おじょうじゃなかった", "Dulu bukan anak perempuan / putri"],
+  ["ちかがい", "ちかがいじゃなかった", "Dulu bukan pertokoan bawah tanah"],
+  ["ばすてい", "ばすていじゃなかった", "Dulu bukan halte bus"],
+  ["ちゅうしゃじょう", "ちゅうしゃじょうじゃなかった", "Dulu bukan tempat parkir"],
+  ["ガソリンスタンド", "ガソリンスタンドじゃなかった", "Dulu bukan pom bensin"],
+  ["パンや", "パンやじゃなかった", "Dulu bukan toko roti"],
+  ["やおや", "やおやじゃなかった", "Dulu bukan toko sayur"],
 
-  // Alam, Cuaca & LIngkungan
-  ["なみ", "なみじゃなかった"],
-  ["すな", "すなじゃなかった"],
-  ["つち", "つちじゃなかった"],
-  ["いし", "いしじゃなかった"],
-  ["いわ", "いわじゃなかった"],
-  ["たに", "たにじゃなかった"],
-  ["たき", "たきじゃなかった"],
-  ["ぬま", "ぬまじゃなかった"],
-  ["ひかり", "ひかりじゃなかった"],
-  ["かげ", "かげじゃなかった"],
+  // Alam, Cuaca & Lingkungan
+  ["なみ", "なみじゃなかった", "Dulu bukan ombak"],
+  ["すな", "すなじゃなかった", "Dulu bukan pasir"],
+  ["つち", "つちじゃなかった", "Dulu bukan tanah"],
+  ["いし", "いしじゃなかった", "Dulu bukan batu"],
+  ["いわ", "いわじゃなかった", "Dulu bukan batu karang / batu besar"],
+  ["たに", "たにじゃなかった", "Dulu bukan lembah"],
+  ["たき", "たきじゃなかった", "Dulu bukan air terjun"],
+  ["ぬま", "ぬまじゃなかった", "Dulu bukan rawa"],
+  ["ひかり", "ひかりじゃなかった", "Dulu bukan cahaya"],
+  ["かげ", "かげじゃなかった", "Dulu bukan bayangan"],
 
   // Hewan & Tumbuhan
-  ["へび", "へびじゃなかった"],
-  ["かえる", "かえるじゃなかった"],
-  ["はち", "はちじゃなかった"],
-  ["ちょうちょう", "ちょうちょうじゃなかった"],
-  ["アリ", "アリじゃなかった"],
-  ["クモ", "クモじゃなかった"],
-  ["えだ", "えだじゃなかった"],
-  ["はっぱ", "はっぱじゃなかった"],
-  ["ねっこ", "ねっこじゃなかった"],
-  ["たね", "たねじゃなかった"],
+  ["へび", "へびじゃなかった", "Dulu bukan ular"],
+  ["かえる", "かえるじゃなかった", "Dulu bukan katak / kodok"],
+  ["はち", "はちじゃなかった", "Dulu bukan lebah"],
+  ["ちょうちょう", "ちょうちょうじゃなかった", "Dulu bukan kupu-kupu"],
+  ["アリ", "アリじゃなかった", "Dulu bukan semut"],
+  ["クモ", "クモじゃなかった", "Dulu bukan laba-laba"],
+  ["えだ", "えだじゃなかった", "Dulu bukan dahan / ranting"],
+  ["はっぱ", "はっぱじゃなかった", "Dulu bukan daun"],
+  ["ねっこ", "ねっこじゃなかった", "Dulu bukan akar"],
+  ["たね", "たねじゃなかった", "Dulu bukan biji / benih"],
 
   // Makanan, Bumbu & Dapur
-  ["しお", "しおじゃなかった"],
-  ["とうがらし", "とうがらしじゃなかった"],
-  ["しょうゆ", "しょうゆじゃなかった"],
-  ["みりん", "みりんじゃなかった"],
-  ["マヨネーズ", "マヨネーズじゃなかった"],
-  ["ケチャップ", "ケチャップじゃなかった"],
-  ["バター", "バターじゃなかった"],
-  ["ジャム", "ジャムじゃなかった"],
-  ["スープ", "スープじゃなかった"],
-  ["サラダ", "サラダじゃなかった"],
+  ["しお", "しおじゃなかった", "Dulu bukan garam"],
+  ["とうがらし", "とうがらしじゃなかった", "Dulu bukan cabai"],
+  ["しょうゆ", "しょうゆじゃなかった", "Dulu bukan kecap asin"],
+  ["みりん", "みりんじゃなかった", "Dulu bukan mirin"],
+  ["マヨネーズ", "マヨネーズじゃなかった", "Dulu bukan mayones"],
+  ["ケチャップ", "ケチャップじゃなかった", "Dulu bukan saus tomat"],
+  ["バター", "バターじゃなかった", "Dulu bukan mentega"],
+  ["ジャム", "ジャムじゃなかった", "Dulu bukan selai"],
+  ["スープ", "スープじゃなかった", "Dulu bukan sup"],
+  ["サラダ", "サラダじゃなかった", "Dulu bukan salad"],
 
   // Peralatan, Perlengkapan & Kantor
-  ["はさみ", "はさみじゃなかった"],
-  ["ホッチキス", "ホッチキスじゃなかった"],
-  ["クリップ", "クリップじゃなかった"],
-  ["ふうとう", "ふうとうじゃなかった"],
-  ["きって", "きってじゃなかった"],
-  ["はんこ", "はんこじゃなかった"],
-  ["カレンダー", "カレンダーじゃなかった"],
-  ["ポスター", "ポスターじゃなかった"],
-  ["ゴミばこ", "ゴミばこじゃなかった"],
-  ["けしゴム", "けしゴムじゃなかった"],
+  ["はさみ", "はさみじゃなかった", "Dulu bukan gunting"],
+  ["ホッチキス", "ホッチキスじゃなかった", "Dulu bukan stapler"],
+  ["クリップ", "クリップじゃなかった", "Dulu bukan klip kertas"],
+  ["ふうとう", "ふうとうじゃなかった", "Dulu bukan amplop"],
+  ["きって", "きってじゃなかった", "Dulu bukan perangko"],
+  ["はんこ", "はんこじゃなかった", "Dulu bukan stempel"],
+  ["カレンダー", "カレンダーじゃなかった", "Dulu bukan kalender"],
+  ["ポスター", "ポスターじゃなかった", "Dulu bukan poster"],
+  ["ゴミばこ", "ゴミばこじゃなかった", "Dulu bukan tempat sampah"],
+  ["けしゴム", "けしゴムじゃなかった", "Dulu bukan penghapus"],
 
   // Pakaian & Perlengkapan Pribadi
-  ["くつ", "くつじゃなかった"],
-  ["スリッパ", "スリッパじゃなかった"],
-  ["サンダル", "サンダルじゃなかった"],
-  ["かさ", "かさじゃなかった"],
-  ["ベルト", "ベルトじゃなかった"],
-  ["ハンカチ", "ハンカチじゃなかった"],
-  ["リュック", "リュックじゃなかった"],
-  ["スーツケース", "スーツケースじゃなかった"],
-  ["ポケット", "ポケットじゃなかった"],
-  ["ボタン", "ボタンじゃなかった"],
+  ["くつ", "くつじゃなかった", "Dulu bukan sepatu"],
+  ["スリッパ", "スリッパじゃなかった", "Dulu bukan sandal rumah"],
+  ["サンダル", "サンダルじゃなかった", "Dulu bukan sandal"],
+  ["かさ", "かさじゃなかった", "Dulu bukan payung"],
+  ["ベルト", "ベルトじゃなかった", "Dulu bukan ikat pinggang"],
+  ["ハンカチ", "ハンカチじゃなかった", "Dulu bukan saputangan"],
+  ["リュック", "リュックじゃなかった", "Dulu bukan tas ransel"],
+  ["スーツケース", "スーツケースじゃなかった", "Dulu bukan koper"],
+  ["ポケット", "ポケットじゃなかった", "Dulu bukan saku / kantong"],
+  ["ボタン", "ボタンじゃなかった", "Dulu bukan kancing"],
 
   // Hiburan, Olahraga & Musik
-  ["ピアノ", "ピアノじゃなかった"],
-  ["ギター", "ギターじゃなかった"],
-  ["バイオリン", "バイオリンじゃなかった"],
-  ["ドラム", "ドラムじゃなかった"],
-  ["ダンス", "ダンスじゃなかった"],
-  ["ジョギング", "ジョギングじゃなかった"],
-  ["ゴルフ", "ゴルフじゃなかった"],
-  ["スキー", "スキーじゃなかった"],
-  ["スケート", "スケートじゃなかった"],
-  ["キャッチボール", "キャッチボールじゃなかった"],
+  ["ピアノ", "ピアノじゃなかった", "Dulu bukan piano"],
+  ["ギター", "ギターじゃなかった", "Dulu bukan gitar"],
+  ["バイオリン", "バイオリンじゃなかった", "Dulu bukan biola"],
+  ["ドラム", "ドラムじゃなかった", "Dulu bukan drum"],
+  ["ダンス", "ダンスじゃなかった", "Dulu bukan tarian / dansa"],
+  ["ジョギング", "ジョギングじゃなかった", "Dulu bukan joging"],
+  ["ゴルフ", "ゴルフじゃなかった", "Dulu bukan golf"],
+  ["スキー", "スキーじゃなかった", "Dulu bukan ski"],
+  ["スケート", "スケートじゃなかった", "Dulu bukan seluncur es"],
+  ["キャッチボール", "キャッチボールじゃなかった", "Dulu bukan lempar tangkap bola"],
 
   // Profesi & Posisi
-  ["パイロット", "パイロットじゃなかった"],
-  ["スチュワーデス", "スチュワーデスじゃなかった"],
-  ["かんごし", "かんごしじゃなかった"],
-  ["いしゃ", "いしゃじゃなかった"],
-  ["はいゆう", "はいゆうじゃなかった"],
-  ["じむいん", "じむいんじゃなかった"],
-  ["ていいん", "ていいんじゃなかった"],
-  ["うけつけ", "うけつけじゃなかった"],
-  ["せんしゅ", "せんしゅじゃなかった"],
+  ["パイロット", "パイロットじゃなかった", "Dulu bukan pilot"],
+  ["スチュワーデス", "スチュワーデスじゃなかった", "Dulu bukan pramugari"],
+  ["かんごし", "かんごしじゃなかった", "Dulu bukan perawat"],
+  ["いしゃ", "いしゃじゃなかった", "Dulu bukan dokter"],
+  ["はいゆう", "はいゆうじゃなかった", "Dulu bukan aktor / aktris"],
+  ["じむいん", "じむいんじゃなかった", "Dulu bukan pegawai kantor"],
+  ["ていいん", "ていいんじゃなかった", "Dulu bukan pelayan toko"],
+  ["うけつけ", "うけつけじゃなかった", "Dulu bukan resepsionis"],
+  ["せんしゅ", "せんしゅじゃなかった", "Dulu bukan atlet"],
 
   // Waktu, Perasaan & Konsep
-  ["けさ", "けさじゃなかった"],
-  ["こんばん", "こんばんじゃなかった"],
-  ["こんしゅう", "こんしゅうじゃなかった"],
-  ["らいしゅう", "らいしゅうじゃなかった"],
-  ["せんげつ", "せんげつじゃなかった"],
-  ["らいねん", "らいねんじゃなかった"],
-  ["きおく", "きおくじゃなかった"],
-  ["けいけん", "けいけんじゃなかった"],
-  ["りゆう", "りゆうじゃなかった"],
-  ["かいけつ", "かいけつじゃなかった"],
-  ["しっぱい", "しっぱいじゃなかった"],
-  ["せいこう", "せいこうじゃなかった"],
-  ["へんんこう", "へんこうじゃなかった"],
-  ["ちこく", "ちこくじゃなかった"],
-  ["そんしつ", "そんしつじゃなかった"],
-  ["りえき", "りえきじゃなかった"],
-  ["じょうほう", "じょうほうじゃなかった"]
+  ["けさ", "けさじゃなかった", "Dulu bukan tadi pagi"],
+  ["こんばん", "こんばんじゃなかった", "Dulu bukan nanti malam"],
+  ["こんしゅう", "こんしゅうじゃなかった", "Dulu bukan minggu ini"],
+  ["らいしゅう", "らいしゅうじゃなかった", "Dulu bukan minggu depan"],
+  ["せんげつ", "せんげつじゃなかった", "Dulu bukan bulan lalu"],
+  ["らいねん", "らいねんじゃなかった", "Dulu bukan tahun depan"],
+  ["きおく", "きおくじゃなかった", "Dulu bukan ingatan / memori"],
+  ["けいけん", "けいけんじゃなかった", "Dulu bukan pengalaman"],
+  ["りゆう", "りゆうじゃなかった", "Dulu bukan alasan"],
+  ["かいけつ", "かいけつじゃなかった", "Dulu bukan solusi / penyelesaian"],
+  ["しっぱい", "しっぱいじゃなかった", "Dulu bukan kegagalan"],
+  ["せいこう", "せいこうじゃなかった", "Dulu bukan keberhasilan"],
+  ["へんんこう", "へんこうじゃなかった", "Dulu bukan perubahan"],
+  ["ちこく", "ちこくじゃなかった", "Dulu bukan keterlambatan"],
+  ["そんしつ", "そんしつじゃなかった", "Dulu bukan kerugian"],
+  ["りえき", "りえきじゃなかった", "Dulu bukan keuntungan"],
+  ["じょうほう", "じょうほうじゃなかった", "Dulu bukan informasi"]
 ];
 
 let q=[],cur=0,xp=0,streak=0;
@@ -415,9 +426,10 @@ if(cur>=q.length){finish();return;}
 
 selected=[];
 
-const [romaji,hira]=q[cur];
+const [romaji,hira,arti]=q[cur];
 
-document.querySelector(".card").innerHTML=`<div id="question">${romaji}</div>`;
+document.getElementById("question").textContent=romaji;
+document.getElementById("meaning").textContent=arti ? `(${arti})` : "";
 
 result.innerHTML=`
 <div class="answer-wrap">
