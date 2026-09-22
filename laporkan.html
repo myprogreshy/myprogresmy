@@ -2,14 +2,13 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Laporkan Bug - Quiz Bahasa Jepang</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- EMAILJS -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
 <script>
 (function(){
   emailjs.init("5A_j5oQ7f8c2NtuP7");
@@ -18,15 +17,19 @@
 
 <style>
 :root {
-  --bg: #0f172a;
-  --card-bg: rgba(30, 41, 59, 0.7);
-  --border: rgba(255, 255, 255, 0.1);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --accent: #38bdf8;
-  --accent-hover: #0284c7;
-  --input-bg: rgba(15, 23, 42, 0.6);
-  --success: #10b981;
+  --bg-main: #F8F9FD;
+  --card-bg: #FFFFFF;
+  --text-primary: #1C1C1E;
+  --text-muted: #8E8E93;
+  --accent-purple: #6C5CE7;
+  --accent-purple-light: #F0EDFF;
+  
+  --color-pink: #FF80A6;
+  --color-pink-bg: #FFEBF2;
+  --color-blue: #0984E3;
+  --color-blue-bg: #E8F4FC;
+  --color-green: #00B894;
+  --color-green-bg: #E6F7F4;
 }
 
 * {
@@ -34,260 +37,423 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--bg);
-  color: var(--text-primary);
-  min-height: 100vh;
+  background: #E2E4F0;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-.container {
-  max-width: 900px;
-  margin: 0 auto;
+/* APP CONTAINER */
+.app-screen {
   width: 100%;
-  min-height: 100vh;
+  max-width: 412px;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 892px;
+  background: var(--bg-main);
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 425px) {
+  .app-screen {
+    border-radius: 40px;
+    height: 92vh;
+    height: 92dvh;
+    border: 8px solid #FFFFFF;
+  }
+}
+
+/* LOADING SCREEN */
+#loading-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: auto;
+}
+
+#loading-screen.hidden-loader {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--accent-purple-light);
+  border-top: 4px solid var(--accent-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 /* HEADER */
 header {
-  background: rgba(30, 41, 59, 0.5);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
-  padding: 20px 25px;
+  background: var(--card-bg);
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-header h1 {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--accent);
-}
-
-header p {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-}
-
-/* MAIN */
-main {
-  flex: 1;
-  padding: 30px 20px;
+.header-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--color-pink-bg);
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--color-pink);
 }
 
-/* CARD */
-.card {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px;
-  width: 100%;
-  max-width: 480px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-}
-
-.card h2 {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 8px;
+header h1 {
+  font-size: 18px;
+  font-weight: 800;
   color: var(--text-primary);
 }
 
-.card p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 20px;
-  line-height: 1.5;
+header p {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
 }
 
-/* FORM */
+/* MAIN CONTENT */
+main {
+  flex: 1;
+  padding: 20px;
+  padding-bottom: 90px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.card h2 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.card p {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+/* FORM ELEMENTS */
 .form-group {
   margin-bottom: 16px;
+  text-align: left;
 }
 
 label {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
   display: block;
   margin-bottom: 6px;
-  color: var(--text-secondary);
 }
 
 input, textarea {
   width: 100%;
   padding: 12px 14px;
-  background: var(--input-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 14px;
+  background: var(--bg-main);
+  border: 1.5px solid #EFEFF4;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 500;
   color: var(--text-primary);
-  transition: all 0.2s ease;
-}
-
-input::placeholder, textarea::placeholder {
-  color: #64748b;
+  transition: 0.2s;
 }
 
 input:focus, textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  border-color: var(--accent-purple);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
 }
 
 textarea {
-  min-height: 120px;
+  min-height: 110px;
   resize: vertical;
 }
 
-/* BUTTON */
-.btn {
+/* BUTTONS */
+.btn-primary {
+  width: 100%;
+  padding: 14px;
   margin-top: 8px;
-  background: var(--accent);
-  color: #0f172a;
-  font-weight: 600;
+  background: var(--accent-purple);
+  color: #FFFFFF;
   border: none;
-  padding: 12px;
-  border-radius: 10px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 13px;
   cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.25);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.back-btn {
   width: 100%;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.btn:hover {
-  background: var(--accent-hover);
-  color: #ffffff;
-}
-
-/* BACK BUTTON */
-.back {
+  padding: 14px;
   margin-top: 10px;
-  background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
+  background: #EFEFF4;
+  color: var(--text-primary);
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 13px;
   cursor: pointer;
-  width: 100%;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  transition: 0.2s;
 }
 
-.back:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
+.back-btn:hover {
+  background: #E5E5EA;
 }
 
 /* STATUS MESSAGES */
-.loading {
+.status-msg {
   display: none;
-  margin-top: 12px;
-  font-size: 13px;
-  color: var(--accent);
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
   text-align: center;
 }
 
-.success {
-  display: none;
-  margin-top: 12px;
-  font-size: 13px;
-  color: var(--success);
-  text-align: center;
-  padding: 10px;
-  background: rgba(16, 185, 129, 0.1);
-  border-radius: 8px;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+.loading-msg {
+  background: var(--accent-purple-light);
+  color: var(--accent-purple);
+}
+
+.success-msg {
+  background: var(--color-green-bg);
+  color: var(--color-green);
 }
 
 /* FOOTER */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 16px;
+.copyright {
   text-align: center;
-  font-size: 12px;
-  color: var(--text-secondary);
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* BOTTOM NAVBAR */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  background: var(--card-bg);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 10;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  color: var(--accent-purple);
+}
+
+.nav-item svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app-screen">
 
-<header>
-  <h1>Quiz Bahasa Jepang</h1>
-  <p>Laporkan Bug</p>
-</header>
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <div class="loading-text">Memuat Halaman...</div>
+  </div>
 
-<main>
+  <!-- HEADER -->
+  <header>
+    <div class="header-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 8h-1.81a5.985 5.985 0 0 0-1.82-1.96l.93-.93a.996.996 0 1 0-1.41-1.41l-1.47 1.47C12.85 5.06 12.43 5 12 5s-.85.06-1.42.17L9.11 3.7a.996.996 0 1 0-1.41 1.41l.93.93C7.63 6.64 6.99 7.27 6.81 8H5c-.55 0-1 .45-1 1s.45 1 1 1h1.09c-.05.33-.09.66-.09 1v1H5c-.55 0-1 .45-1 1s.45 1 1 1h1v1c0 .34.04.67.09 1H5c-.55 0-1 .45-1 1s.45 1 1 1h1.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H19c.55 0 1-.45 1-1s-.45-1-1-1h-1.09c.05-.33.09-.66.09-1v-1h1c.55 0 1-.45 1-1s-.45-1-1-1h-1v-1c0-.34-.04-.67-.09-1H19c.55 0 1-.45 1-1s-.45-1-1-1zm-6 8h-2v-2h2v2zm0-4h-2v-2h2v2z"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Laporkan Bug</h1>
+      <p>Quiz Bahasa Jepang</p>
+    </div>
+  </header>
 
-<div class="card">
+  <!-- MAIN CONTENT -->
+  <main>
+    <div class="card">
+      <h2>Laporkan Bug</h2>
+      <p>Temukan kesalahan atau bug? Laporkan kepada kami agar segera diperbaiki.</p>
 
-<h2>🐛 Laporkan Bug</h2>
-<p>Temukan kesalahan atau bug? Laporkan kepada kami agar segera diperbaiki.</p>
+      <div class="form-group">
+        <label for="nama">Nama (Opsional)</label>
+        <input type="text" id="nama" placeholder="Nama kamu">
+      </div>
 
-<div class="form-group">
-  <label for="nama">Nama (opsional)</label>
-  <input type="text" id="nama" placeholder="Nama kamu">
-</div>
+      <div class="form-group">
+        <label for="pesan">Deskripsi Bug</label>
+        <textarea id="pesan" placeholder="Jelaskan bug yang kamu temukan di sini..."></textarea>
+      </div>
 
-<div class="form-group">
-  <label for="pesan">Deskripsi Bug</label>
-  <textarea id="pesan" placeholder="Jelaskan bug yang kamu temukan..."></textarea>
-</div>
+      <button class="btn-primary" onclick="kirim()">Kirim Laporan</button>
 
-<button class="btn" onclick="kirim()">Kirim Laporan</button>
+      <div class="status-msg loading-msg" id="loading">⏳ Mengirim laporan...</div>
+      <div class="status-msg success-msg" id="success">✓ Laporan berhasil dikirim! Terima kasih.</div>
 
-<div class="loading" id="loading">⏳ Mengirim laporan...</div>
-<div class="success" id="success">✅ Laporan berhasil dikirim! Terima kasih.</div>
+      <button class="back-btn" onclick="history.back()">← Kembali</button>
+    </div>
 
-<button class="back" onclick="history.back()">Kembali</button>
+    <div class="copyright">© 2026 Quiz Jepang</div>
+  </main>
 
-</div>
-
-</main>
-
-<footer>© 2026 Quiz Jepang</footer>
+  <!-- BOTTOM NAVIGATION MENU -->
+  <nav class="bottom-nav">
+    <a href="javascript:void(0)" onclick="goNav('index.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('quiz.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      <span>Quiz</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('materi.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+      <span>Materi</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('profil.html')" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profil</span>
+    </a>
+  </nav>
 
 </div>
 
 <script>
-function kirim(){
+function hideLoader() {
+  const loader = document.getElementById('loading-screen');
+  loader.classList.add('hidden-loader');
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(hideLoader, 300);
+});
+
+window.addEventListener('pageshow', () => {
+  hideLoader();
+});
+
+function goNav(url) {
+  const loader = document.getElementById('loading-screen');
+  loader.classList.remove('hidden-loader');
+  setTimeout(() => {
+    window.location.href = url;
+  }, 200);
+}
+
+function kirim() {
   const nama = document.getElementById("nama").value;
   const pesan = document.getElementById("pesan").value;
 
-  if(pesan.trim() === ""){
+  if (pesan.trim() === "") {
     alert("Deskripsi bug tidak boleh kosong!");
     return;
   }
 
-  document.getElementById("loading").style.display = "block";
   document.getElementById("success").style.display = "none";
+  document.getElementById("loading").style.display = "block";
 
-  emailjs.send("service_sskzgxn","template_y4o0v0a",{
+  emailjs.send("service_sskzgxn", "template_y4o0v0a", {
     nama: nama || "Anonim",
     pesan: "[BUG] " + pesan,
-    to_email: "EMAILKAMU@gmail.com"
+    to_email: "amapupiang@gmail.com"
   })
-  .then(function(){
+  .then(function() {
     document.getElementById("loading").style.display = "none";
     document.getElementById("success").style.display = "block";
 
     document.getElementById("nama").value = "";
     document.getElementById("pesan").value = "";
   })
-  .catch(function(error){
+  .catch(function(error) {
     document.getElementById("loading").style.display = "none";
-    alert("❌ Gagal mengirim!");
+    alert("Gagal mengirim laporan!");
     console.log(error);
   });
 }
