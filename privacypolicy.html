@@ -2,178 +2,397 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Privacy Policy - Quiz Bahasa Jepang</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --primary:#2c7be5;
-  --bg:#f6f8fb;
-  --card:#ffffff;
-  --text:#1f2937;
-  --muted:#6b7280;
+:root {
+  --bg-main: #F8F9FD;
+  --card-bg: #FFFFFF;
+  --text-primary: #1C1C1E;
+  --text-muted: #8E8E93;
+  --accent-purple: #6C5CE7;
+  --accent-purple-light: #F0EDFF;
+  
+  --color-pink: #FF80A6;
+  --color-pink-bg: #FFEBF2;
+  --color-blue: #0984E3;
+  --color-blue-bg: #E8F4FC;
+  --color-green: #00B894;
+  --color-green-bg: #E6F7F4;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body{
-  background:var(--bg);
-  color:var(--text);
+body {
+  background: #E2E4F0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
+/* APP CONTAINER */
+.app-screen {
+  width: 100%;
+  max-width: 412px;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 892px;
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 425px) {
+  .app-screen {
+    border-radius: 40px;
+    height: 92vh;
+    height: 92dvh;
+    border: 8px solid #FFFFFF;
+  }
+}
+
+/* LOADING SCREEN */
+#loading-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: auto;
+}
+
+#loading-screen.hidden-loader {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--accent-purple-light);
+  border-top: 4px solid var(--accent-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 /* HEADER */
-header{
-  background:#fff;
-  border-bottom:1px solid #e5e7eb;
-  padding:20px 25px;
+header {
+  background: var(--card-bg);
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-header h1{
-  font-size:20px;
-  font-weight:600;
+.header-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--accent-purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-purple);
 }
 
-header p{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:4px;
+header h1 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
-/* MAIN */
-main{
-  flex:1;
-  padding:25px;
+header p {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
 }
 
-/* CARD CONTENT */
-.card{
-  background:var(--card);
-  border:1px solid #e5e7eb;
-  border-radius:10px;
-  padding:20px;
-  line-height:1.7;
+/* MAIN CONTENT */
+main {
+  flex: 1;
+  padding: 20px;
+  padding-bottom: 90px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
-.card h2{
-  font-size:18px;
-  margin-bottom:10px;
+.policy-card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.card p{
-  font-size:14px;
-  color:var(--text);
-  margin-bottom:12px;
+.policy-section {
+  border-bottom: 1px dashed #EFEFF4;
+  padding-bottom: 14px;
 }
 
-.card ul{
-  padding-left:18px;
-  margin-bottom:12px;
+.policy-section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-.card li{
-  font-size:14px;
-  margin-bottom:6px;
+.policy-section h2 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.policy-section p {
+  font-size: 13px;
+  color: #4A4A4A;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.policy-section ul {
+  padding-left: 18px;
+  margin-top: 6px;
+}
+
+.policy-section li {
+  font-size: 13px;
+  color: #4A4A4A;
+  margin-bottom: 4px;
+  font-weight: 500;
 }
 
 /* BACK BUTTON */
-.back{
-  margin-top:20px;
-  background:#f3f4f6;
-  border:1px solid #e5e7eb;
-  border-radius:8px;
-  padding:12px;
-  cursor:pointer;
-  width:100%;
+.back-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  background: #EFEFF4;
+  color: var(--text-primary);
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-/* FOOTER */
-footer{
-  border-top:1px solid #e5e7eb;
-  padding:12px;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
+.back-btn:hover {
+  background: #E5E5EA;
+}
+
+/* FOOTER inside scroll */
+.copyright {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* BOTTOM NAVBAR */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  background: var(--card-bg);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 10;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  color: var(--accent-purple);
+}
+
+.nav-item svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app-screen">
 
-<header>
-  <h1>Privacy Policy</h1>
-  <p>Kebijakan Privasi Aplikasi Quiz Jepang</p>
-</header>
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <div class="loading-text">Memuat Halaman...</div>
+  </div>
 
-<main>
+  <!-- HEADER -->
+  <header>
+    <div class="header-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8s0 0 0 0z"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Privacy Policy</h1>
+      <p>Kebijakan Privasi Aplikasi</p>
+    </div>
+  </header>
 
-<div class="card">
+  <!-- MAIN CONTENT -->
+  <main>
+    <div class="policy-card">
+      
+      <div class="policy-section">
+        <h2>1. Informasi yang Dikumpulkan</h2>
+        <p>Aplikasi Quiz Jepang ini tidak mengumpulkan data pribadi seperti nama, email, atau informasi sensitif lainnya.</p>
+      </div>
 
-<h2>1. Informasi yang Dikumpulkan</h2>
-<p>
-Aplikasi Quiz Jepang ini tidak mengumpulkan data pribadi seperti nama, email, atau informasi sensitif lainnya.
-</p>
+      <div class="policy-section">
+        <h2>2. Penggunaan Data</h2>
+        <p>Kami hanya menggunakan data secara umum untuk meningkatkan pengalaman pengguna, seperti:</p>
+        <ul>
+          <li>Performa aplikasi</li>
+          <li>Perbaikan bug</li>
+          <li>Peningkatan fitur</li>
+        </ul>
+      </div>
 
-<h2>2. Penggunaan Data</h2>
-<p>
-Kami hanya menggunakan data secara umum untuk meningkatkan pengalaman pengguna, seperti:
-</p>
-<ul>
-  <li>Performa aplikasi</li>
-  <li>Perbaikan bug</li>
-  <li>Peningkatan fitur</li>
-</ul>
+      <div class="policy-section">
+        <h2>3. Cookies</h2>
+        <p>Aplikasi ini dapat menggunakan cookies untuk menyimpan preferensi pengguna dan meningkatkan pengalaman penggunaan.</p>
+      </div>
 
-<h2>3. Cookies</h2>
-<p>
-Aplikasi ini dapat menggunakan cookies untuk menyimpan preferensi pengguna dan meningkatkan pengalaman penggunaan.
-</p>
+      <div class="policy-section">
+        <h2>4. Iklan</h2>
+        <p>Kami dapat menampilkan iklan dari pihak ketiga. Penyedia iklan mungkin menggunakan teknologi seperti cookies untuk menampilkan iklan yang relevan.</p>
+      </div>
 
-<h2>4. Iklan</h2>
-<p>
-Kami dapat menampilkan iklan dari pihak ketiga. Penyedia iklan mungkin menggunakan teknologi seperti cookies untuk menampilkan iklan yang relevan.
-</p>
+      <div class="policy-section">
+        <h2>5. Keamanan</h2>
+        <p>Kami berusaha menjaga keamanan aplikasi, namun kami tidak dapat menjamin keamanan sepenuhnya dari risiko digital.</p>
+      </div>
 
-<h2>5. Keamanan</h2>
-<p>
-Kami berusaha menjaga keamanan aplikasi, namun kami tidak dapat menjamin keamanan sepenuhnya dari risiko digital.
-</p>
+      <div class="policy-section">
+        <h2>6. Perubahan Kebijakan</h2>
+        <p>Kebijakan privasi ini dapat diperbarui sewaktu-waktu tanpa pemberitahuan terlebih dahulu.</p>
+      </div>
 
-<h2>6. Perubahan Kebijakan</h2>
-<p>
-Kebijakan privasi ini dapat diperbarui sewaktu-waktu tanpa pemberitahuan terlebih dahulu.
-</p>
+      <div class="policy-section">
+        <h2>7. Kontak</h2>
+        <p>Jika ada pertanyaan terkait kebijakan ini, silakan hubungi pengembang melalui platform yang tersedia.</p>
+      </div>
 
-<h2>7. Kontak</h2>
-<p>
-Jika ada pertanyaan terkait kebijakan ini, silakan hubungi pengembang melalui platform yang tersedia.
-</p>
+      <button class="back-btn" onclick="history.back()">← Kembali</button>
 
-<button class="back" onclick="history.back()">Kembali</button>
+    </div>
+
+    <div class="copyright">© 2026 Quiz Jepang</div>
+  </main>
+
+  <!-- BOTTOM NAVIGATION MENU -->
+  <nav class="bottom-nav">
+    <a href="javascript:void(0)" onclick="goNav('index.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('quiz.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      <span>Quiz</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('materi.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+      <span>Materi</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('profil.html')" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profil</span>
+    </a>
+  </nav>
 
 </div>
 
-</main>
+<script>
+function hideLoader() {
+  const loader = document.getElementById('loading-screen');
+  loader.classList.add('hidden-loader');
+}
 
-<footer>© 2026 Quiz Jepang</footer>
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(hideLoader, 300);
+});
 
-</div>
+window.addEventListener('pageshow', () => {
+  hideLoader();
+});
+
+function goNav(url) {
+  const loader = document.getElementById('loading-screen');
+  loader.classList.remove('hidden-loader');
+  setTimeout(() => {
+    window.location.href = url;
+  }, 200);
+}
+</script>
 
 </body>
 </html>
