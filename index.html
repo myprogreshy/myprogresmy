@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Quiz Jepang - Habitz Style</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -43,14 +43,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Menggunakan dvh agar pas dengan layar browser mobile termasuk Safari */
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* APP FRAME (MOCKUP STYLING) */
 .app-screen {
   width: 100%;
   max-width: 412px;
+  /* Solusi kompatibilitas Safari Mobile */
   height: 100vh;
+  height: 100dvh;
   max-height: 892px;
   background: var(--bg-main);
   display: flex;
@@ -64,6 +68,7 @@ body {
   .app-screen {
     border-radius: 40px;
     height: 92vh;
+    height: 92dvh;
     border: 8px solid #FFFFFF;
   }
 }
@@ -71,18 +76,19 @@ body {
 /* MAIN CONTENT */
 main {
   flex: 1;
-  padding: 20px 20px 90px;
+  padding: 16px 20px 80px; /* Menyesuaikan padding bawah agar tidak tertutup nav */
   overflow-y: auto;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* Melancarkan scroll di Safari iOS */
 }
 
 /* PAPAN INFORMASI / ANNOUNCEMENT BANNER (HOME) */
 .info-board {
   background: linear-gradient(135deg, #6C5CE7 0%, #8E7CFF 100%);
   border-radius: 24px;
-  padding: 20px;
+  padding: 18px;
   color: white;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
   box-shadow: 0 10px 20px rgba(108, 92, 231, 0.25);
   position: relative;
   overflow: hidden;
@@ -112,7 +118,7 @@ main {
 }
 
 .info-title {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800;
   margin-bottom: 6px;
   line-height: 1.3;
@@ -121,7 +127,7 @@ main {
 .info-desc {
   font-size: 12px;
   opacity: 0.9;
-  line-height: 1.5;
+  line-height: 1.4;
   font-weight: 500;
 }
 
@@ -132,58 +138,58 @@ main {
   align-items: center;
   text-align: center;
   margin-top: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .avatar-wrapper {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: var(--color-pink-bg);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .user-info h1 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 2px;
 }
 
 .user-info p {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-muted);
   font-weight: 500;
 }
 
 /* SECTION TITLES */
 .section-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 /* MENU GRID (HOME) */
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .menu-card {
   background: var(--card-bg);
   border-radius: 20px;
-  padding: 18px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 125px;
+  min-height: 110px;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
@@ -200,17 +206,17 @@ main {
 }
 
 .card-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .card-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 2px;
@@ -232,7 +238,7 @@ main {
 .list-item {
   background: white;
   border-radius: 18px;
-  padding: 16px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -249,12 +255,12 @@ main {
 .list-item-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .item-avatar {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 12px;
   background: var(--accent-purple-light);
   display: flex;
@@ -263,15 +269,15 @@ main {
 }
 
 .list-item h4 {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .btn-back {
   width: 100%;
-  padding: 14px;
-  margin-top: 16px;
+  padding: 12px;
+  margin-top: 14px;
   background: #EFEFF4;
   color: var(--text-primary);
   border: none;
@@ -292,13 +298,17 @@ main {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 70px;
+  height: auto;
+  min-height: 65px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0 10px;
+  padding: 8px 10px;
+  /* Mendukung Safe Area Inset untuk Home Indicator di iPhone/Safari */
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   z-index: 10;
 }
@@ -307,7 +317,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   cursor: pointer;
   color: var(--text-muted);
   transition: 0.2s;
@@ -332,6 +342,7 @@ main {
   bottom: 0;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -348,8 +359,8 @@ main {
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 4px solid var(--accent-purple-light);
   border-top: 4px solid var(--accent-purple);
   border-radius: 50%;
@@ -377,6 +388,7 @@ main {
   bottom: 0;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -409,15 +421,15 @@ main {
 }
 
 .modal-icon {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--color-orange-bg);
   color: var(--color-orange);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 14px;
+  margin: 0 auto 12px;
 }
 
 .modal-title {
@@ -432,7 +444,7 @@ main {
   color: var(--text-muted);
   line-height: 1.5;
   font-weight: 500;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .btn-modal {
@@ -491,7 +503,7 @@ main {
       <!-- PAPAN INFORMASI UTAMA -->
       <div class="info-board">
         <span class="info-badge">📢 Informasi Terbaru</span>
-        <div class="info-title">Pembaruan Materi Dan Bug!</div>
+        <div class="info-title">Pembaruan Materi N5 & N4!</div>
         <div class="info-desc">Selamat belajar! Materi tata bahasa dan kuis harian baru telah ditambahkan. Selalu pantau perkembanganmu setiap hari.</div>
       </div>
 
