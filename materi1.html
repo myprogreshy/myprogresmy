@@ -2,401 +2,739 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menu Quiz Jepang</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Quiz Bahasa Jepang</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --primary:#2c7be5;
-  --bg:#f6f8fb;
-  --card:#ffffff;
-  --text:#1f2937;
-  --muted:#6b7280;
+:root {
+  --bg-main: #F8F9FD;
+  --card-bg: #FFFFFF;
+  --text-primary: #1C1C1E;
+  --text-muted: #8E8E93;
+  --accent-purple: #6C5CE7;
+  --accent-purple-light: #F0EDFF;
+  
+  --color-pink: #FF80A6;
+  --color-pink-bg: #FFEBF2;
+  --color-blue: #0984E3;
+  --color-blue-bg: #E8F4FC;
+  --color-green: #00B894;
+  --color-green-bg: #E6F7F4;
+  --color-orange: #E17055;
+  --color-orange-bg: #FDF0ED;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body{
-  background:var(--bg);
-  color:var(--text);
+body {
+  background: #E2E4F0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-header{
-  background:#fff;
-  border-bottom:1px solid #e5e7eb;
-  padding:20px 25px;
-}
-
-header h1{
-  font-size:20px;
-  font-weight:600;
-}
-
-header p{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:4px;
-}
-
-main{
-  flex:1;
-  padding:25px;
-}
-
-h2{
-  font-size:18px;
-  font-weight:600;
-  margin-bottom:15px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:15px;
-}
-
-.card{
-  background:var(--card);
-  border:1px solid #e5e7eb;
-  border-radius:10px;
-  padding:16px 18px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.card:hover{
-  border-color:var(--primary);
-  box-shadow:0 4px 10px rgba(0,0,0,.05);
-}
-
-.card h3{
-  font-size:15px;
-  font-weight:600;
-}
-
-.card span{
-  font-size:12px;
-  color:var(--muted);
-}
-
-.list{
-  display:grid;
-  gap:10px;
-}
-
-.item{
-  background:#fff;
-  border:1px solid #e5e7eb;
-  padding:14px 16px;
-  border-radius:8px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
-  transition:.15s;
-}
-
-.item:hover{
-  border-color:var(--primary);
-  background:#f0f6ff;
-}
-
-.back{
-  margin-top:15px;
-  background:#f3f4f6;
-  border:1px solid #e5e7eb;
-  border-radius:8px;
-  padding:12px;
-  cursor:pointer;
+/* APP CONTAINER */
+.app-screen {
   width: 100%;
+  max-width: 412px;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 892px;
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 425px) {
+  .app-screen {
+    border-radius: 40px;
+    height: 92vh;
+    height: 92dvh;
+    border: 8px solid #FFFFFF;
+  }
+}
+
+/* LOADING SCREEN */
+#loading-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: auto;
+}
+
+#loading-screen.hidden-loader {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--accent-purple-light);
+  border-top: 4px solid var(--accent-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* HEADER */
+header {
+  background: var(--card-bg);
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+header h1 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+header p {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* INFO KLIK BANNER */
+#info-klik {
+  background: #FFF9E6;
+  color: #D97706;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(217, 119, 6, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* MAIN SCROLLABLE CONTENT */
+main {
+  flex: 1;
+  padding: 20px;
+  padding-bottom: 90px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+/* GRID MENU */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* CARD */
+.card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 110px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+.card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.card span {
+  font-size: 11px;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
-footer{
-  border-top:1px solid #e5e7eb;
-  padding:12px;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
+/* SUBMENU LIST */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.hidden{display:none}
-
-#info-klik {
-  background:#fff3cd;
-  color:#856404;
-  padding:10px 15px;
-  font-size:13px;
-  border-bottom:1px solid #e5e7eb;
+.item {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
+
+.item:hover {
+  background: var(--accent-purple-light);
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--accent-purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back {
+  width: 100%;
+  padding: 12px;
+  margin-top: 14px;
+  background: #EFEFF4;
+  color: var(--text-primary);
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back:hover {
+  background: #E5E5EA;
+}
+
+/* BOTTOM NAVBAR */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  background: var(--card-bg);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 10;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  color: var(--accent-purple);
+}
+
+.nav-item svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+/* HIDDEN */
+.hidden { display: none !important; }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app-screen">
 
-<header>
-  <h1>Quiz Bahasa Jepang</h1>
-  <p>Menu Materi Lengkap</p>
-</header>
-
-<div id="info-klik" class="hidden">
-  ⚠️ Klik 2x untuk membuka link google drive
-</div>
-
-<main>
-
-<section id="menu">
-  <h2>Kategori</h2>
-  <div class="grid">
-    <div class="card" onclick="openKana()">
-      <h3>Hiragana Katakana</h3>
-      <span>Dasar & Soal</span>
-    </div>
-    <div class="card" onclick="openDongeng()">
-      <h3>Dongeng Jepang</h3>
-      <span>Cerita Rakyat</span>
-    </div>
-    <div class="card" onclick="openIrodoriA1()">
-      <h3>Irodori A1</h3>
-      <span>Starter</span>
-    </div>
-    <div class="card" onclick="openIrodoriA21()">
-      <h3>Irodori A2(1)</h3>
-      <span>Elementary 1</span>
-    </div>
-    <div class="card" onclick="openIrodoriA22()">
-      <h3>Irodori A2(2)</h3>
-      <span>Elementary 2</span>
-    </div>
-    <div class="card" onclick="openKotobaIrodori()">
-      <h3>Kotoba Irodori</h3>
-      <span>Kumpulan Kosakata</span>
-    </div>
-    <div class="card" onclick="openJFT()">
-      <h3>JFT Basic</h3>
-      <span>Kumpulan Soal JFT</span>
-    </div>
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <div class="loading-text">Memuat Data...</div>
   </div>
-</section>
 
-<section id="submenu" class="hidden"></section>
+  <!-- HEADER -->
+  <header>
+    <h1>Quiz Bahasa Jepang</h1>
+    <p>Menu Materi Lengkap</p>
+  </header>
 
-</main>
+  <!-- BANNER PETUNJUK -->
+  <div id="info-klik" class="hidden">
+    ⚠️ Klik 2x untuk membuka link google drive
+  </div>
 
-<footer>© 2026 Quiz Jepang</footer>
+  <!-- MAIN CONTENT -->
+  <main>
+    <!-- MENU UTAMA -->
+    <section id="menu">
+      <div class="section-title">Kategori</div>
+      <div class="grid">
+        
+        <div class="card" onclick="openKana()">
+          <div class="card-icon" style="background: var(--color-pink-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q15,20 50,15 Q85,15 80,50 Q85,85 50,85 Q15,85 20,50 Z" fill="#FF80A6"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+              <polygon points="45,55 55,55 50,62" fill="#FFC800"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Hiragana Katakana</h3>
+            <span>Dasar & Soal</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openDongeng()">
+          <div class="card-icon" style="background: var(--color-blue-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,15 50,15 Q80,15 80,50 Q80,85 50,85 Q20,85 20,50 Z" fill="#0984E3"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+              <path d="M 45 58 Q 50 64 55 58" stroke="#FFF" stroke-width="3" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Dongeng Jepang</h3>
+            <span>Cerita Rakyat</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openIrodoriA1()">
+          <div class="card-icon" style="background: var(--color-green-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,15 50,15 Q80,15 80,50 Q80,85 50,85 Q20,85 20,50 Z" fill="#00B894"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Irodori A1</h3>
+            <span>Starter</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openIrodoriA21()">
+          <div class="card-icon" style="background: var(--color-orange-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q15,20 50,15 Q85,15 80,50 Q85,85 50,85 Q15,85 20,50 Z" fill="#E17055"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Irodori A2(1)</h3>
+            <span>Elementary 1</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openIrodoriA22()">
+          <div class="card-icon" style="background: var(--accent-purple-light);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,15 50,15 Q80,15 80,50 Q80,85 50,85 Q20,85 20,50 Z" fill="#6C5CE7"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Irodori A2(2)</h3>
+            <span>Elementary 2</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openKotobaIrodori()">
+          <div class="card-icon" style="background: var(--color-pink-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q15,20 50,15 Q85,15 80,50 Q85,85 50,85 Q15,85 20,50 Z" fill="#FF80A6"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Kotoba Irodori</h3>
+            <span>Kosakata</span>
+          </div>
+        </div>
+
+        <div class="card" onclick="openJFT()" style="grid-column: span 2;">
+          <div class="card-icon" style="background: var(--color-blue-bg);">
+            <svg width="22" height="22" viewBox="0 0 100 100">
+              <path d="M20,50 Q20,15 50,15 Q80,15 80,50 Q80,85 50,85 Q20,85 20,50 Z" fill="#0984E3"/>
+              <circle cx="40" cy="45" r="5" fill="#FFF"/>
+              <circle cx="60" cy="45" r="5" fill="#FFF"/>
+            </svg>
+          </div>
+          <div>
+            <h3>JFT Basic</h3>
+            <span>Kumpulan Soal JFT</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SUBMENU DINAMIS -->
+    <section id="submenu" class="hidden"></section>
+  </main>
+
+  <!-- BOTTOM NAVIGATION MENU -->
+  <nav class="bottom-nav">
+    <a href="javascript:void(0)" onclick="goNav('index.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('index.html')" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+      <span>Quiz</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('index.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+      <span>Materi</span>
+    </a>
+    <a href="javascript:void(0)" onclick="goNav('index.html')" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profil</span>
+    </a>
+  </nav>
 
 </div>
 
 <script>
-
-
 let clickedLinks = {};
 
-const quizLinks={
-  kana:{ "Hiragana Katakana 1":"https://drive.google.com/file/d/1RPIIu6b3m-cVP52NMCy27Zkc9gq2jS-c/view?usp=drivesdk", 
-        "Hiragana Katakana 2":"https://drive.google.com/file/d/12hPmW2r3VIlfJ8jTkTNAWvyfpJrwa4NF/view?usp=drivesdk", 
-        "Hiragana Soal":"https://drive.google.com/file/d/1JRNPK2RV5O5zgbGRKM9hP_-FINx79-oX/view?usp=drivesdk" },
-  dongeng:{
-    "Issunboushi":"https://drive.google.com/file/d/1MNjW0Do-AaaSqSUWK7pTr3Q1C-G4px5W/view?usp=drivesdk", 
-    "Urashimatarou":"https://drive.google.com/file/d/1InvHlEUbpf9x760VxOhCT-AA6EoBqR5y/view?usp=drivesdk", 
-    "Omusubikororin":"https://drive.google.com/file/d/10K4PhrGd8ynlRLNUMxJPs1WA79aoo4eX/view?usp=drivesdk", 
-    "Kaguyahime":"https://drive.google.com/file/d/1QkjBlZeSsDKcHuz9VyyfdxezW12L2uBA/view?usp=drivesdk",
-    "Kasazizou":"https://drive.google.com/file/d/1MRf6cF2dISgxiQsF8sC93dEEsk_aNzCb/view?usp=drivesdk", 
-    "Sarukanigassen":"https://drive.google.com/file/d/1oae14dDCYK2NuZknY9atOHY7lv3RED5e/view?usp=drivesdk", 
-    "Shitakirisuzume":"https://drive.google.com/file/d/1gFdItkvAqsJqXYWI8ttJ5XMG2IYaUGe5/view?usp=drivesdk", 
-    "Tsurunoongaeshi":"https://drive.google.com/file/d/15IRCobPD5396XZswRqveOWrG8UpmZkLT/view?usp=drivesdk",
-    "Nezuminoyomeiri":"https://drive.google.com/file/d/173sXm9Y2ZyomUyZQdqU1zzYkE8A2ROF2/view?usp=drivesdk", 
-    "Momotarou":"https://drive.google.com/file/d/1prKqNP6NDLig5bzyWqJIAUwkSgF_WIZM/view?usp=drivesdk", 
-    "Kasakojizou 1":"https://docs.google.com/document/d/1CxTSarH9iWUFKP-sCPzj3gnveeXItn3p/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
-    "Kasakojizou 2":"https://docs.google.com/document/d/15IjIJAPk9Fh-3ELIxXlyziQUIcdg6gtJ/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true",
-    "Kachikachiyama":"https://docs.google.com/document/d/1L2vXW1oFg17iNzMkBkh07StF2-K3Hp56/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
-    "Kamotorigonbee":"https://docs.google.com/document/d/1cFhbCj6lG9aUxC-d6X31MPg_XYFF6CyB/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
-    "Kintarou":"https://docs.google.com/document/d/1HttTytD_0z9UctqkMdHU6ChQvwenlEgK/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
-    "Chikaratarou":"https://docs.google.com/document/d/1LYURr1M5iwQodQzPj6gQ0DjQOtgokpE7/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true",
-    "Nezuminosumou":"https://docs.google.com/document/d/16NqD3Q4tQFwAOHLneDVHMr0SPLLmvtfy/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
-    "Hanasakajijii":"https://docs.google.com/document/d/1_N6sOy3Vv7joDjjAIxpT4PUyOVjKtz8V/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true"
+const quizLinks = {
+  kana: { 
+    "Hiragana Katakana 1": "https://drive.google.com/file/d/1RPIIu6b3m-cVP52NMCy27Zkc9gq2jS-c/view?usp=drivesdk", 
+    "Hiragana Katakana 2": "https://drive.google.com/file/d/12hPmW2r3VIlfJ8jTkTNAWvyfpJrwa4NF/view?usp=drivesdk", 
+    "Hiragana Soal": "https://drive.google.com/file/d/1JRNPK2RV5O5zgbGRKM9hP_-FINx79-oX/view?usp=drivesdk" 
+  },
+  dongeng: {
+    "Issunboushi": "https://drive.google.com/file/d/1MNjW0Do-AaaSqSUWK7pTr3Q1C-G4px5W/view?usp=drivesdk", 
+    "Urashimatarou": "https://drive.google.com/file/d/1InvHlEUbpf9x760VxOhCT-AA6EoBqR5y/view?usp=drivesdk", 
+    "Omusubikororin": "https://drive.google.com/file/d/10K4PhrGd8ynlRLNUMxJPs1WA79aoo4eX/view?usp=drivesdk", 
+    "Kaguyahime": "https://drive.google.com/file/d/1QkjBlZeSsDKcHuz9VyyfdxezW12L2uBA/view?usp=drivesdk",
+    "Kasazizou": "https://drive.google.com/file/d/1MRf6cF2dISgxiQsF8sC93dEEsk_aNzCb/view?usp=drivesdk", 
+    "Sarukanigassen": "https://drive.google.com/file/d/1oae14dDCYK2NuZknY9atOHY7lv3RED5e/view?usp=drivesdk", 
+    "Shitakirisuzume": "https://drive.google.com/file/d/1gFdItkvAqsJqXYWI8ttJ5XMG2IYaUGe5/view?usp=drivesdk", 
+    "Tsurunoongaeshi": "https://drive.google.com/file/d/15IRCobPD5396XZswRqveOWrG8UpmZkLT/view?usp=drivesdk",
+    "Nezuminoyomeiri": "https://drive.google.com/file/d/173sXm9Y2ZyomUyZQdqU1zzYkE8A2ROF2/view?usp=drivesdk", 
+    "Momotarou": "https://drive.google.com/file/d/1prKqNP6NDLig5bzyWqJIAUwkSgF_WIZM/view?usp=drivesdk", 
+    "Kasakojizou 1": "https://docs.google.com/document/d/1CxTSarH9iWUFKP-sCPzj3gnveeXItn3p/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
+    "Kasakojizou 2": "https://docs.google.com/document/d/15IjIJAPk9Fh-3ELIxXlyziQUIcdg6gtJ/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true",
+    "Kachikachiyama": "https://docs.google.com/document/d/1L2vXW1oFg17iNzMkBkh07StF2-K3Hp56/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
+    "Kamotorigonbee": "https://docs.google.com/document/d/1cFhbCj6lG9aUxC-d6X31MPg_XYFF6CyB/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
+    "Kintarou": "https://docs.google.com/document/d/1HttTytD_0z9UctqkMdHU6ChQvwenlEgK/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
+    "Chikaratarou": "https://docs.google.com/document/d/1LYURr1M5iwQodQzPj6gQ0DjQOtgokpE7/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true",
+    "Nezuminosumou": "https://docs.google.com/document/d/16NqD3Q4tQFwAOHLneDVHMr0SPLLmvtfy/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true", 
+    "Hanasakajijii": "https://docs.google.com/document/d/1_N6sOy3Vv7joDjjAIxpT4PUyOVjKtz8V/edit?usp=drivesdk&ouid=100639147205328337015&rtpof=true&sd=true"
   },
   irodoriA1: {
-    "TP(A1) Bab 1":"https://drive.google.com/file/d/1gDrENhEyNLpmrJTWK4mXQq-6I7K6olar/view?usp=drivesdk", 
-    "TP(A1) Bab 2":"https://drive.google.com/file/d/180n7gnzAW33rgMl7p4mo9yevqyxdbtMr/view?usp=drivesdk", 
-    "TP(A1) Bab 3":"https://drive.google.com/file/d/1hXpnE3Hu942dkWwDvhwBKeDtfrHjhIHT/view?usp=drivesdk", 
-    "TP(A1) Bab 4":"https://drive.google.com/file/d/1OSn9Z2KMCrz9CwYD5FjARj__JXeIXRdk/view?usp=drivesdk",
-    "TP(A1) Bab 5":"https://drive.google.com/file/d/12R_L5cIj7Xfpdtk8Ykptfu-cUZng766w/view?usp=drivesdk", 
-    "TP(A1) Bab 6":"https://drive.google.com/file/d/1qxrmj_iuPRhq-oVaRCCSytMeuU_-Rty2/view?usp=drivesdk", 
-    "TP(A1) Bab 7":"https://drive.google.com/file/d/14wrCqxk0XA75LaK1yH53aoU6lY4mKPfX/view?usp=drivesdk", 
-    "TP(A1) Bab 8":"https://drive.google.com/file/d/1QN9OvGVOIB2PIb6IccM6GwqDVzgxwfr_/view?usp=drivesdk",
-    "TP(A1) Bab 9":"https://drive.google.com/file/d/1VRiOAbkAWVib8WrBvdNSiH2SkaW46GOu/view?usp=drivesdk", 
-    "TP(A1) Bab 10":"https://drive.google.com/file/d/1gq6MuMl0PlPyi6XHzrhxRsEk3SZz4Dt8/view?usp=drivesdk", 
-    "TP(A1) Bab 11":"https://drive.google.com/file/d/1VywBCm9eG2HdaIih_XHG2Pa7fDMVt7XK/view?usp=drivesdk", 
-    "TP(A1) Bab 12":"https://drive.google.com/file/d/1A1_oIEgQl1jso3N4B6j8uey96JoeRbi4/view?usp=drivesdk",
-    "TP(A1) Bab 13":"https://drive.google.com/file/d/10HiILnliN9CQ716D3j2N1ZV7lbjxWagg/view?usp=drivesdk", 
-    "TP(A1) Bab 14":"https://drive.google.com/file/d/1ro1-gl_b6x_LWkZWC9Jdj1415nAxNZpj/view?usp=drivesdk", 
-    "TP(A1) Bab 15":"https://drive.google.com/file/d/1igqirtOUtN2JsaFFgx9pTwFTPSxCM3Nd/view?usp=drivesdk", 
-    "TP(A1) Bab 16":"https://drive.google.com/file/d/1DjvtJhGTCq_IMKoUqiZFBNZ0_VFrXA64/view?usp=drivesdk",
-    "TP(A1) Bab 17":"https://drive.google.com/file/d/1iU3XicCWQ58AGJPWuePzrUaJvEh2Do6X/view?usp=drivesdk", 
-    "TP(A1) Bab 18":"https://drive.google.com/file/d/17-MuLJLJLFt6XPR6vVC96rmQqJodEBkG/view?usp=drivesdk", 
-    "Kata Ruang Kelas":"https://drive.google.com/file/d/1w6oGYUnRtGbfxz2WEydqc0gcIbwtGBKg/view?usp=drivesdk", 
-    "Kunci Jawaban A1":"https://drive.google.com/file/d/14AxB5pWk-5VSBctAfQZrNXiDVFrv4vHc/view?usp=drivesdk"
+    "TP(A1) Bab 1": "https://drive.google.com/file/d/1gDrENhEyNLpmrJTWK4mXQq-6I7K6olar/view?usp=drivesdk", 
+    "TP(A1) Bab 2": "https://drive.google.com/file/d/180n7gnzAW33rgMl7p4mo9yevqyxdbtMr/view?usp=drivesdk", 
+    "TP(A1) Bab 3": "https://drive.google.com/file/d/1hXpnE3Hu942dkWwDvhwBKeDtfrHjhIHT/view?usp=drivesdk", 
+    "TP(A1) Bab 4": "https://drive.google.com/file/d/1OSn9Z2KMCrz9CwYD5FjARj__JXeIXRdk/view?usp=drivesdk",
+    "TP(A1) Bab 5": "https://drive.google.com/file/d/12R_L5cIj7Xfpdtk8Ykptfu-cUZng766w/view?usp=drivesdk", 
+    "TP(A1) Bab 6": "https://drive.google.com/file/d/1qxrmj_iuPRhq-oVaRCCSytMeuU_-Rty2/view?usp=drivesdk", 
+    "TP(A1) Bab 7": "https://drive.google.com/file/d/14wrCqxk0XA75LaK1yH53aoU6lY4mKPfX/view?usp=drivesdk", 
+    "TP(A1) Bab 8": "https://drive.google.com/file/d/1QN9OvGVOIB2PIb6IccM6GwqDVzgxwfr_/view?usp=drivesdk",
+    "TP(A1) Bab 9": "https://drive.google.com/file/d/1VRiOAbkAWVib8WrBvdNSiH2SkaW46GOu/view?usp=drivesdk", 
+    "TP(A1) Bab 10": "https://drive.google.com/file/d/1gq6MuMl0PlPyi6XHzrhxRsEk3SZz4Dt8/view?usp=drivesdk", 
+    "TP(A1) Bab 11": "https://drive.google.com/file/d/1VywBCm9eG2HdaIih_XHG2Pa7fDMVt7XK/view?usp=drivesdk", 
+    "TP(A1) Bab 12": "https://drive.google.com/file/d/1A1_oIEgQl1jso3N4B6j8uey96JoeRbi4/view?usp=drivesdk",
+    "TP(A1) Bab 13": "https://drive.google.com/file/d/10HiILnliN9CQ716D3j2N1ZV7lbjxWagg/view?usp=drivesdk", 
+    "TP(A1) Bab 14": "https://drive.google.com/file/d/1ro1-gl_b6x_LWkZWC9Jdj1415nAxNZpj/view?usp=drivesdk", 
+    "TP(A1) Bab 15": "https://drive.google.com/file/d/1igqirtOUtN2JsaFFgx9pTwFTPSxCM3Nd/view?usp=drivesdk", 
+    "TP(A1) Bab 16": "https://drive.google.com/file/d/1DjvtJhGTCq_IMKoUqiZFBNZ0_VFrXA64/view?usp=drivesdk",
+    "TP(A1) Bab 17": "https://drive.google.com/file/d/1iU3XicCWQ58AGJPWuePzrUaJvEh2Do6X/view?usp=drivesdk", 
+    "TP(A1) Bab 18": "https://drive.google.com/file/d/17-MuLJLJLFt6XPR6vVC96rmQqJodEBkG/view?usp=drivesdk", 
+    "Kata Ruang Kelas": "https://drive.google.com/file/d/1w6oGYUnRtGbfxz2WEydqc0gcIbwtGBKg/view?usp=drivesdk", 
+    "Kunci Jawaban A1": "https://drive.google.com/file/d/14AxB5pWk-5VSBctAfQZrNXiDVFrv4vHc/view?usp=drivesdk"
   },
   irodoriA21: {
-    "TP(A2-1) Bab 1":"https://drive.google.com/file/d/14HUBQDvPr-i-1UNcmYlL0l3D2nsSCjLD/view?usp=drivesdk", 
-    "TP(A2-1) Bab 2":"https://drive.google.com/file/d/10zwi8pYCxIrWkVGwNV03Kohqhg64sSKd/view?usp=drivesdk", 
-    "TP(A2-1) Bab 3":"https://drive.google.com/file/d/1sqguEztoN7iM_FIoB_i5-xlfROFQ46kA/view?usp=drivesdk", 
-    "TP(A2-1) Bab 4":"https://drive.google.com/file/d/1k6O-7iGbqfNhr_mb9DI2oCLQ68_EdWNy/view?usp=drivesdk",
-    "TP(A2-1) Bab 5":"https://drive.google.com/file/d/141byx8CcXBazs95uQ23GeGLdmhnIiFBo/view?usp=drivesdk", 
-    "TP(A2-1) Bab 6":"https://drive.google.com/file/d/1_-hb4IrFUc7aI2Nx_niFVs4Mop6RjJHh/view?usp=drivesdk", 
-    "TP(A2-1) Bab 7":"https://drive.google.com/file/d/1VBAT6KF0FDCnWiqe6aHh72oXlBWwms7c/view?usp=drivesdk", 
-    "TP(A2-1) Bab 8":"https://drive.google.com/file/d/17-JZLxu6kaPGqS4xxbX84nGPkevwvixU/view?usp=drivesdk",
-    "TP(A2-1) Bab 9":"https://drive.google.com/file/d/1cIenvJtvSGH7JSHt_LWMi2T_jpdZns2p/view?usp=drivesdk", 
-    "TP(A2-1) Bab 10":"https://drive.google.com/file/d/10knzdVs_v-dnwiO_Y5HcVZf6YbVIv6yt/view?usp=drivesdk", 
-    "TP(A2-1) Bab 11":"https://drive.google.com/file/d/1xFDZVEIriCSFx2rv4RFRkQDE5A-ztVA8/view?usp=drivesdk", 
-    "TP(A2-1) Bab 12":"https://drive.google.com/file/d/1dH9ChmkKMyJTHNp5OVqmkmK-yXByjNnQ/view?usp=drivesdk",
-    "TP(A2-1) Bab 13":"https://drive.google.com/file/d/18z4fmw1wpFwkLFPc6Am54Hws9Fq5a6qb/view?usp=drivesdk", 
-    "TP(A2-1) Bab 14":"https://drive.google.com/file/d/1sPu7k0fiagUXNnCDzEvN-Srje_KSagdu/view?usp=drivesdk", 
-    "TP(A2-1) Bab 15":"https://drive.google.com/file/d/1hR36zZxXZrJWDiUP1Jaix0kpkpAlJ2LA/view?usp=drivesdk", 
-    "TP(A2-1) Bab 16":"https://drive.google.com/file/d/1JU0dKENTaN_pCqIBuNw4TnTuLWlpWNel/view?usp=drivesdk",
-    "TP(A2-1) Bab 17":"https://drive.google.com/file/d/1OfTSzK5YiNJKZEwdI42U7l09DFZXHEjn/view?usp=drivesdk", 
-    "TP(A2-1) Bab 18":"https://drive.google.com/file/d/1C4TAjbV1krVKjZTb6qLVrBz1sYDj4Nb7/view?usp=drivesdk", 
-    "Kunci Jawaban A2-1":"https://drive.google.com/file/d/1lOAcRyszKyDZLwSYmSpmGs1kfCZIQLVi/view?usp=drivesdk"
+    "TP(A2-1) Bab 1": "https://drive.google.com/file/d/14HUBQDvPr-i-1UNcmYlL0l3D2nsSCjLD/view?usp=drivesdk", 
+    "TP(A2-1) Bab 2": "https://drive.google.com/file/d/10zwi8pYCxIrWkVGwNV03Kohqhg64sSKd/view?usp=drivesdk", 
+    "TP(A2-1) Bab 3": "https://drive.google.com/file/d/1sqguEztoN7iM_FIoB_i5-xlfROFQ46kA/view?usp=drivesdk", 
+    "TP(A2-1) Bab 4": "https://drive.google.com/file/d/1k6O-7iGbqfNhr_mb9DI2oCLQ68_EdWNy/view?usp=drivesdk",
+    "TP(A2-1) Bab 5": "https://drive.google.com/file/d/141byx8CcXBazs95uQ23GeGLdmhnIiFBo/view?usp=drivesdk", 
+    "TP(A2-1) Bab 6": "https://drive.google.com/file/d/1_-hb4IrFUc7aI2Nx_niFVs4Mop6RjJHh/view?usp=drivesdk", 
+    "TP(A2-1) Bab 7": "https://drive.google.com/file/d/1VBAT6KF0FDCnWiqe6aHh72oXlBWwms7c/view?usp=drivesdk", 
+    "TP(A2-1) Bab 8": "https://drive.google.com/file/d/17-JZLxu6kaPGqS4xxbX84nGPkevwvixU/view?usp=drivesdk",
+    "TP(A2-1) Bab 9": "https://drive.google.com/file/d/1cIenvJtvSGH7JSHt_LWMi2T_jpdZns2p/view?usp=drivesdk", 
+    "TP(A2-1) Bab 10": "https://drive.google.com/file/d/10knzdVs_v-dnwiO_Y5HcVZf6YbVIv6yt/view?usp=drivesdk", 
+    "TP(A2-1) Bab 11": "https://drive.google.com/file/d/1xFDZVEIriCSFx2rv4RFRkQDE5A-ztVA8/view?usp=drivesdk", 
+    "TP(A2-1) Bab 12": "https://drive.google.com/file/d/1dH9ChmkKMyJTHNp5OVqmkmK-yXByjNnQ/view?usp=drivesdk",
+    "TP(A2-1) Bab 13": "https://drive.google.com/file/d/18z4fmw1wpFwkLFPc6Am54Hws9Fq5a6qb/view?usp=drivesdk", 
+    "TP(A2-1) Bab 14": "https://drive.google.com/file/d/1sPu7k0fiagUXNnCDzEvN-Srje_KSagdu/view?usp=drivesdk", 
+    "TP(A2-1) Bab 15": "https://drive.google.com/file/d/1hR36zZxXZrJWDiUP1Jaix0kpkpAlJ2LA/view?usp=drivesdk", 
+    "TP(A2-1) Bab 16": "https://drive.google.com/file/d/1JU0dKENTaN_pCqIBuNw4TnTuLWlpWNel/view?usp=drivesdk",
+    "TP(A2-1) Bab 17": "https://drive.google.com/file/d/1OfTSzK5YiNJKZEwdI42U7l09DFZXHEjn/view?usp=drivesdk", 
+    "TP(A2-1) Bab 18": "https://drive.google.com/file/d/1C4TAjbV1krVKjZTb6qLVrBz1sYDj4Nb7/view?usp=drivesdk", 
+    "Kunci Jawaban A2-1": "https://drive.google.com/file/d/1lOAcRyszKyDZLwSYmSpmGs1kfCZIQLVi/view?usp=drivesdk"
   },
   irodoriA22: {
-    "TP(A2-2) Bab 1":"https://drive.google.com/file/d/11wUcJ50lhnijXwnsJgRztJOtkxk8-Trk/view?usp=drivesdk", 
-    "TP(A2-2) Bab 2":"https://drive.google.com/file/d/1AQ6GGxUyWnu6qiUz2EgYvzm-0Wzmc4vY/view?usp=drivesdk", 
-    "TP(A2-2) Bab 3":"https://drive.google.com/file/d/1umdKdyURN0O5YRh7rJoxiO5d7bFM_vAG/view?usp=drivesdk", 
-    "TP(A2-2) Bab 4":"https://drive.google.com/file/d/1j3bEDDT72H1ekjCKIv0H4uT6VyVeE9Yr/view?usp=drivesdk",
-    "TP(A2-2) Bab 5":"https://drive.google.com/file/d/1SNQzqSpO8w6ysfLOtn2dOjP5vOvfg_pZ/view?usp=drivesdk", 
-    "TP(A2-2) Bab 6":"https://drive.google.com/file/d/1PJ6nvlpy4tsjGBMC1AM6D507EiKq30Jx/view?usp=drivesdk", 
-    "TP(A2-2) Bab 7":"https://drive.google.com/file/d/1hmCisTHKRolWFrk-xE6hUis-xLJ-Rl6u/view?usp=drivesdk", 
-    "TP(A2-2) Bab 8":"https://drive.google.com/file/d/1eflV_WnJs1gPNr_9nMFEHqnnKe8E1-nP/view?usp=drivesdk",
-    "TP(A2-2) Bab 9":"https://drive.google.com/file/d/1uFF9sFOEwglOs-MMUpaLPrHWxQQJKqyU/view?usp=drivesdk", 
-    "TP(A2-2) Bab 10":"https://drive.google.com/file/d/17g_GqGZBLS6N31iLeNBJ-YWB65I0ZiI1/view?usp=drivesdk", 
-    "TP(A2-2) Bab 11":"https://drive.google.com/file/d/1fiuN_QMYwz3IT4X9jE7fr6RBgPyLf4Ko/view?usp=drivesdk", 
-    "TP(A2-2) Bab 12":"https://drive.google.com/file/d/1G6ScNMqixjyV898Fee30wf5sk6k5Khm4/view?usp=drivesdk",
-    "TP(A2-2) Bab 13":"https://drive.google.com/file/d/1e8QLqLvEKpISNoR8WYHVWScwfpeRhN9w/view?usp=drivesdk", 
-    "TP(A2-2) Bab 14":"https://drive.google.com/file/d/1e9ZRG_VZhXJgqKCa-q5nNt90MPo7JeTh/view?usp=drivesdk", 
-    "TP(A2-2) Bab 15":"https://drive.google.com/file/d/10csfZLdpeH-ObZ1iTC2Tz0oriM59Po6B/view?usp=drivesdk", 
-    "TP(A2-2) Bab 16":"https://drive.google.com/file/d/1gt_2P2AK_kEsXwXOu9OyUfQ9Pc8h7Jnj/view?usp=drivesdk",
-    "TP(A2-2) Bab 17":"https://drive.google.com/file/d/1tv3ZpIlETr8-mboo9AwINGk0ds9roeaM/view?usp=drivesdk", 
-    "TP(A2-2) Bab 18":"https://drive.google.com/file/d/1B--iBFhn8xTZEsRmip2Tja8rfv2a48aG/view?usp=drivesdk", 
-    "Kunci Jawaban A2-2":"https://drive.google.com/file/d/1_QHLAvAk9BFObyQ5ZlkP-LkjvXwha1U2/view?usp=drivesdk"
+    "TP(A2-2) Bab 1": "https://drive.google.com/file/d/11wUcJ50lhnijXwnsJgRztJOtkxk8-Trk/view?usp=drivesdk", 
+    "TP(A2-2) Bab 2": "https://drive.google.com/file/d/1AQ6GGxUyWnu6qiUz2EgYvzm-0Wzmc4vY/view?usp=drivesdk", 
+    "TP(A2-2) Bab 3": "https://drive.google.com/file/d/1umdKdyURN0O5YRh7rJoxiO5d7bFM_vAG/view?usp=drivesdk", 
+    "TP(A2-2) Bab 4": "https://drive.google.com/file/d/1j3bEDDT72H1ekjCKIv0H4uT6VyVeE9Yr/view?usp=drivesdk",
+    "TP(A2-2) Bab 5": "https://drive.google.com/file/d/1SNQzqSpO8w6ysfLOtn2dOjP5vOvfg_pZ/view?usp=drivesdk", 
+    "TP(A2-2) Bab 6": "https://drive.google.com/file/d/1PJ6nvlpy4tsjGBMC1AM6D507EiKq30Jx/view?usp=drivesdk", 
+    "TP(A2-2) Bab 7": "https://drive.google.com/file/d/1hmCisTHKRolWFrk-xE6hUis-xLJ-Rl6u/view?usp=drivesdk", 
+    "TP(A2-2) Bab 8": "https://drive.google.com/file/d/1eflV_WnJs1gPNr_9nMFEHqnnKe8E1-nP/view?usp=drivesdk",
+    "TP(A2-2) Bab 9": "https://drive.google.com/file/d/1uFF9sFOEwglOs-MMUpaLPrHWxQQJKqyU/view?usp=drivesdk", 
+    "TP(A2-2) Bab 10": "https://drive.google.com/file/d/17g_GqGZBLS6N31iLeNBJ-YWB65I0ZiI1/view?usp=drivesdk", 
+    "TP(A2-2) Bab 11": "https://drive.google.com/file/d/1fiuN_QMYwz3IT4X9jE7fr6RBgPyLf4Ko/view?usp=drivesdk", 
+    "TP(A2-2) Bab 12": "https://drive.google.com/file/d/1G6ScNMqixjyV898Fee30wf5sk6k5Khm4/view?usp=drivesdk",
+    "TP(A2-2) Bab 13": "https://drive.google.com/file/d/1e8QLqLvEKpISNoR8WYHVWScwfpeRhN9w/view?usp=drivesdk", 
+    "TP(A2-2) Bab 14": "https://drive.google.com/file/d/1e9ZRG_VZhXJgqKCa-q5nNt90MPo7JeTh/view?usp=drivesdk", 
+    "TP(A2-2) Bab 15": "https://drive.google.com/file/d/10csfZLdpeH-ObZ1iTC2Tz0oriM59Po6B/view?usp=drivesdk", 
+    "TP(A2-2) Bab 16": "https://drive.google.com/file/d/1gt_2P2AK_kEsXwXOu9OyUfQ9Pc8h7Jnj/view?usp=drivesdk",
+    "TP(A2-2) Bab 17": "https://drive.google.com/file/d/1tv3ZpIlETr8-mboo9AwINGk0ds9roeaM/view?usp=drivesdk", 
+    "TP(A2-2) Bab 18": "https://drive.google.com/file/d/1B--iBFhn8xTZEsRmip2Tja8rfv2a48aG/view?usp=drivesdk", 
+    "Kunci Jawaban A2-2": "https://drive.google.com/file/d/1_QHLAvAk9BFObyQ5ZlkP-LkjvXwha1U2/view?usp=drivesdk"
   },
   kotoba: {
-    "Kanji Irodori":"https://drive.google.com/file/d/1V_i2Lfk6IQpygBZUe2UvjK7JsZ5cUeJO/view?usp=drivesdk", 
-    "Kata Keterangan Irodori":"https://drive.google.com/file/d/1ybnkc5tDUDUlvuLGJuWTpBzO1moe-Y31/view?usp=drivesdk", 
-    "Kotoba Irodori A1":"https://drive.google.com/file/d/1MX5t2O98eUZDU0COwas5sguADxQGGcWh/view?usp=drivesdk",
-    "Kotoba Irodori A2(1)":"https://drive.google.com/file/d/1ZBziQNmNiF--5u_KEYH9ypf2x8hyrnVr/view?usp=drivesdk", 
-    "Kotoba Irodori A2(2)":"https://drive.google.com/file/d/1hvwuP_C9DSjE7NzYIxw-A1UNU2eQtFs3/view?usp=drivesdk"
+    "Kanji Irodori": "https://drive.google.com/file/d/1V_i2Lfk6IQpygBZUe2UvjK7JsZ5cUeJO/view?usp=drivesdk", 
+    "Kata Keterangan Irodori": "https://drive.google.com/file/d/1ybnkc5tDUDUlvuLGJuWTpBzO1moe-Y31/view?usp=drivesdk", 
+    "Kotoba Irodori A1": "https://drive.google.com/file/d/1MX5t2O98eUZDU0COwas5sguADxQGGcWh/view?usp=drivesdk",
+    "Kotoba Irodori A2(1)": "https://drive.google.com/file/d/1ZBziQNmNiF--5u_KEYH9ypf2x8hyrnVr/view?usp=drivesdk", 
+    "Kotoba Irodori A2(2)": "https://drive.google.com/file/d/1hvwuP_C9DSjE7NzYIxw-A1UNU2eQtFs3/view?usp=drivesdk"
   },
   jft: {
-    "Latihan Soal JFT (Himawari)":"https://drive.google.com/file/d/1YaL7shcNk3npLfUbL9xvo5WEkmZZnvEy/view?usp=drivesdk",
-    "Persiapan JFT Basic Vol 1":"https://drive.google.com/file/d/1waqfO80PmFanAciulbCm5PZAOzMqdGV8/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 2":"https://drive.google.com/file/d/13DtcvlvaDbCdlKE1vuNX2O-7VysNv6UE/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 3":"https://drive.google.com/file/d/11hDM1UqS6FGTBebPII85lbY0HYNF7UeB/view?usp=drivesdk",
-    "Persiapan JFT Basic Vol 4":"https://drive.google.com/file/d/13DiCvtSHY6SvxESP0iojVpwdYY-c2e99/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 5":"https://drive.google.com/file/d/1eAk1rCDWL6anoKr9LkZGF0ChhrqiCDeS/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 6":"https://drive.google.com/file/d/1EH_lcXIS18HzWhZjHfntHTW1oCpGy2Oe/view?usp=drivesdk",
-    "Persiapan JFT Basic Vol 7":"https://drive.google.com/file/d/1nxrDNPk95C2OFkdvAzAsRnx__UG9jNaT/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 8":"https://drive.google.com/file/d/17ZPrLmB1ldC-6gr-vPVQmApWn62NFvfQ/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 9":"https://drive.google.com/file/d/1nzKgnvN5NJwoPgK4aPeQ7_PtvfUKW1RB/view?usp=drivesdk",
-    "Persiapan JFT Basic Vol 10":"https://drive.google.com/file/d/1nshdyHarVo3zn0soO-k_yH2s0LHHFdRQ/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 11":"https://drive.google.com/file/d/1_qCCll5gcPt-m2-GhceJU-M1fC1I5J2T/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 12":"https://drive.google.com/file/d/1dsizA0HiQ6UxcdUI76EMeV0DH-V5bTqM/view?usp=drivesdk",
-    "Persiapan JFT Basic Vol 13":"https://drive.google.com/file/d/1vJmHmE6JhNZF5AKSpIlXOy-pUW113f9j/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 14":"https://drive.google.com/file/d/1oYfdtJTEV1nTucyk36IHx6ia0rNVZv5k/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 15":"https://drive.google.com/file/d/11mV2XaFyDB6YvWNKOZTpwh-e9cBV1eoS/view?usp=drivesdk",
-    "Persiapan JFT Basic Vol 16":"https://drive.google.com/file/d/1GLOb4voZ8_wRvCRcXm67mmEyNLhPZ5TZ/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 17":"https://drive.google.com/file/d/1LbhY2tVw5ilv7wCQpnCJuONRGCOZGW-t/view?usp=drivesdk", 
-    "Persiapan JFT Basic Vol 18":"https://drive.google.com/file/d/1scxIeXUXcKazd1mF1clVVa0wUuMX1BiH/view?usp=drivesdk",
-    "Simulasi JFT Basic 1":"https://drive.google.com/file/d/1j-1hGXo9q2lppaTNQqI90YoZw75bgh-f/view?usp=drivesdk", 
-    "Simulasi JFT Basic 2":"https://drive.google.com/file/d/1MdVrkJ5au2nTeZlmUKecpwRvo_jv4SRO/view?usp=drivesdk", 
-    "Simulasi JFT Basic 3":"https://drive.google.com/file/d/1yhCEb_wjvT2W7IV3dtZEqLb4CoM8Zjp_/view?usp=drivesdk", 
-    "Simulasi JFT Basic 4":"https://drive.google.com/file/d/115Np80C4mdTLnMVOikYVRXwtGW7NG-hP/view?usp=drivesdk",
-    "Soal JFT Dasar 1(1)":"https://drive.google.com/file/d/10qxweUGiuoKUycr5RKjSgEb72urXxnFs/view?usp=drivesdk", 
-    "Soal JFT Dasar 1":"https://drive.google.com/file/d/1_Hk7vSdIzqTJn5GR7TjuwZrZsIR_7aVC/view?usp=drivesdk", 
-    "Soal JFT Dasar 2(1)":"https://drive.google.com/file/d/1H5YZzUUYSMGWfEvcEjvcdG_ATHU8TrTh/view?usp=drivesdk", 
-    "Soal JFT Dasar 2":"https://drive.google.com/file/d/1sbI_zohb6aNTC9cXxEFSVajh8YkQ1fK9/view?usp=drivesdk",
-    "Soal JFT Dasar 3(1)":"https://drive.google.com/file/d/1fL-Hf-03_Y1NrI8p_S55iPLgl5ccNfnQ/view?usp=drivesdk", 
-    "Soal JFT Dasar 3":"https://drive.google.com/file/d/1z5Sl2hfG653Bv4E4mt0ySQeEcxdR6IVD/view?usp=drivesdk", 
-    "Soal JFT Dasar 4(1)":"https://drive.google.com/file/d/1MZyWpp103gTmDtEWilu3f7b9Jk0KjgSw/view?usp=drivesdk", 
-    "Soal JFT Dasar 4":"https://drive.google.com/file/d/1A0p-gM71ilGQO8Bg96_BVW-j-E_BNH1D/view?usp=drivesdk",
-    "Soal JFT Dasar 5":"https://drive.google.com/file/d/1_jI-6bwCs87lrrNKUUHKuF4zhmHz1w5g/view?usp=drivesdk", 
-    "Soal JFT Dasar 6":"https://drive.google.com/file/d/11bHOytWL8lsCsPGUlwLq4n-mL-zpPJib/view?usp=drivesdk", 
-    "Soal JFT Dasar 7":"https://drive.google.com/file/d/1c1iamqI-WSvhjnXVIsduQbm1LTimogJB/view?usp=drivesdk", 
-    "Soal JFT Dasar 8":"https://drive.google.com/file/d/142IXdLAeKDI6yUAv6mOF3QEm3PADFcDO/view?usp=drivesdk",
-    "Soal JFT Dasar 9":"https://drive.google.com/file/d/1IVCjkJOI1nmAItyEuENpFhXxJNFS2lKl/view?usp=drivesdk", 
-    "Soal JFT Dasar 10":"https://drive.google.com/file/d/1MHaOMFBsQV84734ldJ3lq9SYpMJMucz2/view?usp=drivesdk",
-    "Soal JFT Intermediate 1":"https://drive.google.com/file/d/1oLb8ayofTsZ0iRECMhG2bpfTst7ryOW5/view?usp=drivesdk", 
-    "Soal JFT Intermediate 2":"https://drive.google.com/file/d/1G_xSO52HWBiXCC6T1N2uV0tkDcRleFAz/view?usp=drivesdk", 
-    "Soal JFT Intermediate 3":"https://drive.google.com/file/d/12rkFtIZdCwCwARRnDJkDm305Q70zn7LY/view?usp=drivesdk",
-    "Soal JFT Intermediate 4":"https://drive.google.com/file/d/1oWdw9Wd7jc5OVQ2Ug4SVHUw1FDBozAoR/view?usp=drivesdk", 
-    "Soal JFT Intermediate 5":"https://drive.google.com/file/d/1x4wP_PYVyvwY9NRYv2_rZJWLUd5YHYe3/view?usp=drivesdk", 
-    "Soal JFT Intermediate 6":"https://drive.google.com/file/d/1Rk8m42q41PHxoMZaxPWEZFWYDHz2FE84/view?usp=drivesdk",
-    "Soal JFT Intermediate 7":"https://drive.google.com/file/d/1XEmElZ-1jDvwiMQjvZgb4bzfoBWKjQd-/view?usp=drivesdk", 
-    "Soal JFT Intermediate 8":"https://drive.google.com/file/d/1TE7QLDMpuPp1BUmdv-sMNrBrY6jMnfB3/view?usp=drivesdk", 
-    "Soal JFT Intermediate 9":"https://drive.google.com/file/d/1k8yM83F-Eo50eV7CLWHYVXKEGBWL_6_F/view?usp=drivesdk", 
-    "Soal JFT Intermediate 10":"https://drive.google.com/file/d/1S3MxuQB9ECyzrRyvKYMlhjz_tb3F9hZE/view?usp=drivesdk"
+    "Latihan Soal JFT (Himawari)": "https://drive.google.com/file/d/1YaL7shcNk3npLfUbL9xvo5WEkmZZnvEy/view?usp=drivesdk",
+    "Persiapan JFT Basic Vol 1": "https://drive.google.com/file/d/1waqfO80PmFanAciulbCm5PZAOzMqdGV8/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 2": "https://drive.google.com/file/d/13DtcvlvaDbCdlKE1vuNX2O-7VysNv6UE/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 3": "https://drive.google.com/file/d/11hDM1UqS6FGTBebPII85lbY0HYNF7UeB/view?usp=drivesdk",
+    "Persiapan JFT Basic Vol 4": "https://drive.google.com/file/d/13DiCvtSHY6SvxESP0iojVpwdYY-c2e99/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 5": "https://drive.google.com/file/d/1eAk1rCDWL6anoKr9LkZGF0ChhrqiCDeS/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 6": "https://drive.google.com/file/d/1EH_lcXIS18HzWhZjHfntHTW1oCpGy2Oe/view?usp=drivesdk",
+    "Persiapan JFT Basic Vol 7": "https://drive.google.com/file/d/1nxrDNPk95C2OFkdvAzAsRnx__UG9jNaT/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 8": "https://drive.google.com/file/d/17ZPrLmB1ldC-6gr-vPVQmApWn62NFvfQ/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 9": "https://drive.google.com/file/d/1nzKgnvN5NJwoPgK4aPeQ7_PtvfUKW1RB/view?usp=drivesdk",
+    "Persiapan JFT Basic Vol 10": "https://drive.google.com/file/d/1nshdyHarVo3zn0soO-k_yH2s0LHHFdRQ/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 11": "https://drive.google.com/file/d/1_qCCll5gcPt-m2-GhceJU-M1fC1I5J2T/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 12": "https://drive.google.com/file/d/1dsizA0HiQ6UxcdUI76EMeV0DH-V5bTqM/view?usp=drivesdk",
+    "Persiapan JFT Basic Vol 13": "https://drive.google.com/file/d/1vJmHmE6JhNZF5AKSpIlXOy-pUW113f9j/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 14": "https://drive.google.com/file/d/1oYfdtJTEV1nTucyk36IHx6ia0rNVZv5k/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 15": "https://drive.google.com/file/d/11mV2XaFyDB6YvWNKOZTpwh-e9cBV1eoS/view?usp=drivesdk",
+    "Persiapan JFT Basic Vol 16": "https://drive.google.com/file/d/1GLOb4voZ8_wRvCRcXm67mmEyNLhPZ5TZ/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 17": "https://drive.google.com/file/d/1LbhY2tVw5ilv7wCQpnCJuONRGCOZGW-t/view?usp=drivesdk", 
+    "Persiapan JFT Basic Vol 18": "https://drive.google.com/file/d/1scxIeXUXcKazd1mF1clVVa0wUuMX1BiH/view?usp=drivesdk",
+    "Simulasi JFT Basic 1": "https://drive.google.com/file/d/1j-1hGXo9q2lppaTNQqI90YoZw75bgh-f/view?usp=drivesdk", 
+    "Simulasi JFT Basic 2": "https://drive.google.com/file/d/1MdVrkJ5au2nTeZlmUKecpwRvo_jv4SRO/view?usp=drivesdk", 
+    "Simulasi JFT Basic 3": "https://drive.google.com/file/d/1yhCEb_wjvT2W7IV3dtZEqLb4CoM8Zjp_/view?usp=drivesdk", 
+    "Simulasi JFT Basic 4": "https://drive.google.com/file/d/115Np80C4mdTLnMVOikYVRXwtGW7NG-hP/view?usp=drivesdk",
+    "Soal JFT Dasar 1(1)": "https://drive.google.com/file/d/10qxweUGiuoKUycr5RKjSgEb72urXxnFs/view?usp=drivesdk", 
+    "Soal JFT Dasar 1": "https://drive.google.com/file/d/1_Hk7vSdIzqTJn5GR7TjuwZrZsIR_7aVC/view?usp=drivesdk", 
+    "Soal JFT Dasar 2(1)": "https://drive.google.com/file/d/1H5YZzUUYSMGWfEvcEjvcdG_ATHU8TrTh/view?usp=drivesdk", 
+    "Soal JFT Dasar 2": "https://drive.google.com/file/d/1sbI_zohb6aNTC9cXxEFSVajh8YkQ1fK9/view?usp=drivesdk",
+    "Soal JFT Dasar 3(1)": "https://drive.google.com/file/d/1fL-Hf-03_Y1NrI8p_S55iPLgl5ccNfnQ/view?usp=drivesdk", 
+    "Soal JFT Dasar 3": "https://drive.google.com/file/d/1z5Sl2hfG653Bv4E4mt0ySQeEcxdR6IVD/view?usp=drivesdk", 
+    "Soal JFT Dasar 4(1)": "https://drive.google.com/file/d/1MZyWpp103gTmDtEWilu3f7b9Jk0KjgSw/view?usp=drivesdk", 
+    "Soal JFT Dasar 4": "https://drive.google.com/file/d/1A0p-gM71ilGQO8Bg96_BVW-j-E_BNH1D/view?usp=drivesdk",
+    "Soal JFT Dasar 5": "https://drive.google.com/file/d/1_jI-6bwCs87lrrNKUUHKuF4zhmHz1w5g/view?usp=drivesdk", 
+    "Soal JFT Dasar 6": "https://drive.google.com/file/d/11bHOytWL8lsCsPGUlwLq4n-mL-zpPJib/view?usp=drivesdk", 
+    "Soal JFT Dasar 7": "https://drive.google.com/file/d/1c1iamqI-WSvhjnXVIsduQbm1LTimogJB/view?usp=drivesdk", 
+    "Soal JFT Dasar 8": "https://drive.google.com/file/d/142IXdLAeKDI6yUAv6mOF3QEm3PADFcDO/view?usp=drivesdk",
+    "Soal JFT Dasar 9": "https://drive.google.com/file/d/1IVCjkJOI1nmAItyEuENpFhXxJNFS2lKl/view?usp=drivesdk", 
+    "Soal JFT Dasar 10": "https://drive.google.com/file/d/1MHaOMFBsQV84734ldJ3lq9SYpMJMucz2/view?usp=drivesdk",
+    "Soal JFT Intermediate 1": "https://drive.google.com/file/d/1oLb8ayofTsZ0iRECMhG2bpfTst7ryOW5/view?usp=drivesdk", 
+    "Soal JFT Intermediate 2": "https://drive.google.com/file/d/1G_xSO52HWBiXCC6T1N2uV0tkDcRleFAz/view?usp=drivesdk", 
+    "Soal JFT Intermediate 3": "https://drive.google.com/file/d/12rkFtIZdCwCwARRnDJkDm305Q70zn7LY/view?usp=drivesdk",
+    "Soal JFT Intermediate 4": "https://drive.google.com/file/d/1oWdw9Wd7jc5OVQ2Ug4SVHUw1FDBozAoR/view?usp=drivesdk", 
+    "Soal JFT Intermediate 5": "https://drive.google.com/file/d/1x4wP_PYVyvwY9NRYv2_rZJWLUd5YHYe3/view?usp=drivesdk", 
+    "Soal JFT Intermediate 6": "https://drive.google.com/file/d/1Rk8m42q41PHxoMZaxPWEZFWYDHz2FE84/view?usp=drivesdk",
+    "Soal JFT Intermediate 7": "https://drive.google.com/file/d/1XEmElZ-1jDvwiMQjvZgb4bzfoBWKjQd-/view?usp=drivesdk", 
+    "Soal JFT Intermediate 8": "https://drive.google.com/file/d/1TE7QLDMpuPp1BUmdv-sMNrBrY6jMnfB3/view?usp=drivesdk", 
+    "Soal JFT Intermediate 9": "https://drive.google.com/file/d/1k8yM83F-Eo50eV7CLWHYVXKEGBWL_6_F/view?usp=drivesdk", 
+    "Soal JFT Intermediate 10": "https://drive.google.com/file/d/1S3MxuQB9ECyzrRyvKYMlhjz_tb3F9hZE/view?usp=drivesdk"
   }
 };
 
-function show(id){
+let loadingTimer = null;
+
+function hideLoader() {
+  const loader = document.getElementById('loading-screen');
+  loader.classList.add('hidden-loader');
+}
+
+function triggerLoading(actionCallback) {
+  const loader = document.getElementById('loading-screen');
+  if (loadingTimer) clearTimeout(loadingTimer);
+
+  loader.classList.remove('hidden-loader');
+
+  loadingTimer = setTimeout(() => {
+    if (typeof actionCallback === 'function') {
+      actionCallback();
+    }
+    hideLoader();
+  }, 350);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(hideLoader, 300);
+});
+
+window.addEventListener('pageshow', () => {
+  hideLoader();
+});
+
+function show(id) {
   const menu = document.getElementById("menu");
   const submenu = document.getElementById("submenu");
   const infoKlik = document.getElementById("info-klik");
+  
   menu.classList.add("hidden");
   submenu.classList.add("hidden");
+  
   document.getElementById(id).classList.remove("hidden");
-  if(id === "submenu") infoKlik.classList.remove("hidden");
-  else infoKlik.classList.add("hidden");
+  
+  if (id === "submenu") {
+    infoKlik.classList.remove("hidden");
+  } else {
+    infoKlik.classList.add("hidden");
+  }
 }
 
-function openKana(){ buildSub("Hiragana Katakana","kana"); }
-function openDongeng(){ buildSub("Dongeng Jepang","dongeng"); }
-function openIrodoriA1(){ buildSub("Irodori A1","irodoriA1"); }
-function openIrodoriA21(){ buildSub("Irodori A2(1)","irodoriA21"); }
-function openIrodoriA22(){ buildSub("Irodori A2(2)","irodoriA22"); }
-function openKotobaIrodori(){ buildSub("Kotoba Irodori","kotoba"); }
-function openJFT(){ buildSub("JFT Basic","jft"); }
+function openKana() { triggerLoading(() => buildSub("Hiragana Katakana", "kana")); }
+function openDongeng() { triggerLoading(() => buildSub("Dongeng Jepang", "dongeng")); }
+function openIrodoriA1() { triggerLoading(() => buildSub("Irodori A1", "irodoriA1")); }
+function openIrodoriA21() { triggerLoading(() => buildSub("Irodori A2(1)", "irodoriA21")); }
+function openIrodoriA22() { triggerLoading(() => buildSub("Irodori A2(2)", "irodoriA22")); }
+function openKotobaIrodori() { triggerLoading(() => buildSub("Kotoba Irodori", "kotoba")); }
+function openJFT() { triggerLoading(() => buildSub("JFT Basic", "jft")); }
 
-function buildSub(title,key){
-  const box=document.getElementById("submenu");
-  box.innerHTML=`
-    <h2>${title}</h2>
+function backToMenu() {
+  triggerLoading(() => show('menu'));
+}
+
+function buildSub(title, key) {
+  const box = document.getElementById("submenu");
+  
+  box.innerHTML = `
+    <div class="section-title">${title}</div>
     <div class="list">
-      ${Object.keys(quizLinks[key]).map(k=>
-        `<div class="item" onclick="go('${quizLinks[key][k]}')">
-          ${k}<span>→</span>
-        </div>`
-      ).join('')}
-      <button class="back" onclick="show('menu')">Kembali</button>
+      ${Object.keys(quizLinks[key]).map(k => `
+        <div class="item" onclick="go('${quizLinks[key][k]}')">
+          <div class="item-left">
+            <div class="item-icon">
+              <svg width="18" height="18" viewBox="0 0 100 100">
+                <path d="M20,50 Q20,20 50,20 Q80,20 80,50 Q80,80 50,80 Q20,80 20,50 Z" fill="#6C5CE7"/>
+                <circle cx="40" cy="45" r="5" fill="#FFF"/>
+                <circle cx="60" cy="45" r="5" fill="#FFF"/>
+              </svg>
+            </div>
+            <span>${k}</span>
+          </div>
+          <svg width="18" height="18" fill="#8E8E93" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </div>
+      `).join('')}
+      <button class="back" onclick="backToMenu()">← Kembali ke Menu Utama</button>
     </div>
   `;
   show("submenu");
 }
 
-function go(url){
-  if(url === "#") { alert("Link belum tersedia."); return; }
-  if(!clickedLinks[url]){
+function go(url) {
+  if (url === "#") { 
+    alert("Link belum tersedia."); 
+    return; 
+  }
+  
+  if (!clickedLinks[url]) {
     clickedLinks[url] = true;
-    window.open(iklan, "_blank");
-  } else { window.open(url, "_blank"); }
+    if (typeof iklan !== 'undefined') {
+      window.open(iklan, "_blank");
+    }
+  } else { 
+    window.open(url, "_blank"); 
+  }
+}
+
+function goNav(url) {
+  const loader = document.getElementById('loading-screen');
+  loader.classList.remove('hidden-loader');
+  setTimeout(() => {
+    window.location.href = url;
+  }, 200);
 }
 </script>
+
 </body>
 </html>
