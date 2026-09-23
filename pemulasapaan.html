@@ -271,14 +271,18 @@ Mulai Ulang
 <script>
 
 /* ========================================================
-   GANTI NAMA FILE / PATH SUARA SESUAI MILIK ANDA DI SINI
+   FILE AUDIO UTAMA
    ======================================================== */
-const correctAudio = new Audio("benar.mp3.mp3"); // ganti nama file audio benar
-const wrongAudio = new Audio("salah.mp3.mp3");     // ganti nama file audio salah
+const correctAudio = new Audio("benar.mp3.mp3"); 
+const wrongAudio = new Audio("salah.mp3.mp3");     
 
+/*
+  Dengan mengkloning (cloneNode), suara bisa langsung diputar berulang kali
+  meskipun tombol ditekan dengan sangat cepat secara berturut-turut.
+*/
 function playSound(audioObject){
-    audioObject.currentTime = 0; // reset durasi ke awal
-    audioObject.play().catch(e => console.log("Audio play blocked:", e));
+    const soundInstance = audioObject.cloneNode();
+    soundInstance.play().catch(e => console.log("Audio play blocked:", e));
 }
 
 const vocab=[
