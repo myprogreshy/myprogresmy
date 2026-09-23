@@ -268,51 +268,32 @@ Mulai Ulang
 
 </div>
 
+<!-- PRELOAD AUDIO SECARA SEMENTARA AGAR DIKECEL DI MEMORI SYSTEM -->
+<audio id="audioCorrect" src="benar.mp3.mp3" preload="auto"></audio>
+<audio id="audioWrong" src="salah.mp3.mp3" preload="auto"></audio>
+
 <script>
 
 /* ========================================================
-   SISTEM AUDIO WEB AUDIO API (TANPA DELAY / INSTAN)
+   SISTEM AUDIO OPTIMAL & BEBAS DARI MASALAH FILE:///
    ======================================================== */
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioCtx();
+const correctAudio = document.getElementById("audioCorrect");
+const wrongAudio = document.getElementById("audioWrong");
 
-let soundBuffers = {
-  correct: null,
-  wrong: null
-};
-
-// Pre-load file audio ke dalam memori RAM
-async function loadSound(url) {
-  try {
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    return await audioCtx.decodeAudioData(arrayBuffer);
-  } catch (e) {
-    console.error("Gagal memuat audio:", e);
-  }
-}
-
-// Inisialisasi Audio
-async function initSounds() {
-  soundBuffers.correct = await loadSound("benar.mp3.mp3");
-  soundBuffers.wrong = await loadSound("salah.mp3.mp3");
-}
-
-initSounds();
-
-// Pemutar instan berbasis Web Audio API
-function playSound(type) {
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-  
-  const buffer = soundBuffers[type];
-  if (buffer) {
-    const source = audioCtx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(audioCtx.destination);
-    source.start(0); // Dimainkan seketika tanpa delay
-  }
+function playSound(audioElement) {
+    if (!audioElement) return;
+    
+    // Jika audio sedang dimainkan, reset waktunya ke 0 untuk diputar ulang seketika
+    audioElement.currentTime = 0;
+    
+    const playPromise = audioElement.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(e => {
+            // Jika terpotong karena dipencet cepat, klon dan putar secara terpisah
+            const clone = audioElement.cloneNode();
+            clone.play().catch(err => console.log(err));
+        });
+    }
 }
 
 const vocab=[
@@ -384,8 +365,8 @@ function check(sel,ans,indo){
 
 if(sel===ans){
 
-// MEMBUNYIKAN SUARA BENAR SECARA INSTAN
-playSound('correct');
+// MEMBUNYIKAN SUARA BENAR
+playSound(correctAudio);
 
 streak++;
 correct++;
@@ -419,8 +400,8 @@ setTimeout(loadQuestion,500);
 
 }else{
 
-// MEMBUNYIKAN SUARA SALAH SECARA INSTAN
-playSound('wrong');
+// MEMBUNYIKAN SUARA SALAH
+playSound(wrongAudio);
 
 streak=0;
 
