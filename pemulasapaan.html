@@ -270,10 +270,21 @@ Mulai Ulang
 
 <script>
 
+/* ========================================================
+   GANTI NAMA FILE / PATH SUARA SESUAI MILIK ANDA DI SINI
+   ======================================================== */
+const correctAudio = new Audio("benar.mp3"); // ganti nama file audio benar
+const wrongAudio = new Audio("salah.mp3");     // ganti nama file audio salah
+
+function playSound(audioObject){
+    audioObject.currentTime = 0; // reset durasi ke awal
+    audioObject.play().catch(e => console.log("Audio play blocked:", e));
+}
+
 const vocab=[
-    ["さようなら", "selamat tinggal"],["ばいばい", "bye-bye"],["おやすみなさい", "selamat tidur"],
-  ["こんばんは", "selamat sore/malam"],["こんいちは", "selamat siang"],["おはようございます", "salam kenal"],
-  ["こんいちは", "halo"]
+  ["さようなら", "selamat tinggal"],["ばいばい", "bye-bye"],["おやすみなさい", "selamat tidur"],
+  ["こんばんは", "selamat sore/malam"],["こんにちは", "selamat siang"],["おはようございます", "salam kenal"],
+  ["こんにちは", "halo"]
 ];
 
 let q=[],cur=0,xp=0,streak=0;
@@ -339,6 +350,9 @@ function check(sel,ans,indo){
 
 if(sel===ans){
 
+// MEMBUNYIKAN SUARA BENAR
+playSound(correctAudio);
+
 streak++;
 correct++;
 
@@ -370,6 +384,9 @@ updateUI();
 setTimeout(loadQuestion,500);
 
 }else{
+
+// MEMBUNYIKAN SUARA SALAH
+playSound(wrongAudio);
 
 streak=0;
 
