@@ -260,7 +260,7 @@ color:white;
 
 <table class="info-table">
 <tr>
-<td class="quiz-name">Pola Kalimat Bab 1-5</td>
+<td class="quiz-name">Pola Kalimat Bab 6-10</td>
 <td class="q-number" id="qNumber">1 / 12</td>
 </tr>
 </table>
@@ -285,48 +285,97 @@ Mulai Ulang
 
 // Format: [Kalimat Jepang, Fungsi Singkat, Arti Kalimat]
 const vocab=[
-  // BAB 1
-  ["わたしはがくせいです", "menyatakan identitas", "Saya adalah siswa."],
-  ["わたしはエンジニアじゃありません", "negasi identitas", "Saya bukan insinyur."],
-  ["サントスさんはせんせいですか", "tanya identitas", "Apakah Sdr. Santos seorang guru?"],
-  ["ミラーさんもかいしゃいんです", "menyatakan 'juga'", "Sdr. Miller juga karyawan perusahaan."],
-  ["ミラーさんはアイエムシーのしゃいんです", "kepemilikan / organisasi", "Sdr. Miller adalah karyawan IMC."],
-  ["あのかたはどなたですか", "tanya siapa (sopan)", "Siapakah orang itu?"],
-  ["テレサちゃんはきゅうさいです", "menyatakan umur", "Teresa berumur 9 tahun."],
+  // BAB 6
+  ["ジュースをのみます", "objek [o]", "Saya minum jus."],
+  ["サッカーをします", "melakukan kegiatan", "Saya bermain sepak bola."],
+  ["かいぎをします", "melakukan kegiatan", "Saya melakukan rapat."],
+  ["しごとをします", "melakukan kegiatan", "Saya bekerja."],
+  ["げつようびなにをしますか", "tanya kegiatan [apa]", "Hari Senin Anda melakukan apa?"],
+  ["きのうなにをしましたか", "tanya kegiatan lampau", "Kemarin Anda melakukan apa?"],
+  ["それはなんですか", "tanya benda [apa]", "Itu apa?"],
+  ["なにをかいますか", "tanya objek [membeli apa]", "Anda membeli apa?"],
+  ["えきでしんぶんをかいます", "lokasi aksi [de]", "Saya membeli koran di stasiun."],
+  ["いっしょにきょうとへいきませんか", "tentang ajakan [-masenka]", "Mau pergi ke Kyoto bersama-sama?"],
+  ["ちょっとやすみましょう", "mari/ayo [-mashou]", "Mari istirahat sebentar."],
+  ["ええ、たべましょう", "menyetujui ajakan", "Ya, mari makan."],
+  ["きょうとですか、いいですね", "pilihan / kesan", "Ke Kyoto ya? Bagus ya."],
 
-  // BAB 2
-  ["これはほんです", "menunjuk benda dekat", "Ini adalah buku."],
-  ["それはじしょです", "menunjuk benda dekat lawan", "Itu adalah kamus."],
-  ["あれはかばんです", "menunjuk benda jauh", "Itu (di sana) adalah tas."],
-  ["これはえんぴつですか、ボールペンですか", "kalimat pilihan", "Apakah ini pensil atau pulpen?"],
-  ["このほんはわたしのです", "kepemilikan benda", "Buku ini milik saya."],
-  ["これはなんのほんですか", "tanya isi / topik benda", "Ini buku apa?"],
-  ["これはだれのかぎですか", "tanya pemilik benda", "Ini kunci milik siapa?"],
+  // BAB 7
+  ["はしでたべます", "alat / sarana [de]", "Saya makan dengan sumpit."],
+  ["にほんごでレポートをかきます", "bahasa [de]", "Saya menulis laporan dalam bahasa Jepang."],
+  ["ありがとうはえいごでなんですか", "tanya padanan bahasa", "Apa bahasa Inggrisnya 'arigatou'?"],
+  ["thank youはにほんごでなんですか", "tanya padanan bahasa", "Apa bahasa Jepang-nya 'thank you'?"],
+  ["わたしはきむらさんにはなをあげました", "memberi [ni agemashita]", "Saya memberi bunga kepada Sdr. Kimura."],
+  ["わたしはいーさんにおんをかしました", "meminjamkan [ni kashimashita]", "Saya meminjamkan buku kepada Sdr. Lee."],
+  ["わたしはやまださんにえいごをおしえます", "mengajar [ni oshiemasu]", "Saya mengajar bahasa Inggris kepada Sdr. Yamada."],
+  ["わたしはやまださんにはなをもらいました", "menerima [ni moraimashita]", "Saya menerima bunga dari Sdr. Yamada."],
+  ["わたしはカリナさんにCDをかりました", "meminjam [ni karimashita]", "Saya meminjam CD dari Sdr. Karina."],
+  ["わたしはわんさんにちゅうごくごをならいます", "belajar [ni naraimasu]", "Saya belajar bahasa Mandarin dari Sdr. Wang."],
+  ["わたしはやまださんからはなをもらいました", "menerima dari [kara]", "Saya menerima bunga dari Sdr. Yamada."],
+  ["ぎんこうからおかねをかりました", "meminjam dari instansi [kara]", "Saya meminjam uang dari bank."],
+  ["もうにもつをおくりましたか", "tanya sudah/belum [mou]", "Apakah Anda sudah mengirim paket?"],
+  ["はい、もうおくりました", "jawaban sudah [mou]", "Ya, saya sudah mengirimnya."],
+  ["いいえ、まだです", "jawaban belum [mada]", "Belum."],
+  ["このスプーン、すきですね", "kesukaan", "Sendok ini bagus/suka ya."],
+  ["コーヒー、もういっぱいいかがですか", "penawaran [bagaimana kalau]", "Bagaimana kalau minum kopi satu cangkir lagi?"],
 
-  // BAB 3
-  ["ここはきょうしつです", "menunjuk tempat", "Di sini adalah ruang kelas."],
-  ["トイレはあそこです", "lokasi keberadaan", "Toilet ada di sana."],
-  ["エレベーターはどちらですか", "tanya arah / tempat (sopan)", "Elevator ada di sebelah mana?"],
-  ["かいしゃはどちらですか", "tanya asal organisasi / negara", "Perusahaan Anda di mana?"],
-  ["これはどこのワインですか", "tanya buatan negara mana", "Ini wine buatan mana?"],
-  ["このとけいはいくらですか", "tanya harga", "Jam tangan ini harganya berapa?"],
+  // BAB 8
+  ["ワットせんせいはしんせつです", "kata sifat-Na", "Sdr. Watt ramah."],
+  ["ふじさんはたかいです", "kata sifat-I", "Gunung Fuji tinggi."],
+  ["あそこはしずかじゃありません", "negasi kata sifat-Na", "Di sana tidak tenang/sepi."],
+  ["このほんはおもしろくないです", "negasi kata sifat-I", "Buku ini tidak menarik."],
+  ["ペキンはさむいですか", "tanya kata sifat-I", "Apakah Beijing dingin?"],
+  ["ならこうえんはにぎやかですか", "tanya kata sifat-Na", "Apakah Taman Nara ramai?"],
+  ["ワットせんせいはしんせつなせんせいです", "kata sifat-Na + benda", "Sdr. Watt adalah guru yang ramah."],
+  ["ふじさんはたかいやまです", "kata sifat-I + benda", "Gunung Fuji adalah gunung yang tinggi."],
+  ["にほんのたべものはおいしいですが、たかいです", "kontras [ga = tetapi]", "Makanan Jepang enak, tetapi mahal."],
+  ["ペキンはとてもさむいです", "penekan [totemo = sangat]", "Beijing sangat dingin."],
+  ["これはとてもゆうめいなえいがです", "penekan [totemo = sangat]", "Ini adalah film yang sangat terkenal."],
+  ["シャンハイはあまりさむくないです", "penangkal [amari + negasi]", "Shanghai tidak begitu dingin."],
+  ["さくらだいがくはあまりゆうめいなだいがくじゃありません", "penangkal [amari + negasi]", "Universitas Sakura bukan universitas yang begitu terkenal."],
+  ["にほんのせいかつはどうですか", "tanya kesan [doudesuka]", "Bagaimana kehidupan di Jepang?"],
+  ["ならはどんなまちですか", "tanya deskripsi [donna]", "Nara itu kota yang bagaimana?"],
+  ["そうですね", "berpikir / merespons", "Bagaimana ya... / Iya juga ya."],
 
-  // BAB 4
-  ["いまくじはんです", "menyatakan jam / waktu", "Sekarang jam 9 lewat setengah."],
-  ["わたしはまいあさろくじにおきます", "kegiatan rutinitas", "Saya bangun jam 6 setiap pagi."],
-  ["きのうべんきょうしました", "kegiatan lampau", "Kemarin saya sudah belajar."],
-  ["あしたはたらきません", "negasi kegiatan masa depan", "Besok saya tidak bekerja."],
-  ["ぎんこうはくじからごじまでです", "jangka waktu (dari ... sampai)", "Bank buka dari jam 9 sampai jam 5."],
-  ["やすみはどようびときにちようびです", "menghubungkan kata benda (dan)", "Hari libur adalah hari Sabtu dan Minggu."],
+  // BAB 9
+  ["わたしはイタリアりょうりがすきです", "kesukaan [ga suki]", "Saya suka masakan Italia."],
+  ["わたしはにほんごがわかります", "pemahaman [ga wakarimasu]", "Saya paham bahasa Jepang."],
+  ["わたしはくるまがあります", "kepemilikan [ga arimasu]", "Saya punya mobil."],
+  ["どんなスポーツがすきですか", "tanya jenis kesukaan", "Olahraga seperti apa yang Anda sukai?"],
+  ["えいごがよくわかります", "tingkat [yoku = sangat paham]", "Saya sangat paham bahasa Inggris."],
+  ["えいごがすこしわかります", "tingkat [sukoshi = sedikit]", "Saya sedikit paham bahasa Inggris."],
+  ["えいごがあまりわかりません", "tingkat [amari + negasi]", "Saya tidak begitu paham bahasa Inggris."],
+  ["おかねがたくさんあります", "jumlah [takusan = banyak]", "Saya punya banyak uang."],
+  ["おかねがぜんぜんありません", "jumlah [zenzen + negasi]", "Saya sama sekali tidak punya uang."],
+  ["ここはすこしさむいです", "tingkat [sukoshi = sedikit]", "Di sini sedikit dingin."],
+  ["あのえいがはぜんぜんおもしろくないです", "tingkat [zenzen + negasi]", "Film itu sama sekali tidak menarik."],
+  ["じかんがありませんから、しんぶんをよみません", "alasan [kara = karena]", "Karena tidak ada waktu, saya tidak membaca koran."],
+  ["いいえ、よみません、じかんがありませんから", "alasan di akhir kalimat", "Tidak, saya tidak membaca, karena tidak ada waktu."],
+  ["どうしてあさしんぶんをよみませんか", "tanya alasan [doushite]", "Mengapa pagi hari tidak membaca koran?"],
+  ["どうしてですか", "tanya alasan [kenapa]", "Mengapa?"],
 
-  // BAB 5
-  ["わたしはきょうとへいきます", "tujuan pergerakan", "Saya pergi ke Kyoto."],
-  ["タクシーでうちへかえります", "alat transportasi", "Saya pulang ke rumah dengan taksi."],
-  ["あるいてがっこうへいきます", "berjalan kaki", "Saya pergi ke sekolah dengan berjalan kaki."],
-  ["ともだちとにほんへきました", "melakukan bersama orang lain", "Saya datang ke Jepang bersama teman."],
-  ["ひとりでにほんへきました", "melakukan sendirian", "Saya datang ke Jepang sendirian."],
-  ["いつにほんへきましたか", "tanya waktu kejadian", "Kapan Anda datang ke Jepang?"],
-  ["どこへもいきません", "penangkalan total tujuan", "Saya tidak pergi ke mana pun."]
+  // BAB 10
+  ["コンピューターがあります", "keberadaan benda mati [arimasu]", "Ada komputer."],
+  ["さくらがあります", "keberadaan benda mati", "Ada bunga sakura."],
+  ["こうえんがあります", "keberadaan tempat/benda", "Ada taman."],
+  ["おとこのひとがいます", "keberadaan benda hidup [imasu]", "Ada laki-laki."],
+  ["いぬがいます", "keberadaan hewan [imasu]", "Ada anjing."],
+  ["わたしのへやにつくえがあります", "lokasi keberadaan [ni]", "Di kamar saya ada meja."],
+  ["じむしょにミラーさんがいます", "lokasi keberadaan orang", "Di kantor ada Sdr. Miller."],
+  ["ちかになにがありますか", "tanya benda di lokasi", "Ada apa di bawah tanah?"],
+  ["レストランがあります", "keberadaan benda mati", "Ada restoran."],
+  ["うけつけにだれがいますか", "tanya orang di lokasi", "Ada siapa di resepsionis?"],
+  ["きむらさんがいます", "keberadaan orang", "Ada Sdr. Kimura."],
+  ["とうきょうディズニーランドはちばけんにあります", "lokasi subjek spesifik", "Tokyo Disneyland ada di Prefektur Chiba."],
+  ["とうきょうディズニーランドはどこにありますか", "tanya lokasi subjek", "Tokyo Disneyland ada di mana?"],
+  ["ミラーさんはどこにいますか", "tanya lokasi orang", "Sdr. Miller ada di mana?"],
+  ["とうきょうディズニーランドはどこですか", "tanya lokasi singkat", "Tokyo Disneyland di mana?"],
+  ["つくえのうえにしゃしんがあります", "posisi relatif [ue = atas]", "Di atas meja ada foto."],
+  ["ゆうびんきょくはぎんこうのとなりにあります", "posisi relatif [tonari = samping]", "Kantor pos ada di samping bank."],
+  ["ほんやははなやとスーパーのあいだにあります", "posisi relatif [aida = antara]", "Toko buku ada di antara toko bunga dan supermarket."],
+  ["えきのちかくでともだちにあいました", "posisi relatif [chikaku = dekat]", "Saya bertemu teman di dekat stasiun."],
+  ["はこのなかにてがみやしゃしんなどがあります", "pilihan sebagian [ya... nado]", "Di dalam kotak ada surat, foto, dll."],
+  ["アジアストアですか、あのびるのなかです", "posisi relatif [naka = dalam]", "Asia Store? Ada di dalam gedung itu."]
 ];
 
 let q=[],cur=0,xp=0,streak=0;
