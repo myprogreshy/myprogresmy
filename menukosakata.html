@@ -450,7 +450,6 @@ const quizLinks = {
     "Perubahan Bentuk だった": "bentuk7.html",
     "Perubahan Bentuk じゃなかった": "bentuk8.html",
     "Wawancara Mensetsu": "wawancara.html",
-    "Kosakata Pertanian": "pertanian.html",
   },
   pemula: {
     "Kata Sapaan": "pemulasapaan.html",
@@ -476,6 +475,7 @@ const quizLinks = {
     "Kosakata 3": "n5kosakata.html",
     "Kosakata 4": "xpresstka.html",
     "Kosakata 5": "kamussaku.html",
+    "Kosakata 6": "pertanian.html",
   },
   build: {
     "Buat Kosakata": "developer.html",
@@ -521,7 +521,7 @@ function show(id) {
   document.getElementById(id).classList.remove("hidden");
 }
 
-function openGanbaro() { triggerLoading(() => buildSub("Ganbaro Gakkou", "ganbaro")); }
+function openGanbaro() { triggerLoading(() => buildSub("Peta Kosakata", "ganbaro")); }
 function openPemula() { triggerLoading(() => buildSub("Kosakata Pemula", "pemula")); }
 function openRandom() { triggerLoading(() => buildSub("Kosakata Random", "random")); }
 function openBuild() { triggerLoading(() => buildSub("Buat Kosakata", "build")); }
